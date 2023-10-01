@@ -1,2 +1,10 @@
 library reg_page;
-export 'src/registration_page.dart';
+export 'src/localDB.dart';
+export 'src/setting.dart';
+export 'src/signup.dart';
+export 'src/welcome.dart';
+export 'src/show_toast.dart';
+export 'src/connection_checker.dart';
+export 'src/loader_dialog.dart';
+export 'src/repo.dart';
+export 'src/login_model.dart';
