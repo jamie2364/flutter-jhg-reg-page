@@ -8,3 +8,4 @@ export 'src/connection_checker.dart';
 export 'src/loader_dialog.dart';
 export 'src/repo.dart';
 export 'src/login_model.dart';
+export 'src/splash.dart';

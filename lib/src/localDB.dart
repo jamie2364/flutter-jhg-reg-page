@@ -2,28 +2,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDB{
 
-
-  static String isLoginKey = "isLogin";
   static String bearerTokenKey = "BearerToken";
+  static String endDateKey = "endDateKey";
 
-
-
-  // Set user is Login
-  static Future<void> storeLogin(bool value) async {
+  // Set bearer token
+  static Future<void> storeEndDate(String value) async {
     // initialized shared preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Store bearer token in shared preferences
-    sharedPreferences.setBool(isLoginKey, value);
+    sharedPreferences.setString(endDateKey, value);
   }
 
-  // Get user login Status
-  static Future<bool?> get getLogin async {
+  // Get bearer token
+  static Future<String?> get getEndDate async {
     // Initialized shared preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the bearer token which we have stored in sharedPreferences before
-    bool? isLogin = sharedPreferences.getBool(isLoginKey);
-    return isLogin;
+    String? bearerToken = sharedPreferences.getString(endDateKey);
+    return bearerToken;
   }
+
 
   // Set bearer token
   static Future<void> storeBearerToken(String value) async {
@@ -44,11 +42,11 @@ class LocalDB{
 
 
   // Clear bearer token
-  static Future<void> clearBearerToken() async {
+  static Future<void> clearLocalDB() async {
     // Initialized shared preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the bearer token which we have stored in sharedPreferences before
-    await  sharedPreferences.remove(bearerTokenKey);
+    await  sharedPreferences.clear();
   }
 
 }

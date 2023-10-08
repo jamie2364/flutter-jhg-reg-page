@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
 import 'constant.dart';
 import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 
 class Setting extends StatefulWidget {
-  const Setting({super.key,});
+  const Setting({super.key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.nextPage});
+  final String  yearlySubscriptionId;
+  final String  monthlySubscriptionId;
+  final Widget Function() nextPage;
+
   @override
   State<Setting> createState() => _SettingState();
 }
@@ -37,25 +45,19 @@ class _SettingState extends State<Setting> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: (){},
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pop(context);
+                  },
                   child: Icon(Icons.arrow_back_ios,color: AppColor.primaryWhite,
                     size: width*0.060,
                   ),
                 ),
-                InkWell(
-                  onTap: (){},
-                  child: Icon(Icons.more_vert,color: AppColor.primaryWhite,
-                    size: width*0.060,
-                  ),
-                )
               ],),
             SizedBox(height: height*0.030,),
                const Heading(text: Constant.setting),
             SizedBox(height: height*0.07,),
-            Center(
-                child:
-                Container(
+            Center(child: Container(
                   height:height * 0.12,
                   width:  width * 0.85,
                   decoration: BoxDecoration(
@@ -103,14 +105,10 @@ class _SettingState extends State<Setting> {
                               ),
                             ],
                           )
-
                         ],
                       )
                   ),
-                )
-
-            ),
-
+                )),
 
             SizedBox(height: height*0.03,),
 
@@ -200,7 +198,18 @@ class _SettingState extends State<Setting> {
             CustomButton(buttonName: Constant.logOut,
                 buttonColor:  AppColor.primaryWhite,
                 textColor: AppColor.primaryRed,
-                onPressed: (){})
+                onPressed: ()async {
+                  await LocalDB.clearLocalDB();
+                  // ignore: use_build_context_synchronously
+                  Navigator.pushAndRemoveUntil(context,
+                      MaterialPageRoute(builder: (context){
+                        return  Welcome(
+                          yearlySubscriptionId: widget.yearlySubscriptionId,
+                          monthlySubscriptionId: widget.monthlySubscriptionId,
+                          nextPage:widget.nextPage,);
+                      }), (route) => false);
+                }
+            ),
           ],
         ),
       ),

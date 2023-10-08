@@ -1,0 +1,35 @@
+
+import 'dart:convert';
+
+SubscriptionModel subscriptionModelFromJson(String str) => SubscriptionModel.fromJson(json.decode(str));
+
+String subscriptionModelToJson(SubscriptionModel data) => json.encode(data.toJson());
+
+class SubscriptionModel {
+  String? softwareSuite;
+  String? allAccessPass;
+  String? allCoursePass;
+  String? jhgRig;
+
+  SubscriptionModel({
+    this.softwareSuite,
+    this.allAccessPass,
+    this.allCoursePass,
+    this.jhgRig,
+  });
+
+  factory SubscriptionModel.fromJson(Map<String, dynamic> json) => SubscriptionModel(
+    softwareSuite: json["software_suite"],
+    allAccessPass: json["all_access_pass"],
+    allCoursePass: json["all_course_pass"],
+    jhgRig: json["jhg-rig"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "software_suite": softwareSuite,
+    "all_access_pass": allAccessPass,
+    "all_course_pass": allCoursePass,
+    "jhg-rig": jhgRig,
+  };
+}
+

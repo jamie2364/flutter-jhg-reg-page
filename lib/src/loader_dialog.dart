@@ -4,20 +4,18 @@ import 'package:reg_page/src/colors.dart';
 
 loaderDialog(BuildContext context) {
   return showDialog(
+
       context: context,
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-            backgroundColor:AppColor.primaryWhite,
-            insetPadding: const EdgeInsets.all(110),
-            clipBehavior: Clip.none,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+            backgroundColor:AppColor.primaryBlack.withOpacity(0.5),
+            insetPadding: EdgeInsets.zero,
             child:
-             SizedBox(
-                  height: MediaQuery.sizeOf(context).height*0.15,
-                  width: MediaQuery.sizeOf(context).height*0.15,
+             Container(
+                  height: MediaQuery.sizeOf(context).height,
+                  width: MediaQuery.sizeOf(context).height,
+                  color: AppColor.primaryBlack.withOpacity(0.5),
                   child: Center(
                       child: CircularProgressIndicator(
                         color: AppColor.primaryRed,
