@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    routes();
+     routes();
   }
 
   routes()async{
@@ -34,30 +34,29 @@ class _SplashScreenState extends State<SplashScreen> {
     async {
       String? endDate = await LocalDB.getEndDate;
       DateTime currentDate = DateTime.now();
+      if (endDate != null) {
+        DateTime expiryDate = DateTime.parse(endDate);
+        if (currentDate.isAfter(expiryDate)) {
+          {
+            await LocalDB.clearLocalDB();
+          }
+        }
+      }
 
-      // if (endDate != null) {
-      //   DateTime expiryDate = DateTime.parse(endDate);
-      //   if (currentDate.isAfter(expiryDate)) {
-      //     {
-      //       await LocalDB.clearLocalDB();
-      //     }
-      //   }
-      // }
-      //
-      // String? token = await LocalDB.getBearerToken;
-      // if (token == null) {
-      //   // ignore: use_build_context_synchronously
-      //   Navigator.pushReplacement(
-      //       context, MaterialPageRoute(builder: (context) =>
-      //       Welcome(
-      //         yearlySubscriptionId:  widget.yearlySubscriptionId,
-      //         monthlySubscriptionId: widget.monthlySubscriptionId,
-      //         nextPage: () => widget.nextPage(),)));
-      // } else {
+      String? token = await LocalDB.getBearerToken;
+      if (token == null) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) =>
+            Welcome(
+              yearlySubscriptionId:  widget.yearlySubscriptionId,
+              monthlySubscriptionId: widget.monthlySubscriptionId,
+              nextPage: () => widget.nextPage(),)));
+      } else {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => widget.nextPage()));
-      //}
+      }
     });
    }
 
@@ -70,14 +69,12 @@ class _SplashScreenState extends State<SplashScreen> {
           width: MediaQuery.of(context).size.width * 1,
           color:AppColor.primaryBlack,
           child: Center(
-            child: Text(
-              Constant.jamieHarrison,
-              style: TextStyle(
-                color:AppColor.primaryWhite,
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            child:
+            Image.asset("assets/images/logo.png",
+            height:  MediaQuery.of(context).size.height * 0.30,
+              width:  MediaQuery.of(context).size.height * 0.30,
+            fit: BoxFit.cover,
+            )
           ),
         )
     );

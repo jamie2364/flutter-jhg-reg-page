@@ -102,6 +102,7 @@ class _WelcomeState extends State<Welcome> {
     ProductDetailsResponse productDetailsResponse = await inAppPurchase.queryProductDetails(variant);
     if(productDetailsResponse.error == null){
       products = productDetailsResponse.productDetails;
+      print(products);
       for (var element in products) {
         if(element.id == yearlyKey){
           setState(() {
@@ -197,7 +198,7 @@ class _WelcomeState extends State<Welcome> {
                 SizedBox(
                   width: width,
                   height: height*0.44,
-                  child: Image.asset("images/jhg.png",fit: BoxFit.cover,),
+                  child: Image.asset("assets/images/jhg.png",fit: BoxFit.cover,),
                 ),
                 Positioned(
                     child:  Container(
@@ -364,7 +365,7 @@ class _WelcomeState extends State<Welcome> {
                                   SizedBox(width: width*0.02,),
 
                                   Text(
-                                    monthlyPrice!,
+                                    monthlyPrice ?? '',
                                     style:  TextStyle(
                                         color: AppColor.secondaryWhite,
                                         fontSize: 14,

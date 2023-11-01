@@ -1,6 +1,5 @@
 library reg_page;
 export 'src/localDB.dart';
-export 'src/setting.dart';
 export 'src/signup.dart';
 export 'src/welcome.dart';
 export 'src/show_toast.dart';
