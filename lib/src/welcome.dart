@@ -205,7 +205,7 @@ class _WelcomeState extends State<Welcome> {
                         width: width,
                         height: height * 0.44,
                         child: Image.asset(
-                          "images/jhg.png",
+                          "assets/images/jhg.png",
                           fit: BoxFit.cover,
                         ),
                       ),

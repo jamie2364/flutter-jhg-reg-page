@@ -5,6 +5,12 @@ class LocalDB{
   static String bearerTokenKey = "BearerToken";
   static String endDateKey = "endDateKey";
 
+  static Future<SharedPreferences?> get getPref async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences;
+  }
+
   // Set bearer token
   static Future<void> storeEndDate(String value) async {
     // initialized shared preferences

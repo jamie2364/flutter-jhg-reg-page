@@ -26,12 +26,24 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
      routes();
+     animate();
+  }
+
+
+  double logoSize = 0.5;
+
+  animate(){
+    Future.delayed(const Duration(milliseconds: 500),(){
+      setState(() {
+        logoSize = 1.5;
+      });
+    });
   }
 
   routes()async{
-
-    Timer(const Duration(seconds: 3),()
-    async {
+    animate();
+     Timer(const Duration(seconds: 3),()
+     async {
       String? endDate = await LocalDB.getEndDate;
       DateTime currentDate = DateTime.now();
       if (endDate != null) {
@@ -58,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
-   }
+   } 
 
 
   @override
@@ -70,11 +82,19 @@ class _SplashScreenState extends State<SplashScreen> {
           color:AppColor.primaryBlack,
           child: Center(
             child:
-            Image.asset("assets/images/logo.png",
-            height:  MediaQuery.of(context).size.height * 0.30,
-              width:  MediaQuery.of(context).size.height * 0.30,
-            fit: BoxFit.cover,
-            )
+
+                AnimatedScale(
+                    scale: logoSize,
+                    duration:const Duration(milliseconds: 2000),
+                    curve: Curves.linearToEaseOut,
+                   child:  Image.asset("assets/images/logo.png",
+                     height:  MediaQuery.of(context).size.height * 0.30,
+                     width:  MediaQuery.of(context).size.height * 0.30,
+                     fit: BoxFit.cover,
+                   ),
+                )
+
+
           ),
         )
     );
