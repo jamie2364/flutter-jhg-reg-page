@@ -294,7 +294,7 @@ class _WelcomeState extends State<Welcome> {
                                               fontWeight: FontWeight.w600),
                                         ),
                                         subtitle: Text(
-                                          "${Constant.oneWeekFree}$yearlyPrice per Year",
+                                          "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
                                           style: TextStyle(
                                               color: AppColor.secondaryWhite,
                                               fontSize: 14,
@@ -373,7 +373,7 @@ class _WelcomeState extends State<Welcome> {
                                         width: width * 0.02,
                                       ),
                                       Text(
-                                        monthlyPrice ?? '',
+                                        "$monthlyPrice ${Constant.perMonth}",
                                         style: TextStyle(
                                             color: AppColor.secondaryWhite,
                                             fontSize: 14,
