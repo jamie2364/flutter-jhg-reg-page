@@ -4,46 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
+
 class SplashScreen extends StatefulWidget {
+  const SplashScreen(
+      {super.key,
+      required this.yearlySubscriptionId,
+      required this.monthlySubscriptionId,
+      required this.nextPage});
 
-    const SplashScreen({super.key,
-    required this.yearlySubscriptionId,
-    required this.monthlySubscriptionId,
-    required this.nextPage});
-
-    final String  yearlySubscriptionId;
-    final String  monthlySubscriptionId;
-    final Widget Function() nextPage;
-
+  final String yearlySubscriptionId;
+  final String monthlySubscriptionId;
+  final Widget Function() nextPage;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
-     routes();
-     animate();
+    routes();
+    animate();
   }
 
+  double logoSize = 1;
 
-  double logoSize = 0.5;
-
-  animate(){
-    Future.delayed(const Duration(milliseconds: 500),(){
+  animate() {
+    Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        logoSize = 1.5;
+        logoSize = 1.1;
       });
     });
   }
 
-  routes()async{
+  routes() async {
     animate();
-     Timer(const Duration(seconds: 3),()
-     async {
+    Timer(const Duration(seconds: 3), () async {
       String? endDate = await LocalDB.getEndDate;
       DateTime currentDate = DateTime.now();
       if (endDate != null) {
@@ -59,44 +56,40 @@ class _SplashScreenState extends State<SplashScreen> {
       if (token == null) {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) =>
-            Welcome(
-              yearlySubscriptionId:  widget.yearlySubscriptionId,
-              monthlySubscriptionId: widget.monthlySubscriptionId,
-              nextPage: () => widget.nextPage(),)));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Welcome(
+                      yearlySubscriptionId: widget.yearlySubscriptionId,
+                      monthlySubscriptionId: widget.monthlySubscriptionId,
+                      nextPage: () => widget.nextPage(),
+                    )));
       } else {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
-   } 
-
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-          height: MediaQuery.of(context).size.height * 1,
-          width: MediaQuery.of(context).size.width * 1,
-          color:AppColor.primaryBlack,
-          child: Center(
-            child:
-
-                AnimatedScale(
-                    scale: logoSize,
-                    duration:const Duration(milliseconds: 2000),
-                    curve: Curves.linearToEaseOut,
-                   child:  Image.asset("assets/images/logo.png",
-                     height:  MediaQuery.of(context).size.height * 0.30,
-                     width:  MediaQuery.of(context).size.height * 0.30,
-                     fit: BoxFit.cover,
-                   ),
-                )
-
-
-          ),
-        )
-    );
+      height: MediaQuery.of(context).size.height * 1,
+      width: MediaQuery.of(context).size.width * 1,
+      color: AppColor.primaryBlack,
+      child: Center(
+          child: AnimatedScale(
+        scale: logoSize,
+        duration: const Duration(milliseconds: 2000),
+        curve: Curves.linearToEaseOut,
+        child: Image.asset(
+          "assets/images/logo.png",
+          height: MediaQuery.of(context).size.height * 0.30,
+          width: MediaQuery.of(context).size.height * 0.30,
+          fit: BoxFit.cover,
+        ),
+      )),
+    ));
   }
 }
