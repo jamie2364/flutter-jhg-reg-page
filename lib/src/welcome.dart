@@ -95,7 +95,7 @@ class _WelcomeState extends State<Welcome> {
         await inAppPurchase.queryProductDetails(variant);
     if (productDetailsResponse.error == null) {
       products = productDetailsResponse.productDetails;
-      print(products);
+      debugPrint("$products");
       for (var element in products) {
         if (element.id == yearlyKey) {
           setState(() {

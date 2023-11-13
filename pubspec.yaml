@@ -14,7 +14,7 @@ dependencies:
   dio: ^5.3.3
   connectivity: ^3.0.6
   internet_connection_checker: ^1.0.0+1
-  in_app_purchase: ^3.1.10
+  in_app_purchase: ^3.1.11
 
 dev_dependencies:
   flutter_test:
