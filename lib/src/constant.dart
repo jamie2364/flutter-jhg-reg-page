@@ -3,6 +3,8 @@ class Constant {
       "https://www.jamieharrisonguitar.com/wp-json/jwt-auth/v1/token";
   static const String subscriptionUrl =
       "https://www.jamieharrisonguitar.com/wp-json/myplugin/v1/jwt-check-subscription/";
+ static const String marketingUrl =
+      "https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f";
 
   static const String jamieHarrison = 'JAMIE HARRISON';
   static const String login = 'Login';

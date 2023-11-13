@@ -18,9 +18,11 @@ class SignUp extends StatefulWidget {
       {super.key,
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
+      required this.appName,
       required this.nextPage});
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
+  final String appName;
   final Widget Function() nextPage;
 
   @override
@@ -96,6 +98,7 @@ class _SignUpState extends State<SignUp> {
                   builder: (context) => Welcome(
                         yearlySubscriptionId: widget.yearlySubscriptionId,
                         monthlySubscriptionId: widget.monthlySubscriptionId,
+                        appName:  widget.appName,
                         nextPage: () => widget.nextPage(),
                       )));
         }
@@ -108,6 +111,34 @@ class _SignUpState extends State<SignUp> {
       }
     }
   }
+
+
+ Future marketingApi(String email) async {
+
+    bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
+
+    if(isAlreadyLoggedIn == null){
+      await LocalDB.storeFirstTimeLogin(true);
+      bool? hasInternet = await checkInternet();
+      if (!hasInternet) {
+        return;
+      } else {
+        Response response = await repo.postRequest(
+            Constant.marketingUrl, {
+          "subscribers": [{
+            "email": email,
+            "tag_as_event": "${widget.appName}_user"
+          }]
+        },
+            isHeader: true
+        );
+     print("${response.data}");
+      }
+    }else{
+      debugPrint("Already Logged In");
+    }
+  }
+
 
   userLogin() async {
     bool? hasInternet = await checkInternet();
@@ -123,7 +154,7 @@ class _SignUpState extends State<SignUp> {
       loaderDialog(context);
       try {
         Response response = await repo.postRequest(Constant.loginUrl, {
-          "username2": userNameController.text,
+          "username": userNameController.text,
           "password": passwordController.text,
         });
         loginModel = LoginModel.fromJson(response.data);
@@ -136,8 +167,13 @@ class _SignUpState extends State<SignUp> {
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
-            return widget.nextPage();
-          }), (route) => false);
+                return widget.nextPage();
+              }), (route) => false);
+
+          // CALLING MARKETING API
+
+          await marketingApi(loginModel.userEmail?? '');
+
         } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
@@ -171,6 +207,7 @@ class _SignUpState extends State<SignUp> {
       }
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -269,13 +306,6 @@ class _SignUpState extends State<SignUp> {
                     height: height * 0.02,
                   ),
 
-                  // Text(
-                  //   Constant.passwordLabel,
-                  //   style: TextStyle(
-                  //     fontSize: 16,
-                  //     color: AppColor.secondaryWhite,
-                  //   ),
-                  // ),
                   //Password
                   TextFormField(
                       scrollController:

@@ -14,9 +14,11 @@ class Welcome extends StatefulWidget {
       {super.key,
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
+      required this.appName,
       required this.nextPage});
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
+  final String appName;
   final Widget Function() nextPage;
 
   @override
@@ -44,6 +46,22 @@ class _WelcomeState extends State<Welcome> {
     setState(() {
       selectedPlan = plan;
     });
+  }
+
+  replaceAppName(){
+
+    // Convert both strings to lowercase for case-insensitive matching
+    final originalString = widget.appName.toLowerCase();
+    final excludedText = "jhg".toLowerCase();
+
+    // Use replaceAll to exclude the specified text
+
+    String result = originalString.replaceAll(excludedText, '');
+
+    String name = result.replaceFirst(result[1], result[1].toUpperCase());
+
+    return name;
+
   }
 
   //========================================================================
@@ -230,7 +248,9 @@ class _WelcomeState extends State<Welcome> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+
                               const Heading(text: Constant.welcome),
+
                               Text(
                                 Constant.welcomeDescription,
                                 style: TextStyle(
@@ -238,6 +258,18 @@ class _WelcomeState extends State<Welcome> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.w400),
                               ),
+
+                              Padding(
+                                padding:  const EdgeInsets.symmetric(horizontal: 0),
+                                child: Text(
+                                  replaceAppName(),
+                                  style: TextStyle(
+                                      color: AppColor.primaryWhite,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ),
+
                             ],
                           ))
                     ],
@@ -432,6 +464,7 @@ class _WelcomeState extends State<Welcome> {
                                         widget.yearlySubscriptionId,
                                     monthlySubscriptionId:
                                         widget.monthlySubscriptionId,
+                                    appName:  widget.appName,
                                     nextPage: widget.nextPage,
                                   );
                                 }));
