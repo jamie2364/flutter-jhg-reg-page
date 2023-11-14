@@ -39,6 +39,16 @@ class Constant {
   static const String tryFree = 'Start Free Trial';
   static const String alreadySubscribed = 'Already Subscribed? ';
   static const String logIn = 'Login';
+   static const String appName = 'App Name';
+   static const String version = 'Version';
+   static const String viewPrivacyPolicy = 'View Privacy Policy';
+   static const String viewTermsOfUse = 'View Terms of Use';
+   static const String restorePurchases = 'Restore Purchases';
+   static const String visitJamieHarrisonGuitar = 'Visit Jamie Harrison Guitar';
+   static const String appQuotes = '“If music be the food of love, play on,\nmy friend...”';
+   static const String copyRight = 'Copyright © 2023 Jamie Harrison Media Ltd.\nAll Rights Reserved.';
+
+
   static const String continueText = 'Continue';
   static const String emailPasswordInCorrect =
       'Your username or password is incorrect!';

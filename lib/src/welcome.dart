@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/info_screen.dart';
 import 'constant.dart';
 import 'colors.dart';
 import 'custom_button.dart';
@@ -15,12 +16,14 @@ class Welcome extends StatefulWidget {
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,
     required this.appName,
+    required this.appVersion,
     required this.nextPage,
   }) : super(key: key);
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
+  final String appVersion;
   final Widget Function() nextPage;
 
   @override
@@ -139,6 +142,7 @@ class _WelcomeState extends State<Welcome> {
       setState(() {
         loading = false;
       });
+
       // Ignore: use_build_context_synchronously
       showToast(
         context: context,
@@ -295,16 +299,21 @@ class _WelcomeState extends State<Welcome> {
 
                       // INFORMATION BUTTON
 
-                      // Positioned(
-                      //   right: width * 0.05,
-                      //   top:height* 0.03, // Adjust the bottom value to move it downwards
-                      //   child: GestureDetector(
-                      //     onTap: (){},
-                      //     child: Icon(Icons.info,color: AppColor.primaryWhite,
-                      //         size: width*0.065
-                      //         ,),
-                      //   )
-                      // ),
+                     Positioned(
+                        right: width * 0.05,
+                        top:height* 0.03, // Adjust the bottom value to move it downwards
+                        child: GestureDetector(
+                          onTap: (){
+
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return InfoScreen(appName: widget.appName, appVersion: widget.appVersion);
+                            }));
+                          },
+                          child: Icon(Icons.info,color: AppColor.primaryWhite,
+                              size: width*0.065
+                              ,),
+                        )
+                      ),
                     ],
                   ),
 
@@ -550,6 +559,7 @@ class _WelcomeState extends State<Welcome> {
                                         monthlySubscriptionId:
                                             widget.monthlySubscriptionId,
                                         appName: widget.appName,
+                                        appVersion: widget.appVersion,
                                         nextPage: widget.nextPage,
                                       );
                                     },

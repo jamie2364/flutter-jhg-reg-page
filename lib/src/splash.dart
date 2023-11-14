@@ -10,11 +10,13 @@ class SplashScreen extends StatefulWidget {
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
         required this.appName,
+        required this.appVersion,
         required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
+  final String appVersion;
   final Widget Function() nextPage;
 
   @override
@@ -63,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       yearlySubscriptionId: widget.yearlySubscriptionId,
                       monthlySubscriptionId: widget.monthlySubscriptionId,
                       appName:  widget.appName,
+                      appVersion:  widget.appVersion,
                       nextPage: () => widget.nextPage(),
                     )));
       } else {
