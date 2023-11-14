@@ -3,13 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/loader_dialog.dart';
-import 'package:reg_page/src/login_model.dart';
-import 'package:reg_page/src/repo.dart';
-import 'package:reg_page/src/show_toast.dart';
 import 'package:reg_page/src/subscription_model.dart';
 import 'colors.dart';
-import 'connection_checker.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 
@@ -299,7 +294,7 @@ class _SignUpState extends State<SignUp> {
                             color: AppColor.secondaryWhite,
                             fontWeight: FontWeight.w400),
                         contentPadding:
-                            EdgeInsets.only(left: 16.0, bottom: 12.0),
+                            const EdgeInsets.only(left: 16.0, bottom: 12.0),
                       )),
 
                   SizedBox(
@@ -342,7 +337,7 @@ class _SignUpState extends State<SignUp> {
                             fontSize: 14,
                             color: AppColor.secondaryWhite,
                             fontWeight: FontWeight.w400),
-                        contentPadding: EdgeInsets.only(left: 16.0),
+                        contentPadding: const EdgeInsets.only(left: 16.0),
                       )),
 
                   SizedBox(

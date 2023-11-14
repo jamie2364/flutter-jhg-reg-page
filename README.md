@@ -108,8 +108,52 @@ to `/example` folder.
 const like = 'sample';
 ```
 
+ADDING THE APP NAME 
+
+In the Reg Page, there are several places that use the name of the app as a variable. Therefore we need to define the app name in each app. 
+
+
+appName: We need to also define the apps name in three places:
+
+1)        In the main.dart file like this:
+
+ home:  SplashScreen(
+          yearlySubscriptionId: AppConstant.yearlySubscriptionId,
+          monthlySubscriptionId: AppConstant.monthlySubscriptionId,
+          appName: AppConstant.appName,
+          nextPage: ()=> const HomeScreen(),),
+
+2) In the setting_screen.dart file, like this: 
+
+                    onPressed: () async {
+                      await LocalDB.clearLocalDB();
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushAndRemoveUntil(context,
+                          MaterialPageRoute(builder: (context) {
+                        return Welcome(
+                          yearlySubscriptionId:
+                              AppConstant.yearlySubscriptionId,
+                          monthlySubscriptionId:
+                              AppConstant.monthlySubscriptionId,
+                          appName: AppConstant.appName,
+                          nextPage: () => const HomeScreen(),
+                        );
+                      }), (route) => false);
+                    },
+
+3) In the app_constant.dart file, like this:
+
+static const String appName = 'JHG Rhythm Master';
+
+
+
+
+
 ## Additional information
 
 TODO: Tell users more about the package: where to find more information, how to
 contribute to the package, how to file issues, what response they can expect
 from the package authors, and more.
+
+
+

@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
-import 'package:reg_page/src/constant.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen(
