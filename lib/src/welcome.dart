@@ -10,12 +10,14 @@ import 'custom_button.dart';
 import 'heading.dart';
 
 class Welcome extends StatefulWidget {
-  const Welcome(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.nextPage});
+  const Welcome({
+    Key? key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.appName,
+    required this.nextPage,
+  }) : super(key: key);
+
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
@@ -35,6 +37,7 @@ class _WelcomeState extends State<Welcome> {
   String? yearlyPrice;
 
   Set<String> variant = <String>{};
+
   @override
   void initState() {
     initializedData();
@@ -42,38 +45,42 @@ class _WelcomeState extends State<Welcome> {
   }
 
   int selectedPlan = 1;
+
   onPlanSelect(int plan) {
     setState(() {
       selectedPlan = plan;
     });
   }
 
-  replaceAppName(){
+  replaceAppName() {
+    // Define the text to remove (uppercase)
+    final excludedText = "JHG";
 
-    // Convert both strings to lowercase for case-insensitive matching
-    final originalString = widget.appName.toLowerCase();
-    final excludedText = "jhg".toLowerCase();
+    // Replace the specified text with an empty string
+    String result = widget.appName.replaceAll(excludedText, '');
 
-    // Use replaceAll to exclude the specified text
-
-    String result = originalString.replaceAll(excludedText, '');
-
-    String name = result.replaceFirst(result[1], result[1].toUpperCase());
-
-    return name;
-
+    return result;
   }
 
-  //========================================================================
-  //IN APP PURCHASE
+  // replaceAppName() {
+  //   // Convert both strings to lowercase for case-insensitive matching
+  //   final originalString = widget.appName.toLowerCase();
+  //   final excludedText = "JHG".toLowerCase();
 
-  // static const String yearlyKey = "com.jamieharrisonguitar.taptempo.freetrial";
-  // static const  String monthlyKey = "com.jamieharrisonguitar.taptempo.monthly";
+  //   // Use replaceAll to exclude the specified text
+  //   String result = originalString.replaceAll(excludedText, '');
+
+  //   String name = result.replaceFirst(result[1], result[1].toUpperCase());
+
+  //   return name;
+  // }
+
+  //========================================================================
+  // IN APP PURCHASE
 
   InAppPurchase inAppPurchase = InAppPurchase.instance;
   late StreamSubscription<dynamic> streamSubscription;
   List<ProductDetails> products = [];
-  //Set<String> variant = <String> {yearlyKey, monthlyKey};
 
   // Initialize subscription
   Future<void> initializedData() async {
@@ -87,17 +94,17 @@ class _WelcomeState extends State<Welcome> {
     await subscriptionStream();
   }
 
-  // payment stream listener
+  // Payment stream listener
   Future<void> subscriptionStream() async {
-    // clear the product list
+    // Clear the product list
     products.clear();
 
-    // instance of the purchase stream
+    // Instance of the purchase stream
     Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
 
-    // listen for stream
+    // Listen for stream
     streamSubscription = purchaseUpdated.listen((purchaseList) async {
-      //  calling for purchases
+      // Calling for purchases
       await listenToPurchase(purchaseList);
     }, onDone: () {
       streamSubscription.cancel();
@@ -108,7 +115,7 @@ class _WelcomeState extends State<Welcome> {
   }
 
   initStore(BuildContext context) async {
-    // getting subscription
+    // Getting subscription
     ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(variant);
     if (productDetailsResponse.error == null) {
@@ -132,11 +139,12 @@ class _WelcomeState extends State<Welcome> {
       setState(() {
         loading = false;
       });
-      // ignore: use_build_context_synchronously
+      // Ignore: use_build_context_synchronously
       showToast(
-          context: context,
-          message: productDetailsResponse.error!.message,
-          isError: true);
+        context: context,
+        message: productDetailsResponse.error!.message,
+        isError: true,
+      );
       debugPrint("Error ${productDetailsResponse.error}");
     }
   }
@@ -145,38 +153,43 @@ class _WelcomeState extends State<Welcome> {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: true);
+          context: context,
+          message: purchaseDetails.error!.message,
+          isError: true,
+        );
         debugPrint("pending");
         Navigator.pop(context);
       } else if (purchaseDetails.status == PurchaseStatus.error) {
         debugPrint("error");
         showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: true);
+          context: context,
+          message: purchaseDetails.error!.message,
+          isError: true,
+        );
         Navigator.pop(context);
       } else if (purchaseDetails.status == PurchaseStatus.purchased) {
         debugPrint("Purchased");
         showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: false);
+          context: context,
+          message: purchaseDetails.error!.message,
+          isError: false,
+        );
         Navigator.pop(context);
       } else if (purchaseDetails.status == PurchaseStatus.canceled) {
         debugPrint("canceled");
         showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: true);
+          context: context,
+          message: purchaseDetails.error!.message,
+          isError: true,
+        );
         Navigator.pop(context);
       } else if (purchaseDetails.status == PurchaseStatus.restored) {
         debugPrint("restored");
         showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: false);
+          context: context,
+          message: purchaseDetails.error!.message,
+          isError: false,
+        );
         Navigator.pop(context);
       }
     });
@@ -190,7 +203,7 @@ class _WelcomeState extends State<Welcome> {
       bool isAvailable = await inAppPurchase.isAvailable();
       if (isAvailable) {
         await inAppPurchase.buyNonConsumable(purchaseParam: param);
-        // ignore: use_build_context_synchronously
+        // Ignore: use_build_context_synchronously
         Navigator.pop(context);
       }
     } on PlatformException catch (e) {
@@ -228,50 +241,54 @@ class _WelcomeState extends State<Welcome> {
                         ),
                       ),
                       Positioned(
-                          child: Container(
-                        width: width,
-                        height: height * 0.44,
-                        decoration: BoxDecoration(
+                        child: Container(
+                          width: width,
+                          height: height * 0.44,
+                          decoration: BoxDecoration(
                             gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                              Colors.transparent,
-                              Colors.transparent,
-                              AppColor.primaryBlack
-                            ])),
-                      )),
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.transparent,
+                                AppColor.primaryBlack,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                       Positioned(
-                          left: width * 0.05,
-                          bottom: 0,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              const Heading(text: Constant.welcome),
-
-                              Text(
-                                Constant.welcomeDescription,
-                                style: TextStyle(
-                                    color: AppColor.primaryWhite,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400),
+                        left: width * 0.05,
+                        bottom:
+                            0, // Adjust the bottom value to move it downwards
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Heading(text: Constant.welcome),
+                            Text(
+                              Constant.welcomeDescription,
+                              style: TextStyle(
+                                color: AppColor.primaryWhite,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
                               ),
-
-                              Padding(
-                                padding:  const EdgeInsets.symmetric(horizontal: 0),
-                                child: Text(
-                                  replaceAppName(),
-                                  style: TextStyle(
-                                      color: AppColor.primaryWhite,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 0),
+                              child: Text(
+                                replaceAppName(),
+                                style: TextStyle(
+                                  color: AppColor.primaryWhite,
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
-
-                            ],
-                          ))
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   Padding(
@@ -288,28 +305,32 @@ class _WelcomeState extends State<Welcome> {
                         Text(
                           Constant.pleaseChoosePlan,
                           style: TextStyle(
-                              color: AppColor.secondaryWhite,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
+                            color: AppColor.secondaryWhite,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                         SizedBox(
                           height: height * 0.02,
                         ),
                         Center(
-                            child: Container(
-                          height: height * 0.13,
-                          width: width * 0.85,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            height: height * 0.13,
+                            width: width * 0.85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: selectedPlan == 1
-                                      ? AppColor.primaryRed
-                                      : AppColor.primaryWhite,
-                                  width: 1.5),
-                              color: AppColor.primaryBlack),
-                          child: Padding(
+                                color: selectedPlan == 1
+                                    ? AppColor.primaryRed
+                                    : AppColor.primaryWhite,
+                                width: 1.5,
+                              ),
+                              color: AppColor.primaryBlack,
+                            ),
+                            child: Padding(
                               padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.050),
+                                horizontal: width * 0.050,
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -317,89 +338,103 @@ class _WelcomeState extends State<Welcome> {
                                   SizedBox(
                                     height: height * 0.07,
                                     child: ListTile(
-                                        contentPadding: EdgeInsets.zero,
-                                        title: Text(
-                                          Constant.annualPlan,
-                                          style: TextStyle(
-                                              color: AppColor.primaryWhite,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Text(
+                                        Constant.annualPlan,
+                                        style: TextStyle(
+                                          color: AppColor.primaryWhite,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                         ),
-                                        subtitle: Text(
-                                          "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
-                                          style: TextStyle(
-                                              color: AppColor.secondaryWhite,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400),
+                                      ),
+                                      subtitle: Text(
+                                        "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
+                                        style: TextStyle(
+                                          color: AppColor.secondaryWhite,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                        trailing: GestureDetector(
-                                          onTap: () {
-                                            onPlanSelect(1);
-                                          },
-                                          child: Container(
-                                            height: height * 0.027,
-                                            width: height * 0.027,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
+                                      ),
+                                      trailing: GestureDetector(
+                                        onTap: () {
+                                          onPlanSelect(1);
+                                        },
+                                        child: Container(
+                                          height: height * 0.027,
+                                          width: height * 0.027,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: selectedPlan == 1
+                                                ? AppColor.primaryRed
+                                                : AppColor.primaryBlack,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
                                               color: selectedPlan == 1
                                                   ? AppColor.primaryRed
-                                                  : AppColor.primaryBlack,
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: selectedPlan == 1
-                                                      ? AppColor.primaryRed
-                                                      : AppColor.primaryWhite,
-                                                  width: 1.8),
-                                            ),
-                                            child: Icon(
-                                              Icons.done,
-                                              color: AppColor.primaryBlack,
-                                              size: width * 0.04,
+                                                  : AppColor.primaryWhite,
+                                              width: 1.8,
                                             ),
                                           ),
-                                        )),
+                                          child: Icon(
+                                            Icons.done,
+                                            color: AppColor.primaryBlack,
+                                            size: width * 0.04,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                   Divider(
                                     color: AppColor.secondaryWhite,
                                   ),
-                                  Text(Constant.weeklySave,
-                                      style: TextStyle(
-                                          color: AppColor.secondaryWhite,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400))
+                                  Text(
+                                    Constant.weeklySave,
+                                    style: TextStyle(
+                                      color: AppColor.secondaryWhite,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
                                 ],
-                              )),
-                        )),
+                              ),
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: height * 0.03,
                         ),
                         Center(
-                            child: Container(
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          width: MediaQuery.of(context).size.width * 0.85,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: MediaQuery.of(context).size.width * 0.85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                  color: selectedPlan == 2
-                                      ? AppColor.primaryRed
-                                      : AppColor.primaryWhite,
-                                  width: 1.5),
-                              color: AppColor.primaryBlack),
-                          child: Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width * 0.035),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
+                                color: selectedPlan == 2
+                                    ? AppColor.primaryRed
+                                    : AppColor.primaryWhite,
+                                width: 1.5,
+                              ),
+                              color: AppColor.primaryBlack,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.035,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
                                         Constant.monthlyPlan,
                                         style: TextStyle(
-                                            color: AppColor.primaryWhite,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
+                                          color: AppColor.primaryWhite,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                        ),
                                       ),
                                       SizedBox(
                                         width: width * 0.02,
@@ -407,41 +442,45 @@ class _WelcomeState extends State<Welcome> {
                                       Text(
                                         "$monthlyPrice ${Constant.perMonth}",
                                         style: TextStyle(
-                                            color: AppColor.secondaryWhite,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400),
+                                          color: AppColor.secondaryWhite,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
                                       ),
-                                    ]),
-                                GestureDetector(
-                                  onTap: () {
-                                    onPlanSelect(2);
-                                  },
-                                  child: Container(
-                                    height: height * 0.027,
-                                    width: height * 0.027,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: selectedPlan == 2
-                                          ? AppColor.primaryRed
-                                          : AppColor.primaryBlack,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
+                                    ],
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      onPlanSelect(2);
+                                    },
+                                    child: Container(
+                                      height: height * 0.027,
+                                      width: height * 0.027,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: selectedPlan == 2
+                                            ? AppColor.primaryRed
+                                            : AppColor.primaryBlack,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
                                           color: selectedPlan == 2
                                               ? AppColor.primaryRed
                                               : AppColor.primaryWhite,
-                                          width: 1.8),
-                                    ),
-                                    child: Icon(
-                                      Icons.done,
-                                      color: AppColor.primaryBlack,
-                                      size: width * 0.04,
+                                          width: 1.8,
+                                        ),
+                                      ),
+                                      child: Icon(
+                                        Icons.done,
+                                        color: AppColor.primaryBlack,
+                                        size: width * 0.04,
+                                      ),
                                     ),
                                   ),
-                                )
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        )),
+                        ),
                         SizedBox(
                           height: height * 0.02,
                         ),
@@ -451,49 +490,56 @@ class _WelcomeState extends State<Welcome> {
                             Text(
                               Constant.alreadySubscribed,
                               style: TextStyle(
-                                  color: AppColor.primaryWhite,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w300),
+                                color: AppColor.primaryWhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return SignUp(
-                                    yearlySubscriptionId:
-                                        widget.yearlySubscriptionId,
-                                    monthlySubscriptionId:
-                                        widget.monthlySubscriptionId,
-                                    appName:  widget.appName,
-                                    nextPage: widget.nextPage,
-                                  );
-                                }));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return SignUp(
+                                        yearlySubscriptionId:
+                                            widget.yearlySubscriptionId,
+                                        monthlySubscriptionId:
+                                            widget.monthlySubscriptionId,
+                                        appName: widget.appName,
+                                        nextPage: widget.nextPage,
+                                      );
+                                    },
+                                  ),
+                                );
                               },
                               child: Text(
                                 Constant.logIn,
                                 style: TextStyle(
-                                    color: AppColor.primaryWhite,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400),
+                                  color: AppColor.primaryWhite,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                         SizedBox(
                           height: height * 0.03,
                         ),
                         CustomButton(
-                            buttonName: selectedPlan == 1
-                                ? Constant.tryFree
-                                : Constant.continueText,
-                            buttonColor: AppColor.primaryRed,
-                            textColor: AppColor.primaryWhite,
-                            onPressed: () async {
-                              await purchaseSubscription(selectedPlan);
-                            })
+                          buttonName: selectedPlan == 1
+                              ? Constant.tryFree
+                              : Constant.continueText,
+                          buttonColor: AppColor.primaryRed,
+                          textColor: AppColor.primaryWhite,
+                          onPressed: () async {
+                            await purchaseSubscription(selectedPlan);
+                          },
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
       ),
