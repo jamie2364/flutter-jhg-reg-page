@@ -151,10 +151,15 @@ class _SignUpState extends State<SignUp> {
         loginModel = LoginModel.fromJson(response.data);
         setState(() {});
         if (response.statusCode == 200 || response.statusCode == 201) {
+
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
+
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
+
+          await LocalDB.storeUserName(loginModel.userLogin!);
+
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
@@ -164,6 +169,7 @@ class _SignUpState extends State<SignUp> {
           // CALLING MARKETING API
 
           await marketingApi(loginModel.userEmail ?? '');
+
         } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);

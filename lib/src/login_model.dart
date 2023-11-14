@@ -4,6 +4,7 @@ class LoginModel {
   Data? data;
   String? token;
   String? userEmail;
+  String? userLogin;
   String? userNicename;
   String? userDisplayName;
   FreeTrial? freeTrial;
@@ -16,6 +17,7 @@ class LoginModel {
     this.data,
     this.token,
     this.userEmail,
+    this.userLogin,
     this.userNicename,
     this.userDisplayName,
     this.freeTrial,
@@ -28,6 +30,7 @@ class LoginModel {
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
     token: json["token"],
     userEmail: json["user_email"],
+    userLogin: json["user_login"],
     userNicename: json["user_nicename"],
     userDisplayName: json["user_display_name"],
     freeTrial: json["free_trial"] == null ? null : FreeTrial.fromJson(json["free_trial"]),
@@ -40,6 +43,7 @@ class LoginModel {
     "data": data?.toJson(),
     "token": token,
     "user_email": userEmail,
+    "user_login": userLogin,
     "user_nicename": userNicename,
     "user_display_name": userDisplayName,
     "free_trial": freeTrial?.toJson(),

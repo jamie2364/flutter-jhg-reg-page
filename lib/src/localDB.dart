@@ -5,6 +5,7 @@ class LocalDB{
   static String bearerTokenKey = "BearerToken";
   static String endDateKey = "endDateKey";
   static String firstTimeLoginKey = "firstTimerLogin";
+  static String userNameKey = "userName";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -64,6 +65,26 @@ class LocalDB{
     // Get the bearer token which we have stored in sharedPreferences before
     bool? login = sharedPreferences.getBool(firstTimeLoginKey);
     return login;
+  }
+
+
+
+
+  // Set user name
+  static Future<void> storeUserName(String value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Store bearer token in shared preferences
+    sharedPreferences.setString(userNameKey, value);
+  }
+
+  // Get user name
+  static Future<String?> get getUserName async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the bearer token which we have stored in sharedPreferences before
+    String? userName = sharedPreferences.getString(userNameKey);
+    return userName;
   }
 
 

@@ -55,10 +55,13 @@ LocalDB.storeEndDate(String value);
 Get end date of timer,
 LocalDB.getEndDate(String value);
 
+To get user Name 
+LocalDB.getUserName();  
+
 Clear local db;
 LocalDB.clearLocalDB();
-
-
+   
+ 
 //======================================
 
 Loading
