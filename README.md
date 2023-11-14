@@ -113,7 +113,7 @@ ADDING THE APP NAME
 In the Reg Page, there are several places that use the name of the app as a variable. Therefore we need to define the app name in each app. 
 
 
-appName: We need to also define the apps name in three places:
+appName: We need to also define the apps name in three places (Please note that this will not be the same in every app and you may need to adjust based on how you have structured your app)
 
 1)        In the main.dart file like this:
 
