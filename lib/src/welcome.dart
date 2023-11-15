@@ -236,7 +236,6 @@ class _WelcomeState extends State<Welcome> {
                 children: [
                   Stack(
                     children: [
-
                       // IMAGE
                       SizedBox(
                         width: width,
@@ -296,24 +295,27 @@ class _WelcomeState extends State<Welcome> {
                         ),
                       ),
 
-
                       // INFORMATION BUTTON
 
-                     Positioned(
-                        right: width * 0.05,
-                        top:height* 0.03, // Adjust the bottom value to move it downwards
-                        child: GestureDetector(
-                          onTap: (){
-
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return InfoScreen(appName: widget.appName, appVersion: widget.appVersion);
-                            }));
-                          },
-                          child: Icon(Icons.info,color: AppColor.primaryWhite,
-                              size: width*0.065
-                              ,),
-                        )
-                      ),
+                      Positioned(
+                          right: width * 0.05,
+                          top: height *
+                              0.03, // Adjust the bottom value to move it downwards
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return InfoScreen(
+                                    appName: widget.appName,
+                                    appVersion: widget.appVersion);
+                              }));
+                            },
+                            child: Icon(
+                              Icons.info_rounded,
+                              color: AppColor.primaryWhite,
+                              size: width * 0.065,
+                            ),
+                          )),
                     ],
                   ),
 
@@ -326,7 +328,6 @@ class _WelcomeState extends State<Welcome> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-
                         // SPACER
                         SizedBox(
                           height: height * 0.04,
@@ -347,10 +348,9 @@ class _WelcomeState extends State<Welcome> {
                           height: height * 0.02,
                         ),
 
-
                         // ANNUAL PLAN BUTTON
                         Center(
-                          child:  GestureDetector(
+                          child: GestureDetector(
                             onTap: () {
                               onPlanSelect(1);
                             },
@@ -395,31 +395,28 @@ class _WelcomeState extends State<Welcome> {
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
-                                        trailing:
-
-                                          Container(
-                                            height: height * 0.027,
-                                            width: height * 0.027,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
+                                        trailing: Container(
+                                          height: height * 0.027,
+                                          width: height * 0.027,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: selectedPlan == 1
+                                                ? AppColor.primaryRed
+                                                : AppColor.primaryBlack,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
                                               color: selectedPlan == 1
                                                   ? AppColor.primaryRed
-                                                  : AppColor.primaryBlack,
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                color: selectedPlan == 1
-                                                    ? AppColor.primaryRed
-                                                    : AppColor.primaryWhite,
-                                                width: 1.8,
-                                              ),
-                                            ),
-                                            child: Icon(
-                                              Icons.done,
-                                              color: AppColor.primaryBlack,
-                                              size: width * 0.04,
+                                                  : AppColor.primaryWhite,
+                                              width: 1.8,
                                             ),
                                           ),
-
+                                          child: Icon(
+                                            Icons.done,
+                                            color: AppColor.primaryBlack,
+                                            size: width * 0.04,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                     Divider(
@@ -445,13 +442,12 @@ class _WelcomeState extends State<Welcome> {
                           height: height * 0.03,
                         ),
 
-
                         // MONTHLY PLAN BUTTON
                         Center(
-                          child:  GestureDetector(
-                              onTap: () {
-                                onPlanSelect(2);
-                              },
+                          child: GestureDetector(
+                            onTap: () {
+                              onPlanSelect(2);
+                            },
                             child: Container(
                               height: MediaQuery.of(context).size.height * 0.06,
                               width: MediaQuery.of(context).size.width * 0.85,
@@ -474,7 +470,8 @@ class _WelcomeState extends State<Welcome> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           Constant.monthlyPlan,
@@ -497,30 +494,28 @@ class _WelcomeState extends State<Welcome> {
                                         ),
                                       ],
                                     ),
-
-                                      Container(
-                                        height: height * 0.027,
-                                        width: height * 0.027,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
+                                    Container(
+                                      height: height * 0.027,
+                                      width: height * 0.027,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: selectedPlan == 2
+                                            ? AppColor.primaryRed
+                                            : AppColor.primaryBlack,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
                                           color: selectedPlan == 2
                                               ? AppColor.primaryRed
-                                              : AppColor.primaryBlack,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: selectedPlan == 2
-                                                ? AppColor.primaryRed
-                                                : AppColor.primaryWhite,
-                                            width: 1.8,
-                                          ),
-                                        ),
-                                        child: Icon(
-                                          Icons.done,
-                                          color: AppColor.primaryBlack,
-                                          size: width * 0.04,
+                                              : AppColor.primaryWhite,
+                                          width: 1.8,
                                         ),
                                       ),
-
+                                      child: Icon(
+                                        Icons.done,
+                                        color: AppColor.primaryBlack,
+                                        size: width * 0.04,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -528,12 +523,10 @@ class _WelcomeState extends State<Welcome> {
                           ),
                         ),
 
-
                         // SPACER
                         SizedBox(
                           height: height * 0.02,
                         ),
-
 
                         // ALREADY SUBSCRIBED AND LOGIN TEXT BUTTON
                         Row(
@@ -582,7 +575,6 @@ class _WelcomeState extends State<Welcome> {
                         SizedBox(
                           height: height * 0.03,
                         ),
-
 
                         // START FREE TRAIL  , CONTINUE BUTTON
                         CustomButton(
