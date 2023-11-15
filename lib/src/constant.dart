@@ -6,6 +6,10 @@ class Constant {
  static const String marketingUrl =
       "https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f";
 
+  static const String policyPrivacyUrl = 'https://www.Jamieharrisonguitar.com/privacy-policy';
+  static const String termAndServicesUrl = 'https://www.Jamieharrisonguitar.com/terms-of-service';
+  static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
+
   static const String jamieHarrison = 'JAMIE HARRISON';
   static const String login = 'Login';
   static const String enterName = 'Enter Your Name';
@@ -44,8 +48,9 @@ class Constant {
    static const String viewPrivacyPolicy = 'View Privacy Policy';
    static const String viewTermsOfUse = 'View Terms of Use';
    static const String restorePurchases = 'Restore Purchases';
+  static const String williamShakespeare = 'William Shakespeare';
    static const String visitJamieHarrisonGuitar = 'Visit Jamie Harrison Guitar';
-   static const String appQuotes = '“If music be the food of love, play on,\nmy friend...”';
+   static const String appQuotes = '“If music be the food of love, play on,\n my friend...”';
    static const String copyRight = 'Copyright © 2023 Jamie Harrison Media Ltd.\nAll Rights Reserved.';
 
 

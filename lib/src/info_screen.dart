@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
@@ -20,6 +21,14 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
+
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $uri');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +49,11 @@ class _InfoScreenState extends State<InfoScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+
                   SizedBox(
                     height: height * 0.030,
                   ),
+
                   // BACK ICON BUTTON
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,32 +74,48 @@ class _InfoScreenState extends State<InfoScreen> {
                   SizedBox(
                     height: height * 0.050,
                   ),
+
                   AppInfoSection(title: Constant.appName, subtitle: widget.appName),
+
                   SizedBox(
                     height: height * 0.010,
                   ),
+
                   AppInfoSection(title: Constant.version, subtitle: widget.appVersion),
+
                   // SPACER
                   SizedBox(
                     height: height * 0.050,
                   ),
 
-                  InfoButtonSection(title: Constant.viewPrivacyPolicy, onPressed: (){}),
+                  // POLICY PRIVACY
+                  InfoButtonSection(title: Constant.viewPrivacyPolicy, onPressed: (){
+                    _launchUrl(Constant.policyPrivacyUrl);
+                  }),
 
-                  InfoButtonSection(title: Constant.viewTermsOfUse, onPressed: (){}),
+                  // TERM AND SERVICES
+                  InfoButtonSection(title: Constant.viewTermsOfUse, onPressed: (){
+                    _launchUrl(Constant.termAndServicesUrl);
+                  }),
 
+                  // RESTORE PURCHASES
                   InfoButtonSection(title: Constant.restorePurchases, onPressed: (){}),
 
-                  InfoButtonSection(title: Constant.visitJamieHarrisonGuitar, onPressed: (){}),
+                  //JAMIE HARRISON
+                  InfoButtonSection(title: Constant.visitJamieHarrisonGuitar, onPressed: (){
+                    _launchUrl(Constant.jamieUrl);
+                  }),
+
 
                   SizedBox(
                     height: height * 0.060,
                   ),
+
                   // QUOTES
-                  Padding(
-                    padding:  EdgeInsets.symmetric(horizontal: width*0.02),
+                  Center(
                     child: Text(
                       Constant.appQuotes,
+                      textAlign: TextAlign.center,
                       style:  TextStyle(
                         fontStyle: FontStyle.italic,
                         color: AppColor.secondaryWhite,
@@ -99,8 +126,25 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.18,
+                    height: height * 0.01,
                   ),
+
+                  Center(
+                    child: Text(
+                      Constant.williamShakespeare,
+                      textAlign: TextAlign.center,
+                      style:  TextStyle(
+                        color: AppColor.secondaryWhite,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: height * 0.19,
+                  ),
+
                   // COPY RIGHT TEXT
                   Center(
                     child: Text(
@@ -119,13 +163,13 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
           ),
           Positioned(
-              top: height*0.68,
-              left: width*0.35,
+              top: height*0.73,
+              left: width*0.25,
               child:     // SIGNATURE
               Container(
                // color: Colors.red,
-                height: height*0.15,
-                width: width*0.4,
+                height: height*0.16,
+                width: width*0.5,
                 child: Image.asset(
                   "assets/images/sign.png",
                   fit: BoxFit.fill,
@@ -137,9 +181,9 @@ class _InfoScreenState extends State<InfoScreen> {
   }
 }
 
+
 class AppInfoSection extends StatelessWidget {
   const AppInfoSection({super.key,required this.title,required this.subtitle});
-
   final String title;
   final String subtitle;
 

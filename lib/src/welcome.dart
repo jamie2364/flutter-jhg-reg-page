@@ -57,26 +57,13 @@ class _WelcomeState extends State<Welcome> {
 
   replaceAppName() {
     // Define the text to remove (uppercase)
-    final excludedText = "JHG";
+    const excludedText = "JHG";
 
     // Replace the specified text with an empty string
     String result = widget.appName.replaceAll(excludedText, '');
 
     return result;
   }
-
-  // replaceAppName() {
-  //   // Convert both strings to lowercase for case-insensitive matching
-  //   final originalString = widget.appName.toLowerCase();
-  //   final excludedText = "JHG".toLowerCase();
-
-  //   // Use replaceAll to exclude the specified text
-  //   String result = originalString.replaceAll(excludedText, '');
-
-  //   String name = result.replaceFirst(result[1], result[1].toUpperCase());
-
-  //   return name;
-  // }
 
   //========================================================================
   // IN APP PURCHASE
@@ -330,7 +317,7 @@ class _WelcomeState extends State<Welcome> {
                       children: [
                         // SPACER
                         SizedBox(
-                          height: height * 0.04,
+                          height: height * 0.02,
                         ),
 
                         // PLEASE CHOOSE TEXT
