@@ -142,7 +142,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.19,
+                    height: height * 0.17,
                   ),
 
                   // COPY RIGHT TEXT
