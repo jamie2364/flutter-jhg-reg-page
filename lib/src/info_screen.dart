@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
