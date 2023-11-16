@@ -27,10 +27,13 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/jhg_background.png
+    - assets/images/jhg_logo.png
+    - assets/images/jhg_sign.png
 
   # To add assets to your package, add an assets section, like this:
-  assets:
-    - assets/images/
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages

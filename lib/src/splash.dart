@@ -89,7 +89,8 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: const Duration(milliseconds: 2000),
         curve: Curves.linearToEaseOut,
         child: Image.asset(
-          "assets/images/logo.png",
+          "assets/images/jhg_logo.png",
+          package: 'reg_page',
           height: MediaQuery.of(context).size.height * 0.30,
           width: MediaQuery.of(context).size.height * 0.30,
           fit: BoxFit.cover,

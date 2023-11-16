@@ -31,6 +31,7 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+
   bool loading = true;
 
   String? monthlyKey;
@@ -203,6 +204,17 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
+  Future<void> restorePurchase()async{
+    try {
+      loaderDialog(context);
+    final response =  await InAppPurchase.instance.restorePurchases();
+      Navigator.pop(context);
+    } on PlatformException catch (e) {
+      print(e);
+      Navigator.pop(context);
+      // Error restoring purchases
+    }}
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -227,8 +239,10 @@ class _WelcomeState extends State<Welcome> {
                       SizedBox(
                         width: width,
                         height: height * 0.44,
-                        child: Image.asset(
-                          "assets/images/jhg.png",
+                        child:
+                        Image.asset(
+                          "assets/images/jhg_background.png",
+                          package: 'reg_page',
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -294,7 +308,8 @@ class _WelcomeState extends State<Welcome> {
                                   MaterialPageRoute(builder: (context) {
                                 return InfoScreen(
                                     appName: widget.appName,
-                                    appVersion: widget.appVersion);
+                                    appVersion: widget.appVersion,
+                                    callback: restorePurchase,);
                               }));
                             },
                             child: Icon(

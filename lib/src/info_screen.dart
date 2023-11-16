@@ -1,26 +1,24 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/subscription_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
-import 'custom_button.dart';
-import 'heading.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen(
-      {super.key,required this.appName,required this.appVersion});
+      {super.key,required this.appName,required this.appVersion,required this.callback});
 
   final String appName;
   final String appVersion;
+  final VoidCallback callback;
 
   @override
   State<InfoScreen> createState() => _InfoScreenState();
 }
 
 class _InfoScreenState extends State<InfoScreen> {
+
 
 
   Future<void> _launchUrl(String url) async {
@@ -43,8 +41,8 @@ class _InfoScreenState extends State<InfoScreen> {
             width: width,
             color: AppColor.primaryBlack,
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: width * 0.08, vertical: height * 0.04),
+              padding: EdgeInsets.only(
+                  left: width * 0.08,right: width * 0.08,top:height * 0.04),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +97,9 @@ class _InfoScreenState extends State<InfoScreen> {
                   }),
 
                   // RESTORE PURCHASES
-                  InfoButtonSection(title: Constant.restorePurchases, onPressed: (){}),
+                  InfoButtonSection(title: Constant.restorePurchases, onPressed: (){
+                    widget.callback();
+                  }),
 
                   //JAMIE HARRISON
                   InfoButtonSection(title: Constant.visitJamieHarrisonGuitar, onPressed: (){
@@ -171,7 +171,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 height: height*0.16,
                 width: width*0.5,
                 child: Image.asset(
-                  "assets/images/sign.png",
+                  "assets/images/jhg_sign.png",
+                  package: 'reg_page',
                   fit: BoxFit.fill,
                 ),
               ),)
