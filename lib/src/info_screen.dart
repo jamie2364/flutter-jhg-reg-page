@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
 
@@ -97,7 +98,8 @@ class _InfoScreenState extends State<InfoScreen> {
 
                   // RESTORE PURCHASES
                   InfoButtonSection(title: Constant.restorePurchases, onPressed: (){
-                    widget.callback();
+                   // widget.callback();
+                    restorePopupDialog(context, Constant.restoreNotFound, Constant.restoreNotFoundDescription);
                   }),
 
                   //JAMIE HARRISON

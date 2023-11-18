@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/info_screen.dart';
+import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'constant.dart';
 import 'colors.dart';
 import 'custom_button.dart';
@@ -142,7 +143,13 @@ class _WelcomeState extends State<Welcome> {
   }
 
   listenToPurchase(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+    print("list");
+    print("PList :${purchaseDetailsList}");
+
+    if(purchaseDetailsList.isEmpty) {
+      restorePopupDialog(context, Constant.restoreNotFound, Constant.restoreNotFoundDescription);
+    }else{
+      purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.pending) {
         showToast(
           context: context,
@@ -176,16 +183,18 @@ class _WelcomeState extends State<Welcome> {
         );
         Navigator.pop(context);
       } else if (purchaseDetails.status == PurchaseStatus.restored) {
+
         debugPrint("restored");
-        showToast(
-          context: context,
-          message: purchaseDetails.error!.message,
-          isError: false,
-        );
-        Navigator.pop(context);
+
+        restorePopupDialog(
+            context,
+            Constant.restoreSuccess,
+            Constant.restoreSuccessDescription);
+
       }
     });
-  }
+     }
+   }
 
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
@@ -205,11 +214,15 @@ class _WelcomeState extends State<Welcome> {
   }
 
   Future<void> restorePurchase()async{
+
     try {
+
       loaderDialog(context);
-    final response =  await InAppPurchase.instance.restorePurchases();
+      await InAppPurchase.instance.restorePurchases();
       Navigator.pop(context);
+
     } on PlatformException catch (e) {
+
       print(e);
       Navigator.pop(context);
       // Error restoring purchases

@@ -23,6 +23,7 @@ class Constant {
   static const String social = 'SOCIAL';
   static const String media = 'MEDIA';
   static const String link = 'LINK';
+  static const String close = 'Close';
   static const String emailAnd = 'EMAIL &';
   static const String messages = 'MESSAGES';
   static const String emailDescription =
@@ -53,6 +54,12 @@ class Constant {
    static const String appQuotes = '“If music be the food of love, play on,\n my friend...”';
    static const String copyRight = 'Copyright © 2023 Jamie Harrison Media Ltd.\nAll Rights Reserved.';
 
+
+  static const String restoreSuccess = 'Purchases Restored!';
+  static const String restoreSuccessDescription = 'Awesome! We have restored all\nyour previous purchases!\nYou’re all set!';
+
+  static const String restoreNotFound = 'Nothing to restore!';
+  static const String restoreNotFoundDescription = 'Sorry, we have found no previous\npurchases from you!';
 
   static const String continueText = 'Continue';
   static const String emailPasswordInCorrect =
