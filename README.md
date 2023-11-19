@@ -115,6 +115,29 @@ ADDING THE APP NAME
 
 In the Reg Page, there are several places that use the name of the app as a variable. Therefore we need to define the app name in each app. 
 
+appVersion: To get the app you have to install a package "package_info_plus: latest version"
+
+1: Instance of the package  
+
+PackageInfo packageInfo = PackageInfo(
+appName: '',
+packageName: '',
+version: '',
+buildNumber: '',
+buildSignature: '',
+installerStore: '',
+);
+
+// Get value form the package
+2: Future<void> _initPackageInfo() async {
+final info = await PackageInfo.fromPlatform();
+setState(() {
+packageInfo = info;
+});
+}
+ 
+3: packageInfo.version
+
 
 appName: We need to also define the apps name in three places (Please note that this will not be the same in every app and you may need to adjust based on how you have structured your app)
 
@@ -124,6 +147,7 @@ appName: We need to also define the apps name in three places (Please note that 
           yearlySubscriptionId: AppConstant.yearlySubscriptionId,
           monthlySubscriptionId: AppConstant.monthlySubscriptionId,
           appName: AppConstant.appName,
+          appVersion: packageInfo.version ,
           nextPage: ()=> const HomeScreen(),),
 
 2) In the setting_screen.dart file, like this: 
