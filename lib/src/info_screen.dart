@@ -79,19 +79,24 @@ class _InfoScreenState extends State<InfoScreen> {
                         },
                         child: Row(
                           children: [
+                            SizedBox(width: 10),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: 4.0), // Add padding to the right
+                              child: Icon(
+                                Icons.error_outline_rounded,
+                                color: AppColor.primaryRed,
+                                size: 16,
+                              ),
+                            ),
                             Text(
                               'Report an Issue',
                               style: TextStyle(
                                 color: AppColor.primaryRed,
                                 fontSize: 12,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            // SizedBox(width: 10),
-                            // Icon(
-                            //   Icons.bug_report,
-                            //   color: AppColor.secondaryWhite,
-                            //   size: 24,
-                            // ),
                           ],
                         ),
                       ),
