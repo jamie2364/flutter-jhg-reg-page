@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'constant.dart';
 import 'colors.dart';
 
 void main() {
@@ -25,8 +26,6 @@ class _BugReportPageState extends State<BugReportPage> {
   String _issueDescription = '';
 
   final dio = Dio();
-  final reportBugURL =
-      'https://www.jamieharrisonguitar.com/wp-json/custom/v1/report';
 
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
@@ -40,7 +39,7 @@ class _BugReportPageState extends State<BugReportPage> {
       };
 
       final Response response = await dio.post(
-        reportBugURL,
+        Constant.reportBugUrl,
         data: requestData,
       );
 
