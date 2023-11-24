@@ -144,7 +144,7 @@ class _WelcomeState extends State<Welcome> {
 
   listenToPurchase(List<PurchaseDetails> purchaseDetailsList) {
     print("list");
-    print("PList :${purchaseDetailsList}");
+    print("PList :$purchaseDetailsList");
 
     if(purchaseDetailsList.isEmpty) {
       restorePopupDialog(context, Constant.restoreNotFound, Constant.restoreNotFoundDescription);

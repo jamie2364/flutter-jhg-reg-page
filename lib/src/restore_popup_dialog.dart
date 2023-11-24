@@ -1,5 +1,4 @@
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
@@ -42,7 +41,7 @@ restorePopupDialog(
                         alignment: Alignment.topRight,
                          child: GestureDetector(
                            onTap: (){Navigator.pop(context);},
-                          child: Container(
+                          child: SizedBox(
                             // color: Colors.red,
                             height: height*0.020,
                             width:  height*0.020,
@@ -81,7 +80,7 @@ restorePopupDialog(
                         ),
                       ),
 
-                      Spacer(),
+                      const Spacer(),
 
 
                       GestureDetector(
