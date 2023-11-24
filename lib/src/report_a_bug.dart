@@ -73,11 +73,10 @@ class _BugReportPageState extends State<BugReportPage> {
           child: Padding(
             padding: const EdgeInsets.all(30.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
-                  'Report a Bug',
+                  'Report an Issue', // Changed headline
                   style: TextStyle(
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
@@ -85,98 +84,105 @@ class _BugReportPageState extends State<BugReportPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: 28.0),
-                Text(
-                  'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                SizedBox(height: 32.0),
-                Container(
-                  height: 200.0,
-                  child: TextField(
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Describe your issue',
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _issueDescription = value;
-                      });
-                    },
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  child: Row(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Checkbox(
-                        value: _isChecked,
-                        onChanged: (value) {
-                          setState(() {
-                            _isChecked = value!;
-                          });
-                        },
+                      SizedBox(height: 16.0),
+                      Text(
+                        'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.left,
                       ),
-                      Flexible(
-                        child: Text(
-                          'I understand this page is only related to technical issues of YourAppName',
-                          style: TextStyle(
-                            fontSize: 14.0,
-                            color: Colors.white,
+                      SizedBox(height: 16.0),
+                      Container(
+                        height: 5 * 24.0,
+                        child: TextField(
+                          minLines: 3,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Describe your issue',
+                            fillColor: Colors.white,
+                            filled: true,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              _issueDescription = value;
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        children: <Widget>[
+                          Checkbox(
+                            value: _isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                _isChecked = value!;
+                              });
+                            },
+                          ),
+                          Flexible(
+                            child: Text(
+                              'I understand this page is only related to technical issues of {YourAppName}', //Need to extract YourAppName from the current app name
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.0),
+                      ElevatedButton(
+                        onPressed: _isChecked
+                            ? () {
+                                final name =
+                                    'test'; //insert the user's name here, taken from the logged in info of the user
+                                final email =
+                                    'test@test.com'; //insert the user's email here, taken from the logged in info of the user
+                                final issue = _issueDescription;
+                                final device =
+                                    'test'; ////insert the user's device here, if possible
+                                final application =
+                                    'jhg_app'; //insert the appName variable here
+
+                                submitBugReport(
+                                    name, email, issue, device, application);
+                              }
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          primary: _isChecked
+                              ? AppColor.primaryRed
+                              : AppColor.greyPrimary,
+                          padding: EdgeInsets.symmetric(
+                            vertical: 16.0,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                        child: Container(
+                          width: double.infinity,
+                          child: Center(
+                            child: Text(
+                              'Submit',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ],
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _isChecked
-                      ? () {
-                          final name =
-                              'test'; //insert the users name here, taken from the logged in info of the user
-                          final email =
-                              'test@test.com'; //insert the users email here, taken from the logged in info of the user
-                          final issue = _issueDescription;
-                          final device =
-                              'test'; ////insert the users device here, if possible
-                          final application =
-                              'jhg_app'; //insert the appName variable here
-
-                          submitBugReport(
-                              name, email, issue, device, application);
-                        }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    primary:
-                        _isChecked ? AppColor.primaryRed : AppColor.greyPrimary,
-                    padding: EdgeInsets.symmetric(
-                      vertical: 16.0,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                  ),
-                  child: Container(
-                    width: double.infinity,
-                    child: Center(
-                      child: Text(
-                        'Submit',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
                   ),
                 ),
               ],

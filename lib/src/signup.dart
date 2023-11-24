@@ -14,7 +14,7 @@ class SignUp extends StatefulWidget {
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
       required this.appName,
-        required this.appVersion,
+      required this.appVersion,
       required this.nextPage});
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
@@ -96,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                         yearlySubscriptionId: widget.yearlySubscriptionId,
                         monthlySubscriptionId: widget.monthlySubscriptionId,
                         appName: widget.appName,
-                        appVersion:widget.appVersion ,
+                        appVersion: widget.appVersion,
                         nextPage: () => widget.nextPage(),
                       )));
         }
@@ -154,7 +154,6 @@ class _SignUpState extends State<SignUp> {
         loginModel = LoginModel.fromJson(response.data);
         setState(() {});
         if (response.statusCode == 200 || response.statusCode == 201) {
-
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
 
@@ -172,7 +171,6 @@ class _SignUpState extends State<SignUp> {
           // CALLING MARKETING API
 
           await marketingApi(loginModel.userEmail ?? '');
-
         } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
@@ -267,44 +265,54 @@ class _SignUpState extends State<SignUp> {
                   //     color: AppColor.secondaryWhite,
                   //   ),
                   // ),
-                  //USER NAME
+//USER NAME
                   TextFormField(
-                      scrollController:
-                          ScrollController(keepScrollOffset: true),
-                      textAlignVertical: TextAlignVertical.center,
-                      autofocus: false,
-                      cursorColor: AppColor.secondaryWhite,
-                      controller: userNameController,
-                      autovalidateMode: userNameController.text.isNotEmpty
-                          ? AutovalidateMode.always
-                          : AutovalidateMode.onUserInteraction,
-                      style:
-                          TextStyle(fontSize: 14, color: AppColor.primaryWhite),
-                      obscureText: false,
-                      inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                      decoration: InputDecoration(
-                        errorStyle: TextStyle(
-                          fontSize: 12,
-                          color: AppColor.primaryRed,
+                    scrollController: ScrollController(keepScrollOffset: true),
+                    textAlignVertical: TextAlignVertical.center,
+                    autofocus: false,
+                    cursorColor: AppColor.secondaryWhite,
+                    controller: userNameController,
+                    autovalidateMode: userNameController.text.isNotEmpty
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.onUserInteraction,
+                    style:
+                        TextStyle(fontSize: 14, color: AppColor.primaryWhite),
+                    obscureText: false,
+                    inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                        fontSize: 12,
+                        color: AppColor.primaryRed,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red.shade500,
+                          width: 2.0, // Thickness when selected
                         ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red.shade500),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.secondaryWhite,
+                          width: 2.0, // Thickness when not selected
                         ),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: Constant.userNameHint,
-                        hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: AppColor.secondaryWhite,
-                            fontWeight: FontWeight.w400),
-                        contentPadding:
-                            const EdgeInsets.only(left: 16.0, bottom: 12.0),
-                      )),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: Constant.userNameHint,
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: AppColor.secondaryWhite,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.only(left: 16.0, bottom: 12.0),
+                    ),
+                  ),
 
                   SizedBox(
                     height: height * 0.02,
                   ),
 
-                  //Password
+//Password
                   TextFormField(
                       scrollController:
                           ScrollController(keepScrollOffset: true),
@@ -321,25 +329,38 @@ class _SignUpState extends State<SignUp> {
                       inputFormatters: [LengthLimitingTextInputFormatter(50)],
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(
-                            onTap: () {
-                              onEyeTap();
-                            },
-                            child: Icon(showPassword == false
+                          onTap: () {
+                            onEyeTap();
+                          },
+                          child: Icon(
+                            showPassword == false
                                 ? Icons.visibility
-                                : Icons.visibility_off_sharp)),
+                                : Icons.visibility_off_sharp,
+                          ),
+                        ),
                         errorStyle: TextStyle(
                           fontSize: 12,
                           color: AppColor.primaryRed,
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red.shade500),
+                          borderSide: BorderSide(
+                            color: Colors.red.shade500,
+                            width: 2.0, // Thickness when selected
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColor.secondaryWhite,
+                            width: 2.0, // Thickness when not selected
+                          ),
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         hintText: Constant.passwordHint,
                         hintStyle: TextStyle(
-                            fontSize: 14,
-                            color: AppColor.secondaryWhite,
-                            fontWeight: FontWeight.w400),
+                          fontSize: 14,
+                          color: AppColor.secondaryWhite,
+                          fontWeight: FontWeight.w400,
+                        ),
                         contentPadding: const EdgeInsets.only(left: 16.0),
                       )),
 
