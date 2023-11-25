@@ -1,35 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:reg_page/reg_page.dart';
 import 'constant.dart';
 import 'colors.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: BugReportPage(),
-    );
-  }
-}
-
 class BugReportPage extends StatefulWidget {
+  const BugReportPage(
+      {super.key,
+        required this.device,
+        required this.appName,});
+
+  final String device ;
+  final String appName;
+  //
   @override
   _BugReportPageState createState() => _BugReportPageState();
 }
 
 class _BugReportPageState extends State<BugReportPage> {
   bool _isChecked = false;
-  String _issueDescription = '';
-
+  TextEditingController issueController = TextEditingController();
   final dio = Dio();
-
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
     try {
+      loaderDialog(context);
       final Map<String, dynamic> requestData = {
         'name': name,
         'email': email,
@@ -43,14 +38,25 @@ class _BugReportPageState extends State<BugReportPage> {
         data: requestData,
       );
 
+      print('Response : $response');
+
       if (response.statusCode == 200) {
+        Navigator.pop(context);
+
+        setState(() {
+          issueController.clear();
+          _isChecked = false;
+        });
+        showToast(context: context, message: "Your message has been succesfully delivered", isError: false);
         // Successful API call
         // You can handle the response here if needed
       } else {
+        Navigator.pop(context);
         // Handle error cases
         print('Error: ${response.statusCode}');
       }
     } catch (e) {
+      Navigator.pop(context);
       // Debug log for errors
       print('Error: $e');
     }
@@ -58,6 +64,8 @@ class _BugReportPageState extends State<BugReportPage> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         title: null,
@@ -70,10 +78,14 @@ class _BugReportPageState extends State<BugReportPage> {
         child: Container(
           color: AppColor.primaryBlack,
           child: Padding(
-            padding: const EdgeInsets.all(30.0),
+            padding:
+            EdgeInsets.symmetric(
+                horizontal: width*0.060
+                ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
+                SizedBox(height: height*0.060,),
                 Text(
                   'Report an Issue', // Changed headline
                   style: TextStyle(
@@ -83,12 +95,13 @@ class _BugReportPageState extends State<BugReportPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
+                SizedBox(height: height*0.050,),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      SizedBox(height: 16.0),
-                      Text(
+                      SizedBox(height: height*0.025,),
+                      const Text(
                         'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
                         style: TextStyle(
                           fontSize: 16.0,
@@ -96,10 +109,12 @@ class _BugReportPageState extends State<BugReportPage> {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(height: 16.0),
+                      SizedBox(height: height*0.025,),
                       Container(
-                        height: 5 * 24.0,
+                        height:
+                        height*0.15,
                         child: TextField(
+                          controller: issueController,
                           minLines: 3,
                           maxLines: null,
                           decoration: InputDecoration(
@@ -110,14 +125,14 @@ class _BugReportPageState extends State<BugReportPage> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              _issueDescription = value;
-                            });
-                          },
+                          // onChanged: (value) {
+                          //   setState(() {
+                          //     _issueDescription = value;
+                          //   });
+                          // },
                         ),
                       ),
-                      SizedBox(height: 16.0),
+                      SizedBox(height: height*0.020,),
                       Row(
                         children: <Widget>[
                           Checkbox(
@@ -128,7 +143,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               });
                             },
                           ),
-                          Flexible(
+                          const Flexible(
                             child: Text(
                               'I understand this page is only related to technical issues of {YourAppName}', //Need to extract YourAppName from the current app name
                               style: TextStyle(
@@ -139,20 +154,18 @@ class _BugReportPageState extends State<BugReportPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 16.0),
+                      SizedBox(height: height*0.040,),
                       ElevatedButton(
                         onPressed: _isChecked
-                            ? () {
-                                final name =
-                                    'test'; //insert the user's name here, taken from the logged in info of the user
-                                final email =
-                                    'test@test.com'; //insert the user's email here, taken from the logged in info of the user
-                                final issue = _issueDescription;
-                                final device =
-                                    'test'; ////insert the user's device here, if possible
-                                final application =
-                                    'jhg_app'; //insert the appName variable here
+                            ? () async {
 
+                             final userName = await  LocalDB.getUserName;
+                             final userEmail = await  LocalDB.getUserEmail;
+                                final name = userName ?? "user"; //insert the user's name here, taken from the logged in info of the user
+                                final email = userEmail ?? "email"; //insert the user's email here, taken from the logged in info of the user
+                                final issue = issueController.text;
+                                final device = widget.device; ////insert the user's device here, if possible
+                                final application = widget.appName; //insert the appName variable here
                                 submitBugReport(
                                     name, email, issue, device, application);
                               }
@@ -162,7 +175,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               ? AppColor.primaryRed
                               : AppColor.greyPrimary,
                           padding: EdgeInsets.symmetric(
-                            vertical: 16.0,
+                            vertical:height*0.020,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),

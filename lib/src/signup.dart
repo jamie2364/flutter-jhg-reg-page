@@ -159,7 +159,7 @@ class _SignUpState extends State<SignUp> {
 
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
-
+          await LocalDB.storeUserEmail(loginModel.userEmail!);
           await LocalDB.storeUserName(loginModel.userLogin!);
 
           // ignore: use_build_context_synchronously

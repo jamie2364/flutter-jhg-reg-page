@@ -68,38 +68,38 @@ class _InfoScreenState extends State<InfoScreen> {
                         ),
                       ),
                       // Swap the positions of the Report a Bug icon and text
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BugReportPage(),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(width: 10),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  right: 4.0), // Add padding to the right
-                              child: Icon(
-                                Icons.error_outline_rounded,
-                                color: AppColor.primaryRed,
-                                size: 16,
-                              ),
-                            ),
-                            Text(
-                              'Report an Issue',
-                              style: TextStyle(
-                                color: AppColor.primaryRed,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => BugReportPage(),
+                      //       ),
+                      //     );
+                      //   },
+                      //   child: Row(
+                      //     children: [
+                      //       SizedBox(width: 10),
+                      //       Padding(
+                      //         padding: EdgeInsets.only(
+                      //             right: 4.0), // Add padding to the right
+                      //         child: Icon(
+                      //           Icons.error_outline_rounded,
+                      //           color: AppColor.primaryRed,
+                      //           size: 16,
+                      //         ),
+                      //       ),
+                      //       Text(
+                      //         'Report an Issue',
+                      //         style: TextStyle(
+                      //           color: AppColor.primaryRed,
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.w600,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   ),
                   SizedBox(
