@@ -161,6 +161,7 @@ class _SignUpState extends State<SignUp> {
           await LocalDB.storeBearerToken(loginModel.token!);
           await LocalDB.storeUserEmail(loginModel.userEmail!);
           await LocalDB.storeUserName(loginModel.userLogin!);
+          await LocalDB.storeUserId(loginModel.userId!);
 
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,

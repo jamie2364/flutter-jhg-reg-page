@@ -1,12 +1,12 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalDB{
-
+class LocalDB {
   static String bearerTokenKey = "BearerToken";
   static String endDateKey = "endDateKey";
   static String firstTimeLoginKey = "firstTimerLogin";
   static String userNameKey = "userName";
   static String userEmailKey = "userEmail";
+  static String userIdKey = "UserId";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -31,7 +31,6 @@ class LocalDB{
     return bearerToken;
   }
 
-
   // Set bearer token
   static Future<void> storeBearerToken(String value) async {
     // initialized shared preferences
@@ -48,8 +47,6 @@ class LocalDB{
     String? bearerToken = sharedPreferences.getString(bearerTokenKey);
     return bearerToken;
   }
-
-
 
   // Set bearer token
   static Future<void> storeFirstTimeLogin(bool value) async {
@@ -68,9 +65,6 @@ class LocalDB{
     return login;
   }
 
-
-
-
   // Set user name
   static Future<void> storeUserName(String value) async {
     // initialized shared preferences
@@ -87,7 +81,6 @@ class LocalDB{
     String? userName = sharedPreferences.getString(userNameKey);
     return userName;
   }
-
 
   // Set user name
   static Future<void> storeUserEmail(String value) async {
@@ -106,14 +99,28 @@ class LocalDB{
     return userEmail;
   }
 
+  // Set user ID
+  static Future<void> storeUserId(int value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Store User Id in shared preferences
+    sharedPreferences.setInt(userIdKey, value);
+  }
 
+  // Get User ID
+  static Future<int?> get getUserId async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the bearer token which we have stored in sharedPreferences before
+    int? userEmail = sharedPreferences.getInt(userIdKey);
+    return userEmail;
+  }
 
   // Clear bearer token
   static Future<void> clearLocalDB() async {
     // Initialized shared preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the bearer token which we have stored in sharedPreferences before
-    await  sharedPreferences.clear();
+    await sharedPreferences.clear();
   }
-
 }
