@@ -83,6 +83,25 @@ Toast
 //======================================
 Splash screen
 
+* Monthly and  yearly subscription is required 
+* Add Your subscription is as a string in Constant or String file
+     
+      static const String androidYearlySubscriptionId = "android-yearly-subscrition";
+      static const String androidMonthlySubscriptionId  =  "android-monthly-subscrition";
+      static const String iosYearlySubscriptionId = "ios-yearly-subscrition";
+      static const String iosMonthlySubscriptionId  =  "ios-monthly-subscrition";
+  
+* create a dart file in utils and and these methods
+
+      String monthlySubscription(){
+        return  Platform.isAndroid ? AppConstant.androidMonthlySubscriptionId  :  AppConstant.iosMonthlySubscriptionId;
+        }
+        
+        String yearlySubscription(){
+        return  Platform.isAndroid ? AppConstant.androidYearlySubscriptionId  :  AppConstant.iosYearlySubscriptionId;
+        }
+
+
 To use splash screen just
 
         class MyApp extends StatelessWidget {
@@ -101,8 +120,8 @@ To use splash screen just
         // pass  monthly and yearly id
         // pass your hame screen as a function
         home:  SplashScreen(
-        yearlySubscriptionId: “id of the yearly plan”,
-        monthlySubscriptionId: “id of the monthly plan”,
+         yearlySubscriptionId: yearlySubscription(),
+         monthlySubscriptionId: monthlySubscription(),
         nextPage: ()=> const HomeScreen(),),
         );
         //);
@@ -151,8 +170,8 @@ appName: We need to also define the apps name in three places (Please note that 
 1) In the main.dart file like this:
 
          home:  SplashScreen(
-                  yearlySubscriptionId: AppConstant.yearlySubscriptionId,
-                  monthlySubscriptionId: AppConstant.monthlySubscriptionId,
+                  yearlySubscriptionId: yearlySubscription(),
+                  monthlySubscriptionId: monthlySubscription(),
                   appName: AppConstant.appName,
                   appVersion: packageInfo.version ,
                   nextPage: ()=> const HomeScreen(),),
@@ -165,12 +184,10 @@ appName: We need to also define the apps name in three places (Please note that 
                       Navigator.pushAndRemoveUntil(context,
                           MaterialPageRoute(builder: (context) {
                         return Welcome(
-                          yearlySubscriptionId:
-                              AppConstant.yearlySubscriptionId,
-                          monthlySubscriptionId:
-                              AppConstant.monthlySubscriptionId,
-                          appName: AppConstant.appName,
-                          nextPage: () => const HomeScreen(),
+                           yearlySubscriptionId: yearlySubscription(),
+                           monthlySubscriptionId: monthlySubscription(),
+                           appName: AppConstant.appName,
+                           nextPage: () => const HomeScreen(),
                         );
                       }), (route) => false);
                     },
