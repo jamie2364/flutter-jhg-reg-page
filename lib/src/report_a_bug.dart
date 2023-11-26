@@ -74,8 +74,10 @@ class _BugReportPageState extends State<BugReportPage> {
           color: AppColor.primaryWhite,
         ),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Container(
+          height: MediaQuery.sizeOf(context).height,
+          width: MediaQuery.sizeOf(context).width,
           color: AppColor.primaryBlack,
           child: Padding(
             padding:
