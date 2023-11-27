@@ -145,10 +145,10 @@ class _BugReportPageState extends State<BugReportPage> {
                               });
                             },
                           ),
-                          const Flexible(
+                           Flexible(
                             child: Text(
-                              'I understand this page is only related to technical issues of {YourAppName}', //Need to extract YourAppName from the current app name
-                              style: TextStyle(
+                              'I understand this page is only related to technical issues of ${widget.appName}', //Need to extract YourAppName from the current app name
+                              style: const TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.white,
                               ),
