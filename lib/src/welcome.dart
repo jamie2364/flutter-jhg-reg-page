@@ -76,6 +76,10 @@ class _WelcomeState extends State<Welcome> {
 
   // Initialize subscription
   Future<void> initializedData() async {
+
+    print(widget.yearlySubscriptionId);
+    print(widget.monthlySubscriptionId);
+
     variant.clear();
 
     variant.add(widget.yearlySubscriptionId);

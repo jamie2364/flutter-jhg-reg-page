@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:reg_page/reg_page.dart';
@@ -20,9 +22,17 @@ class BugReportPage extends StatefulWidget {
 class _BugReportPageState extends State<BugReportPage> {
   bool _isChecked = false;
   TextEditingController issueController = TextEditingController();
-  final dio = Dio();
+
+
+
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
+
+    final token = await LocalDB.getBearerToken; 
+
+    final dio = Dio(BaseOptions(headers: {
+      HttpHeaders.authorizationHeader: "Bearer $token",}));
+
     try {
       loaderDialog(context);
       final Map<String, dynamic> requestData = {
