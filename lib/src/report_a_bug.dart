@@ -28,7 +28,7 @@ class _BugReportPageState extends State<BugReportPage> {
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
 
-    final token = await LocalDB.getBearerToken; 
+    final token = await LocalDB.getBearerToken;
 
     final dio = Dio(BaseOptions(headers: {
       HttpHeaders.authorizationHeader: "Bearer $token",}));

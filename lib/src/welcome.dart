@@ -400,6 +400,7 @@ class _WelcomeState extends State<Welcome> {
                                         contentPadding: EdgeInsets.zero,
                                         title: Text(
                                           Constant.annualPlan,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: AppColor.primaryWhite,
                                             fontSize: 16,
@@ -408,6 +409,7 @@ class _WelcomeState extends State<Welcome> {
                                         ),
                                         subtitle: Text(
                                           "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: AppColor.secondaryWhite,
                                             fontSize: 14,
@@ -494,6 +496,7 @@ class _WelcomeState extends State<Welcome> {
                                       children: [
                                         Text(
                                           Constant.monthlyPlan,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: AppColor.primaryWhite,
                                             fontSize: 16,
@@ -505,6 +508,7 @@ class _WelcomeState extends State<Welcome> {
                                         ),
                                         Text(
                                           "$monthlyPrice ${Constant.perMonth}",
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
                                             color: AppColor.secondaryWhite,
                                             fontSize: 14,
@@ -553,6 +557,7 @@ class _WelcomeState extends State<Welcome> {
                           children: [
                             Text(
                               Constant.alreadySubscribed,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: AppColor.primaryWhite,
                                 fontSize: 16,
@@ -580,6 +585,7 @@ class _WelcomeState extends State<Welcome> {
                               },
                               child: Text(
                                 Constant.logIn,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: AppColor.primaryWhite,
                                   fontSize: 16,
