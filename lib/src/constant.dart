@@ -43,7 +43,7 @@ class Constant {
   static const String oneWeekFree = '1 week free, then ';
   static const String perYear = 'per year';
   static const String perMonth = 'per Month';
-  static const String weeklySave = 'Cancel at any time';
+  static const String weeklySave = 'More Info';
   static const String monthlyPlan = 'Monthly Plan';
   static const String tryFree = 'Start Free Trial';
   static const String alreadySubscribed = 'Already Subscribed? ';

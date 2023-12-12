@@ -32,7 +32,6 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
-
   bool loading = true;
 
   String? monthlyKey;
@@ -76,7 +75,6 @@ class _WelcomeState extends State<Welcome> {
 
   // Initialize subscription
   Future<void> initializedData() async {
-
     print(widget.yearlySubscriptionId);
     print(widget.monthlySubscriptionId);
 
@@ -150,55 +148,52 @@ class _WelcomeState extends State<Welcome> {
     print("list");
     print("PList :$purchaseDetailsList");
 
-    if(purchaseDetailsList.isEmpty) {
-      restorePopupDialog(context, Constant.restoreNotFound, Constant.restoreNotFoundDescription);
-    }else{
+    if (purchaseDetailsList.isEmpty) {
+      restorePopupDialog(context, Constant.restoreNotFound,
+          Constant.restoreNotFoundDescription);
+    } else {
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        showToast(
-          context: context,
-          message: purchaseDetails.error!.message,
-          isError: true,
-        );
-        debugPrint("pending");
-        Navigator.pop(context);
-      } else if (purchaseDetails.status == PurchaseStatus.error) {
-        debugPrint("error");
-        showToast(
-          context: context,
-          message: purchaseDetails.error!.message,
-          isError: true,
-        );
-        Navigator.pop(context);
-      } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-        debugPrint("Purchased");
-        showToast(
-          context: context,
-          message: purchaseDetails.error!.message,
-          isError: false,
-        );
-        Navigator.pop(context);
-      } else if (purchaseDetails.status == PurchaseStatus.canceled) {
-        debugPrint("canceled");
-        showToast(
-          context: context,
-          message: purchaseDetails.error!.message,
-          isError: true,
-        );
-        Navigator.pop(context);
-      } else if (purchaseDetails.status == PurchaseStatus.restored) {
+        if (purchaseDetails.status == PurchaseStatus.pending) {
+          showToast(
+            context: context,
+            message: purchaseDetails.error!.message,
+            isError: true,
+          );
+          debugPrint("pending");
+          Navigator.pop(context);
+        } else if (purchaseDetails.status == PurchaseStatus.error) {
+          debugPrint("error");
+          showToast(
+            context: context,
+            message: purchaseDetails.error!.message,
+            isError: true,
+          );
+          Navigator.pop(context);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
+          debugPrint("Purchased");
+          showToast(
+            context: context,
+            message: purchaseDetails.error!.message,
+            isError: false,
+          );
+          Navigator.pop(context);
+        } else if (purchaseDetails.status == PurchaseStatus.canceled) {
+          debugPrint("canceled");
+          showToast(
+            context: context,
+            message: purchaseDetails.error!.message,
+            isError: true,
+          );
+          Navigator.pop(context);
+        } else if (purchaseDetails.status == PurchaseStatus.restored) {
+          debugPrint("restored");
 
-        debugPrint("restored");
-
-        restorePopupDialog(
-            context,
-            Constant.restoreSuccess,
-            Constant.restoreSuccessDescription);
-
-      }
-    });
-     }
-   }
+          restorePopupDialog(context, Constant.restoreSuccess,
+              Constant.restoreSuccessDescription);
+        }
+      });
+    }
+  }
 
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
@@ -217,20 +212,61 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
-  Future<void> restorePurchase()async{
-
+  Future<void> restorePurchase() async {
     try {
-
       loaderDialog(context);
       await InAppPurchase.instance.restorePurchases();
       Navigator.pop(context);
-
     } on PlatformException catch (e) {
-
       print(e);
       Navigator.pop(context);
       // Error restoring purchases
-    }}
+    }
+  }
+
+  void showWeeklySaveInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Padding(
+          padding:
+              EdgeInsets.only(top: 100.0), // Adjust the top padding as needed
+          child: AlertDialog(
+            title: Text(
+              "Annual Subscription Info",
+              style: TextStyle(
+                color: AppColor.secondaryWhite,
+                fontSize: 22, // Adjust the font size as needed
+                fontWeight: FontWeight.bold, // Adjust the font weight as needed
+              ),
+            ),
+            content: Text(
+              "Get a free trial for 7 days, after which you will be automatically charged the annual fee. You may cancel at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
+              style: TextStyle(
+                color: AppColor.secondaryWhite,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            backgroundColor: AppColor.primaryBlack,
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  "OK",
+                  style: TextStyle(
+                    color: AppColor.primaryRed, // Set the text color here
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -256,8 +292,7 @@ class _WelcomeState extends State<Welcome> {
                       SizedBox(
                         width: width,
                         height: height * 0.44,
-                        child:
-                        Image.asset(
+                        child: Image.asset(
                           "assets/images/jhg_background.png",
                           package: 'reg_page',
                           fit: BoxFit.cover,
@@ -324,9 +359,10 @@ class _WelcomeState extends State<Welcome> {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
                                 return InfoScreen(
-                                    appName: widget.appName,
-                                    appVersion: widget.appVersion,
-                                    callback: restorePurchase,);
+                                  appName: widget.appName,
+                                  appVersion: widget.appVersion,
+                                  callback: restorePurchase,
+                                );
                               }));
                             },
                             child: Icon(
@@ -368,6 +404,7 @@ class _WelcomeState extends State<Welcome> {
                         ),
 
                         // ANNUAL PLAN BUTTON
+
                         Center(
                           child: GestureDetector(
                             onTap: () {
@@ -443,12 +480,19 @@ class _WelcomeState extends State<Welcome> {
                                     Divider(
                                       color: AppColor.secondaryWhite,
                                     ),
-                                    Text(
-                                      Constant.weeklySave,
-                                      style: TextStyle(
-                                        color: AppColor.secondaryWhite,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                                    GestureDetector(
+                                      onTap: () {
+                                        showWeeklySaveInfoDialog(context);
+                                      },
+                                      child: Text(
+                                        Constant.weeklySave,
+                                        style: TextStyle(
+                                          color: AppColor.primaryRed,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                          decoration: TextDecoration
+                                              .underline, // Add underline to indicate it's clickable
+                                        ),
                                       ),
                                     ),
                                   ],
