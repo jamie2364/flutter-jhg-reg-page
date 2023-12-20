@@ -277,7 +277,7 @@ class _WelcomeState extends State<Welcome> {
       backgroundColor: AppColor.primaryBlack,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: height * 0.04),
+          padding: EdgeInsets.symmetric(vertical: height * 0.5),
           child: loading
               ? Center(
                   child: CircularProgressIndicator(
@@ -300,7 +300,7 @@ class _WelcomeState extends State<Welcome> {
                             fit: BoxFit.cover,
                           ),
                         ),
-        
+
                         // IMAGE TRANSPARENT BACKGROUND
                         Positioned(
                           child: Container(
@@ -319,7 +319,7 @@ class _WelcomeState extends State<Welcome> {
                             ),
                           ),
                         ),
-        
+
                         // WELCOME TEXT WITH APP NAME
                         Positioned(
                           left: width * 0.05,
@@ -349,9 +349,9 @@ class _WelcomeState extends State<Welcome> {
                             ],
                           ),
                         ),
-        
+
                         // INFORMATION BUTTON
-        
+
                         Positioned(
                             right: width * 0.05,
                             top: height *
@@ -375,7 +375,7 @@ class _WelcomeState extends State<Welcome> {
                             )),
                       ],
                     ),
-        
+
                     // PACKAGE SELECTION
                     Padding(
                       padding: EdgeInsets.symmetric(
@@ -389,7 +389,7 @@ class _WelcomeState extends State<Welcome> {
                           SizedBox(
                             height: height * 0.02,
                           ),
-        
+
                           // PLEASE CHOOSE TEXT
                           Text(
                             Constant.pleaseChoosePlan,
@@ -400,10 +400,8 @@ class _WelcomeState extends State<Welcome> {
                             ),
                           ),
                           SignUp(
-                            yearlySubscriptionId:
-                            widget.yearlySubscriptionId,
-                            monthlySubscriptionId:
-                            widget.monthlySubscriptionId,
+                            yearlySubscriptionId: widget.yearlySubscriptionId,
+                            monthlySubscriptionId: widget.monthlySubscriptionId,
                             appName: widget.appName,
                             appVersion: widget.appVersion,
                             nextPage: widget.nextPage,
@@ -412,9 +410,7 @@ class _WelcomeState extends State<Welcome> {
                           SizedBox(
                             height: height * 0.02,
                           ),
-        
-        
-        
+
                           // SPACER
                           SizedBox(
                             height: height * 0.03,
