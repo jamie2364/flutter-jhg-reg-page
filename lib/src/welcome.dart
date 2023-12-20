@@ -277,7 +277,7 @@ class _WelcomeState extends State<Welcome> {
       backgroundColor: AppColor.primaryBlack,
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: height * 0.5),
+          padding: EdgeInsets.symmetric(vertical: height * 5),
           child: loading
               ? Center(
                   child: CircularProgressIndicator(
