@@ -9,12 +9,17 @@ import 'custom_button.dart';
 import 'heading.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key,
-    required this.yearlySubscriptionId,
-    required this.monthlySubscriptionId,
-    required this.nextPage});
-  final String  yearlySubscriptionId;
-  final String  monthlySubscriptionId;
+  const SignUp(
+      {super.key,
+      required this.yearlySubscriptionId,
+      required this.monthlySubscriptionId,
+      required this.appName,
+      required this.appVersion,
+      required this.nextPage});
+  final String yearlySubscriptionId;
+  final String monthlySubscriptionId;
+  final String appName;
+  final String appVersion;
   final Widget Function() nextPage;
 
   @override
@@ -22,7 +27,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
   TextEditingController userNameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -33,133 +37,189 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  clearTextField(){
+  clearTextField() {
     setState(() {
       userNameController.clear();
       passwordController.clear();
     });
   }
 
-
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
-  checkSubscription()async{
+  checkSubscription() async {
     bool? hasInternet = await checkInternet();
-    if(!hasInternet){
+    if (!hasInternet) {
       // ignore: use_build_context_synchronously
-      showToast(context: context, message: "Please check your internet", isError: true);
+      showToast(
+          context: context,
+          message: "Please check your internet",
+          isError: true);
       return;
-    }else{
-      try{
+    } else {
+      try {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        Response response =
-        await repo.getRequest(Constant.subscriptionUrl,{});
+        Response response = await repo.getRequest(Constant.subscriptionUrl, {});
         subscriptionModel = SubscriptionModel.fromJson(response.data);
         setState(() {});
-        if(subscriptionModel.allAccessPass == "active" || subscriptionModel.softwareSuite == "active"){
+        if (subscriptionModel.allAccessPass == "active" ||
+            subscriptionModel.softwareSuite == "active") {
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => widget.nextPage()));
-        }else{
-
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => widget.nextPage()));
+        } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
 
-          if(response.statusCode == 500){
+          if (response.statusCode == 500) {
             // ignore: use_build_context_synchronously
-            showToast(context: context, message:Constant.serverErrorMessage, isError: true);
-          }else{
+            showToast(
+                context: context,
+                message: Constant.serverErrorMessage,
+                isError: true);
+          } else {
             // ignore: use_build_context_synchronously
-            showToast(context: context, message:"Error ${response.statusCode} ${response.statusMessage}", isError: true);
+            showToast(
+                context: context,
+                message:
+                    "Error ${response.statusCode} ${response.statusMessage}",
+                isError: true);
           }
 
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-              Welcome(
-                yearlySubscriptionId: widget.yearlySubscriptionId,
-                monthlySubscriptionId: widget.monthlySubscriptionId,
-                nextPage: () => widget.nextPage(),)));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Welcome(
+                        yearlySubscriptionId: widget.yearlySubscriptionId,
+                        monthlySubscriptionId: widget.monthlySubscriptionId,
+                        appName: widget.appName,
+                        appVersion: widget.appVersion,
+                        nextPage: () => widget.nextPage(),
+                      )));
         }
-
-      }catch(e){
+      } catch (e) {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
         // ignore: use_build_context_synchronously
-        showToast(context: context, message: "Something Went Wrong ", isError: true);
+        showToast(
+            context: context, message: "Something Went Wrong ", isError: true);
       }
     }
   }
 
-  userLogin()async{
+  Future marketingApi(String email) async {
+    bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
+
+    if (isAlreadyLoggedIn == null) {
+      await LocalDB.storeFirstTimeLogin(true);
+      bool? hasInternet = await checkInternet();
+      if (!hasInternet) {
+        return;
+      } else {
+        Response response = await repo.postRequest(
+            Constant.marketingUrl,
+            {
+              "subscribers": [
+                {"email": email, "tag_as_event": "${widget.appName} User"}
+              ]
+            },
+            isHeader: true);
+        print("${response.data}");
+      }
+    } else {
+      debugPrint("Already Logged In");
+    }
+  }
+
+  userLogin() async {
     bool? hasInternet = await checkInternet();
-    if(!hasInternet){
+    if (!hasInternet) {
       // ignore: use_build_context_synchronously
-      showToast(context: context, message: "Please check your internet", isError: true);
+      showToast(
+          context: context,
+          message: "Please check your internet",
+          isError: true);
       return;
-    }else{
+    } else {
       // ignore: use_build_context_synchronously
       loaderDialog(context);
-      try{
-        Response response =
-            await repo.postRequest(Constant.loginUrl,{
-          "username":userNameController.text,
-          "password":passwordController.text,
+      try {
+        Response response = await repo.postRequest(Constant.loginUrl, {
+          "username": userNameController.text,
+          "password": passwordController.text,
         });
         loginModel = LoginModel.fromJson(response.data);
         setState(() {});
-        if(response.statusCode == 200 || response.statusCode == 201 ){
+        if (response.statusCode == 200 || response.statusCode == 201) {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
+
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
+          await LocalDB.storeUserEmail(loginModel.userEmail!);
+          await LocalDB.storeUserName(loginModel.userLogin!);
+          await LocalDB.storeUserId(loginModel.userId!);
+
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context){
-                return widget.nextPage();
-              }), (route) => false);
-        }else{
+              MaterialPageRoute(builder: (context) {
+            return widget.nextPage();
+          }), (route) => false);
+
+          // CALLING MARKETING API
+
+          await marketingApi(loginModel.userEmail ?? '');
+        } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
-          if(response.statusCode == 403){
+          if (response.statusCode == 403) {
             // ignore: use_build_context_synchronously
-            showToast(context: context, message:Constant.emailPasswordInCorrect, isError: true);
-
-          }else if(response.statusCode == 500){
+            showToast(
+                context: context,
+                message: Constant.emailPasswordInCorrect,
+                isError: true);
+          } else if (response.statusCode == 500) {
             // ignore: use_build_context_synchronously
-            showToast(context: context, message:Constant.serverErrorMessage, isError: true);
-          }else{
+            showToast(
+                context: context,
+                message: Constant.serverErrorMessage,
+                isError: true);
+          } else {
             // ignore: use_build_context_synchronously
-            showToast(context: context, message:"Error ${response.statusCode} ${response.statusMessage}", isError: true);
+            showToast(
+                context: context,
+                message:
+                    "Error ${response.statusCode} ${response.statusMessage}",
+                isError: true);
           }
-
-
         }
-      }catch(e){
+      } catch (e) {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
         // ignore: use_build_context_synchronously
-        showToast(context: context, message: "Something Went Wrong ", isError: true);
+        showToast(
+            context: context, message: "Something Went Wrong ", isError: true);
       }
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-    final height =  MediaQuery.of(context).size.height;
-    final width =  MediaQuery.of(context).size.width;
-    return  Scaffold(
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    return Scaffold(
       backgroundColor: AppColor.primaryBlack,
-      body:
-      Container(
+      body: Container(
         height: height,
         width: width,
         color: AppColor.primaryBlack,
         child: GestureDetector(
-          onTap: (){FocusScope.of(context).unfocus();},
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
           child: SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -168,108 +228,167 @@ class _SignUpState extends State<SignUp> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: height*0.030,),
+                  SizedBox(
+                    height: height * 0.030,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.arrow_back_ios,color: AppColor.primaryWhite,
-                          size: width*0.060,
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: AppColor.primaryWhite,
+                          size: width * 0.060,
                         ),
                       ),
-                    ],),
-                  SizedBox(height: height*0.030,),
-                  const  Heading(text: Constant.login),
+                    ],
+                  ),
+                  SizedBox(
+                    height: height * 0.030,
+                  ),
+                  const Heading(text: Constant.login),
 
-                  SizedBox(height: height*0.23,),
+                  SizedBox(
+                    height: height * 0.23,
+                  ),
 
-                  SizedBox(height: height*0.02,),
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
 
-
-                  Text(Constant.userNameLabel, style:TextStyle(
-                    fontSize: 16, color:AppColor.secondaryWhite,),),
-                  //USER NAME
+                  // Text(
+                  //   Constant.userNameLabel,
+                  //   style: TextStyle(
+                  //     fontSize: 16,
+                  //     color: AppColor.secondaryWhite,
+                  //   ),
+                  // ),
+//USER NAME
                   TextFormField(
-                      scrollController: ScrollController(keepScrollOffset: true),
+                    scrollController: ScrollController(keepScrollOffset: true),
+                    textAlignVertical: TextAlignVertical.center,
+                    autofocus: false,
+                    cursorColor: AppColor.secondaryWhite,
+                    controller: userNameController,
+                    autovalidateMode: userNameController.text.isNotEmpty
+                        ? AutovalidateMode.always
+                        : AutovalidateMode.onUserInteraction,
+                    style:
+                        TextStyle(fontSize: 14, color: AppColor.primaryWhite),
+                    obscureText: false,
+                    inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                    decoration: InputDecoration(
+                      errorStyle: TextStyle(
+                        fontSize: 12,
+                        color: AppColor.primaryRed,
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.red.shade500,
+                          width: 2.0, // Thickness when selected
+                        ),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: AppColor.secondaryWhite,
+                          width: 2.0, // Thickness when not selected
+                        ),
+                      ),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: Constant.userNameHint,
+                      hintStyle: TextStyle(
+                        fontSize: 14,
+                        color: AppColor.secondaryWhite,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      contentPadding:
+                          const EdgeInsets.only(left: 16.0, bottom: 12.0),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
+
+//Password
+                  TextFormField(
+                      scrollController:
+                          ScrollController(keepScrollOffset: true),
                       textAlignVertical: TextAlignVertical.center,
                       autofocus: false,
-                      controller: userNameController,
-                      autovalidateMode: userNameController.text.isNotEmpty
-                          ? AutovalidateMode.always
-                          : AutovalidateMode.onUserInteraction,
-                      style:  TextStyle(
-                          fontSize: 14,color: AppColor.primaryWhite),
-                      obscureText: false,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(50)
-                      ],
-
-                      decoration: InputDecoration(
-                        errorStyle:  TextStyle(fontSize: 12, color: AppColor.primaryRed,),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintText: Constant.userNameHint,
-                        hintStyle: TextStyle(
-                            fontSize: 12, color:AppColor.secondaryWhite,fontWeight: FontWeight.w100),
-                      )),
-
-                  SizedBox(height: height*0.02,),
-
-
-                  Text(Constant.passwordLabel, style:TextStyle(
-                    fontSize: 16, color:AppColor.secondaryWhite,),),
-                  //Password
-                  TextFormField(
-                      scrollController: ScrollController(keepScrollOffset: true),
-                      textAlignVertical: TextAlignVertical.center,
-                      autofocus: false,
+                      cursorColor: AppColor.secondaryWhite,
                       controller: passwordController,
                       autovalidateMode: passwordController.text.isNotEmpty
                           ? AutovalidateMode.always
                           : AutovalidateMode.onUserInteraction,
-                      style:  TextStyle(
-                          fontSize: 14,color: AppColor.primaryWhite),
+                      style:
+                          TextStyle(fontSize: 14, color: AppColor.primaryWhite),
                       obscureText: showPassword,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(50)
-                      ],
+                      inputFormatters: [LengthLimitingTextInputFormatter(50)],
                       decoration: InputDecoration(
                         suffixIcon: GestureDetector(
-                            onTap:(){
-                              onEyeTap();
-                            },
-                            child: Icon(
-                                showPassword == false ?
-                                Icons.visibility :  Icons.visibility_off_sharp
-                            )),
-                        errorStyle:  TextStyle(fontSize: 12, color: AppColor.primaryRed,),
+                          onTap: () {
+                            onEyeTap();
+                          },
+                          child: Icon(
+                            showPassword == false
+                                ? Icons.visibility
+                                : Icons.visibility_off_sharp,
+                          ),
+                        ),
+                        errorStyle: TextStyle(
+                          fontSize: 12,
+                          color: AppColor.primaryRed,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.red.shade500,
+                            width: 2.0, // Thickness when selected
+                          ),
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColor.secondaryWhite,
+                            width: 2.0, // Thickness when not selected
+                          ),
+                        ),
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         hintText: Constant.passwordHint,
                         hintStyle: TextStyle(
-                            fontSize: 12, color:AppColor.secondaryWhite,fontWeight: FontWeight.w100),
-
+                          fontSize: 14,
+                          color: AppColor.secondaryWhite,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        contentPadding: const EdgeInsets.only(left: 16.0),
                       )),
 
-                  SizedBox(height: height*0.07,),
+                  SizedBox(
+                    height: height * 0.07,
+                  ),
 
-                  CustomButton(buttonName: Constant.login,
+                  CustomButton(
+                      buttonName: Constant.login,
                       buttonColor: AppColor.primaryRed,
-                      textColor:AppColor.primaryWhite,
-                      onPressed:()async{
-
-                      if(userNameController.text.isEmpty || passwordController.text.isEmpty){
-                        showToast(context: context, message: "Please Enter User Name and Password", isError: true);
-                        return;
-                      }
-                      String? token = await LocalDB.getBearerToken;
-                      if(token == null){
-                       await userLogin();
-                      }else{
-                        await checkSubscription();
-                      }
-                  })
+                      textColor: AppColor.primaryWhite,
+                      onPressed: () async {
+                        if (userNameController.text.isEmpty ||
+                            passwordController.text.isEmpty) {
+                          showToast(
+                              context: context,
+                              message: "Please Enter User Name and Password",
+                              isError: true);
+                          return;
+                        }
+                        String? token = await LocalDB.getBearerToken;
+                        if (token == null) {
+                          await userLogin();
+                        } else {
+                          await checkSubscription();
+                        }
+                      })
                 ],
               ),
             ),

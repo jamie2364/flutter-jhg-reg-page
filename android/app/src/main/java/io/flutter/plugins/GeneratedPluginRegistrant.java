@@ -4,6 +4,7 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugins.connectivity.ConnectivityPlugin;
 import io.flutter.plugins.inapppurchase.InAppPurchasePlugin;
 import io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin;
+import io.flutter.plugins.urllauncher.UrlLauncherPlugin;
 
 /**
  * Generated file. Do not edit.
@@ -16,6 +17,7 @@ public final class GeneratedPluginRegistrant {
     ConnectivityPlugin.registerWith(registry.registrarFor("io.flutter.plugins.connectivity.ConnectivityPlugin"));
     InAppPurchasePlugin.registerWith(registry.registrarFor("io.flutter.plugins.inapppurchase.InAppPurchasePlugin"));
     SharedPreferencesPlugin.registerWith(registry.registrarFor("io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin"));
+    UrlLauncherPlugin.registerWith(registry.registrarFor("io.flutter.plugins.urllauncher.UrlLauncherPlugin"));
   }
 
   private static boolean alreadyRegisteredWith(PluginRegistry registry) {

@@ -3,19 +3,29 @@ import 'package:dio/dio.dart';
 import 'package:reg_page/reg_page.dart';
 
 class ApiRepo {
-  postRequest(String url, Map<String, dynamic> data) async {
+
+  postRequest(String url, Map<String, dynamic> data ,{bool? isHeader}) async {
     try {
+
       Dio dio = Dio();
-     final headers =  {
+
+      final headers =  {
        // HttpHeaders.authorizationHeader: "Bearer $bearerToken",
         //HttpHeaders.contentTypeHeader: "application/json",
         HttpHeaders.acceptEncodingHeader: "*"
         };
+
+      final headers1 = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Basic cDJmY2M2NjIwZDMxNjg3NjQzY2VmYjBkMmFiNjliMmQ5OnNhNGYxZGZmMTZlMTYyNGRiNDUwM2I5YTQ0NjdjMzRlOA==',
+      };
+
       Options options = Options(
           sendTimeout:const Duration(seconds: 60),
           receiveTimeout:const Duration(seconds: 60),
           receiveDataWhenStatusError: true,
-          headers: headers );
+          headers: isHeader == true ? headers1 : headers );
 
       Response response = await dio.post(
         options:options,

@@ -9,10 +9,14 @@ class SplashScreen extends StatefulWidget {
       {super.key,
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
-      required this.nextPage});
+        required this.appName,
+        required this.appVersion,
+        required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
+  final String appName;
+  final String appVersion;
   final Widget Function() nextPage;
 
   @override
@@ -60,6 +64,8 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (context) => Welcome(
                       yearlySubscriptionId: widget.yearlySubscriptionId,
                       monthlySubscriptionId: widget.monthlySubscriptionId,
+                      appName:  widget.appName,
+                      appVersion:  widget.appVersion,
                       nextPage: () => widget.nextPage(),
                     )));
       } else {
@@ -83,7 +89,8 @@ class _SplashScreenState extends State<SplashScreen> {
         duration: const Duration(milliseconds: 2000),
         curve: Curves.linearToEaseOut,
         child: Image.asset(
-          "assets/images/logo.png",
+          "assets/images/jhg_logo.png",
+          package: 'reg_page',
           height: MediaQuery.of(context).size.height * 0.30,
           width: MediaQuery.of(context).size.height * 0.30,
           fit: BoxFit.cover,

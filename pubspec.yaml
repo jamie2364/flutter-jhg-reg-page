@@ -14,7 +14,9 @@ dependencies:
   dio: ^5.3.3
   connectivity: ^3.0.6
   internet_connection_checker: ^1.0.0+1
-  in_app_purchase: ^3.1.10
+  in_app_purchase: ^3.1.11
+  url_launcher: ^6.2.1
+
 
 dev_dependencies:
   flutter_test:
@@ -26,10 +28,14 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/jhg_background.png
+    - assets/images/jhg_logo.png
+    - assets/images/jhg_sign.png
+    - assets/images/icon_cross.png
 
   # To add assets to your package, add an assets section, like this:
-    assets:
-      - assets/images/
   #
   # For details regarding assets in packages, see
   # https://flutter.dev/assets-and-images/#from-packages
