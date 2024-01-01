@@ -140,7 +140,7 @@ class _WelcomeState extends State<Welcome> {
         context: context,
         message: productDetailsResponse.error!.message,
         isError: true,
-      );
+       );
       debugPrint("Error ${productDetailsResponse.error}");
     }
   }
@@ -177,7 +177,13 @@ class _WelcomeState extends State<Welcome> {
             message: purchaseDetails.error!.message,
             isError: false,
           );
-          Navigator.pop(context);
+          // Navigator.pop(context);
+          // ignore: use_build_context_synchronously
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+                return widget.nextPage();
+              }), (route) => false);
+
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
           showToast(
@@ -188,7 +194,11 @@ class _WelcomeState extends State<Welcome> {
           Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
-
+          //ignore: use_build_context_synchronously
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (context) {
+                return widget.nextPage();
+              }), (route) => false);
           restorePopupDialog(context, Constant.restoreSuccess,
               Constant.restoreSuccessDescription);
         }
