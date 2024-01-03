@@ -288,7 +288,7 @@ class _WelcomeState extends State<Welcome> {
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: height * 0.04),
         child: loading
-            ? Center(
+            ? Center( 
                 child: CircularProgressIndicator(
                   color: AppColor.primaryRed,
                 ),
@@ -493,7 +493,7 @@ class _WelcomeState extends State<Welcome> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        showWeeklySaveInfoDialog(context);
+                                        showWeeklySaveInfoDialog(context,yearlyPrice);
                                       },
                                       child: Text(
                                         Constant.weeklySave,

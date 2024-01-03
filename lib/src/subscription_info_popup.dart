@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'colors.dart';
 
-void showWeeklySaveInfoDialog(BuildContext context) {
+void showWeeklySaveInfoDialog(BuildContext context, String? price) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -18,7 +18,7 @@ void showWeeklySaveInfoDialog(BuildContext context) {
             ),
           ),
           content: Text(
-            "Get a free trial for 7 days, after which you will be automatically charged the annual fee. You may cancel at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
+            "Get a free trial for 7 days, after which you will be automatically charged $price. You may cancel at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
             style: TextStyle(
               color: AppColor.secondaryWhite,
               fontSize: 14,
