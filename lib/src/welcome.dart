@@ -234,13 +234,38 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
+  // Future<void> purchaseSubscription(int plan) async {
+  //   loaderDialog(context);
+  //   print("SELECTED PLAN IS $plan");
+  //   print("AND PRODUCT IS ${products[0].id}");
+  //   print("AND MRGE IS ${plan == 1 ? products[0].id : products[1].id}");
+  //   final PurchaseParam param =
+  //       PurchaseParam(productDetails: plan == 1 ? products[0] : products[1]);
+  //   try {
+  //     bool isAvailable = await inAppPurchase.isAvailable();
+  //     if (isAvailable) {
+  //       await inAppPurchase.buyNonConsumable(purchaseParam: param);
+  //       // Ignore: use_build_context_synchronously
+  //       Navigator.pop(context);
+  //     }
+  //   } on PlatformException catch (e) {
+  //     Navigator.pop(context);
+  //     showToast(context: context, message: e.message!, isError: true);
+  //   }
+  // }
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
     print("SELECTED PLAN IS $plan");
-    print("AND PRODUCT IS ${products[0].id}");
-    print("AND MRGE IS ${plan == 1 ? products[0].id : products[1].id}");
-    final PurchaseParam param =
-        PurchaseParam(productDetails: plan == 1 ? products[0] : products[1]);
+
+    // Determine the product to be selected based on the plan
+    final ProductDetails selectedProduct = (plan == 1)
+        ? products.firstWhere((product) => product.id.contains("annual"),
+            orElse: () => products[0])
+        : products[1];
+
+    print("SELECTED PRODUCT IS ${selectedProduct.id}");
+
+    final PurchaseParam param = PurchaseParam(productDetails: selectedProduct);
     try {
       bool isAvailable = await inAppPurchase.isAvailable();
       if (isAvailable) {
