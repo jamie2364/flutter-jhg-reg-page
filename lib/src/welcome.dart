@@ -253,31 +253,84 @@ class _WelcomeState extends State<Welcome> {
   //     showToast(context: context, message: e.message!, isError: true);
   //   }
   // }
-  Future<void> purchaseSubscription(int plan) async {
-    loaderDialog(context);
-    print("SELECTED PLAN IS $plan");
+//  Future<void> purchaseSubscription(int plan) async {
+//   loaderDialog(context);
+//   print("SELECTED PLAN IS $plan");
 
-    // Determine the product to be selected based on the plan
-    final ProductDetails selectedProduct = (plan == 1)
-        ? products.firstWhere((product) => product.id.contains("annual"),
-            orElse: () => products[0])
-        : products[1];
+//   // Determine the product to be selected based on the plan
+//   ProductDetails? selectedProduct;
 
-    print("SELECTED PRODUCT IS ${selectedProduct.id}");
+//   if (plan == 1) {
+//    var selectedProducts = findProductWithAnnualId();
+//     if (selectedProducts == null) {
+//       selectedProduct = products[0];
+//     }
+//   } else {
+//     selectedProduct = products[1];
+//   }
 
-    final PurchaseParam param = PurchaseParam(productDetails: selectedProduct);
-    try {
-      bool isAvailable = await inAppPurchase.isAvailable();
-      if (isAvailable) {
-        await inAppPurchase.buyNonConsumable(purchaseParam: param);
-        // Ignore: use_build_context_synchronously
-        Navigator.pop(context);
-      }
-    } on PlatformException catch (e) {
-      Navigator.pop(context);
-      showToast(context: context, message: e.message!, isError: true);
+//   print("SELECTED PRODUCT IS ${selectedProduct!.id}");
+
+//   final PurchaseParam param = PurchaseParam(productDetails: selectedProduct);
+//   try {
+//     bool isAvailable = await inAppPurchase.isAvailable();
+//     if (isAvailable) {
+//       await inAppPurchase.buyNonConsumable(purchaseParam: param);
+//       // Ignore: use_build_context_synchronously
+//       Navigator.pop(context);
+//     }
+//   } on PlatformException catch (e) {
+//     Navigator.pop(context);
+//     showToast(context: context, message: e.message!, isError: true);
+//   }
+// }
+
+//  findProductWithAnnualId() {
+//   // Find the product with "annual" in its ID, or return null if not found
+//   for (var product in products) {
+//     if (product.id.contains("annual")) {
+//       return product;
+//     }
+//   }
+//   return null;
+// }
+Future<void> purchaseSubscription(int plan) async {
+  loaderDialog(context);
+  print("SELECTED PLAN IS $plan");
+
+  int selectedProductIndex = -1;
+
+  // Determine the index of the product based on the plan and keyword
+  for (int i = 0; i < products.length; i++) {
+    if (plan == 1 && products[i].id.contains("annual")) {
+      selectedProductIndex = i;
+      break;
+    } else if (plan == 2 && products[i].id.contains("monthly")) {
+      selectedProductIndex = i;
+      break;
     }
   }
+
+  // If no matching product is found, default to the first product
+  if (selectedProductIndex == -1) {
+    selectedProductIndex = 0;
+  }
+
+  final PurchaseParam param = PurchaseParam(productDetails: products[selectedProductIndex]);
+  
+  try {
+    bool isAvailable = await inAppPurchase.isAvailable();
+    if (isAvailable) {
+      await inAppPurchase.buyNonConsumable(purchaseParam: param);
+      // Ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    }
+  } on PlatformException catch (e) {
+    Navigator.pop(context);
+    showToast(context: context, message: e.message!, isError: true);
+  }
+}
+
 
   Future<void> restorePurchase() async {
     try {
