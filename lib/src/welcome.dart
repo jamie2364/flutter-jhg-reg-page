@@ -768,7 +768,9 @@ Future<void> purchaseSubscription(int plan) async {
 
                         // START FREE TRAIL  , CONTINUE BUTTON
                         CustomButton(
-                          buttonName: "KKK",
+                          buttonName: selectedPlan == 1
+                              ? Constant.tryFree
+                              : Constant.continueText,
                           buttonColor: AppColor.primaryRed,
                           textColor: AppColor.primaryWhite,
                           onPressed: () async {
