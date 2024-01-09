@@ -105,6 +105,7 @@ class _WelcomeState extends State<Welcome> {
       streamSubscription.cancel();
     }, onError: (error) {
       debugPrint("Error");
+      streamSubscription.cancel();
     });
     initStore(context);
   }
@@ -140,7 +141,7 @@ class _WelcomeState extends State<Welcome> {
         context: context,
         message: productDetailsResponse.error!.message,
         isError: true,
-       );
+      );
       debugPrint("Error ${productDetailsResponse.error}");
     }
   }
@@ -155,21 +156,25 @@ class _WelcomeState extends State<Welcome> {
     } else {
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
         if (purchaseDetails.status == PurchaseStatus.pending) {
+          print("ERROR IS ${purchaseDetails.error}");
           showToast(
             context: context,
-            message: purchaseDetails.error!.message,
+            message: purchaseDetails.error == null
+                ? ""
+                : purchaseDetails.error!.message,
             isError: true,
           );
           debugPrint("pending");
-          Navigator.pop(context);
+          //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
           debugPrint("error");
+          print("ERROR IS ${purchaseDetails.error}");
           showToast(
             context: context,
             message: purchaseDetails.error!.message,
             isError: true,
           );
-          Navigator.pop(context);
+          //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
           showToast(
@@ -181,24 +186,24 @@ class _WelcomeState extends State<Welcome> {
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
-                return widget.nextPage();
-              }), (route) => false);
-
+            return widget.nextPage();
+          }), (route) => false);
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
+          print("ERROR IS::: ${purchaseDetails.error}");
           showToast(
             context: context,
             message: purchaseDetails.error!.message,
             isError: true,
           );
-          Navigator.pop(context);
+          // Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           //ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
-                return widget.nextPage();
-              }), (route) => false);
+            return widget.nextPage();
+          }), (route) => false);
           restorePopupDialog(context, Constant.restoreSuccess,
               Constant.restoreSuccessDescription);
         }
@@ -288,7 +293,7 @@ class _WelcomeState extends State<Welcome> {
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: height * 0.04),
         child: loading
-            ? Center( 
+            ? Center(
                 child: CircularProgressIndicator(
                   color: AppColor.primaryRed,
                 ),
@@ -493,7 +498,8 @@ class _WelcomeState extends State<Welcome> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        showWeeklySaveInfoDialog(context,yearlyPrice);
+                                        showWeeklySaveInfoDialog(
+                                            context, yearlyPrice);
                                       },
                                       child: Text(
                                         Constant.weeklySave,
