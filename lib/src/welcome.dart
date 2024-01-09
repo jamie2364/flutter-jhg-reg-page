@@ -118,10 +118,14 @@ class _WelcomeState extends State<Welcome> {
     // Getting subscription
     ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(variant);
+    print("VARIANT IS $variant");
+
     if (productDetailsResponse.error == null) {
       products = productDetailsResponse.productDetails;
       debugPrint("$products");
       for (var element in products) {
+        print("products id  IS ${element.id}");
+
         if (element.id == yearlyKey) {
           setState(() {
             yearlyPrice = element.price;
