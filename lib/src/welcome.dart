@@ -171,16 +171,7 @@ class _WelcomeState extends State<Welcome> {
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("productID IS ${purchaseDetails.productID}");
           print("purchaseID IS ${purchaseDetails.purchaseID}");
-
-          // purchaseDetails.error == null
-          //     ? const SizedBox()
-          //     : showToast(
-          //         context: context,
-          //         message: purchaseDetails.error == null
-          //             ? ""
-          //             : purchaseDetails.error!.message,
-          //         isError: true,
-          //       );
+          
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
@@ -203,8 +194,8 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
-          // Navigator.pop(context);
-          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
+          //ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
@@ -222,6 +213,7 @@ class _WelcomeState extends State<Welcome> {
           // Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
+          Navigator.pop(context);
           //ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
@@ -234,66 +226,6 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
-  // Future<void> purchaseSubscription(int plan) async {
-  //   loaderDialog(context);
-  //   print("SELECTED PLAN IS $plan");
-  //   print("AND PRODUCT IS ${products[0].id}");
-  //   print("AND MRGE IS ${plan == 1 ? products[0].id : products[1].id}");
-  //   final PurchaseParam param =
-  //       PurchaseParam(productDetails: plan == 1 ? products[0] : products[1]);
-  //   try {
-  //     bool isAvailable = await inAppPurchase.isAvailable();
-  //     if (isAvailable) {
-  //       await inAppPurchase.buyNonConsumable(purchaseParam: param);
-  //       // Ignore: use_build_context_synchronously
-  //       Navigator.pop(context);
-  //     }
-  //   } on PlatformException catch (e) {
-  //     Navigator.pop(context);
-  //     showToast(context: context, message: e.message!, isError: true);
-  //   }
-  // }
-//  Future<void> purchaseSubscription(int plan) async {
-//   loaderDialog(context);
-//   print("SELECTED PLAN IS $plan");
-
-//   // Determine the product to be selected based on the plan
-//   ProductDetails? selectedProduct;
-
-//   if (plan == 1) {
-//    var selectedProducts = findProductWithAnnualId();
-//     if (selectedProducts == null) {
-//       selectedProduct = products[0];
-//     }
-//   } else {
-//     selectedProduct = products[1];
-//   }
-
-//   print("SELECTED PRODUCT IS ${selectedProduct!.id}");
-
-//   final PurchaseParam param = PurchaseParam(productDetails: selectedProduct);
-//   try {
-//     bool isAvailable = await inAppPurchase.isAvailable();
-//     if (isAvailable) {
-//       await inAppPurchase.buyNonConsumable(purchaseParam: param);
-//       // Ignore: use_build_context_synchronously
-//       Navigator.pop(context);
-//     }
-//   } on PlatformException catch (e) {
-//     Navigator.pop(context);
-//     showToast(context: context, message: e.message!, isError: true);
-//   }
-// }
-
-//  findProductWithAnnualId() {
-//   // Find the product with "annual" in its ID, or return null if not found
-//   for (var product in products) {
-//     if (product.id.contains("annual")) {
-//       return product;
-//     }
-//   }
-//   return null;
-// }
 Future<void> purchaseSubscription(int plan) async {
   loaderDialog(context);
   print("SELECTED PLAN IS $plan");
@@ -321,9 +253,9 @@ Future<void> purchaseSubscription(int plan) async {
   try {
     bool isAvailable = await inAppPurchase.isAvailable();
     if (isAvailable) {
-      await inAppPurchase.buyNonConsumable(purchaseParam: param);
+      await  inAppPurchase.buyNonConsumable(purchaseParam: param);
       // Ignore: use_build_context_synchronously
-      Navigator.pop(context);
+     // Navigator.pop(context);
     }
   } on PlatformException catch (e) {
     Navigator.pop(context);
