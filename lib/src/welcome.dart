@@ -684,9 +684,7 @@ class _WelcomeState extends State<Welcome> {
 
                         // START FREE TRAIL  , CONTINUE BUTTON
                         CustomButton(
-                          buttonName: selectedPlan == 1
-                              ? Constant.tryFree
-                              : Constant.continueText,
+                          buttonName: "KKK",
                           buttonColor: AppColor.primaryRed,
                           textColor: AppColor.primaryWhite,
                           onPressed: () async {
