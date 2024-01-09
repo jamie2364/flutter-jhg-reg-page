@@ -82,9 +82,11 @@ class _WelcomeState extends State<Welcome> {
     print(widget.monthlySubscriptionId);
 
     variant.clear();
+    print("VARIANT IS $variant");
 
     variant.add(widget.yearlySubscriptionId);
     variant.add(widget.monthlySubscriptionId);
+    print("VARIANT IS $variant");
 
     yearlyKey = widget.yearlySubscriptionId;
     monthlyKey = widget.monthlySubscriptionId;
