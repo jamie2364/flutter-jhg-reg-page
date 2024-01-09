@@ -152,7 +152,7 @@ class _WelcomeState extends State<Welcome> {
 
   listenToPurchase(List<PurchaseDetails> purchaseDetailsList) {
     print("list");
-    print("PList :$purchaseDetailsList");
+    print("PList :${purchaseDetailsList}");
 
     if (purchaseDetailsList.isEmpty) {
       restorePopupDialog(context, Constant.restoreNotFound,
@@ -160,8 +160,12 @@ class _WelcomeState extends State<Welcome> {
     } else {
       // ignore: avoid_function_literals_in_foreach_calls
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+        print("productID IS ${purchaseDetails.productID}");
+        print("purchaseID IS ${purchaseDetails.purchaseID}");
         if (purchaseDetails.status == PurchaseStatus.pending) {
-          print("ERROR IS ${purchaseDetails.error}");
+          print("productID IS ${purchaseDetails.productID}");
+          print("purchaseID IS ${purchaseDetails.purchaseID}");
+
           // purchaseDetails.error == null
           //     ? const SizedBox()
           //     : showToast(
@@ -226,6 +230,9 @@ class _WelcomeState extends State<Welcome> {
 
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
+    print("SELECTED PLAN IS $plan");
+    print("AND PRODUCT IS ${products[0]}");
+    print("AND MRGE IS ${plan == 1 ? products[0] : products[1]}");
     final PurchaseParam param =
         PurchaseParam(productDetails: plan == 1 ? products[0] : products[1]);
     try {
