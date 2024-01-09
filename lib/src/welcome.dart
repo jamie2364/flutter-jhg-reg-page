@@ -231,8 +231,8 @@ class _WelcomeState extends State<Welcome> {
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
     print("SELECTED PLAN IS $plan");
-    print("AND PRODUCT IS ${products[0]}");
-    print("AND MRGE IS ${plan == 1 ? products[0] : products[1]}");
+    print("AND PRODUCT IS ${products[0].id}");
+    print("AND MRGE IS ${plan == 1 ? products[0].id : products[1].id}");
     final PurchaseParam param =
         PurchaseParam(productDetails: plan == 1 ? products[0] : products[1]);
     try {
