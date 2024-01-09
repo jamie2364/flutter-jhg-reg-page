@@ -157,7 +157,8 @@ class _WelcomeState extends State<Welcome> {
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("ERROR IS ${purchaseDetails.error}");
-          showToast(
+          purchaseDetails.error == null
+                ?const SizedBox(): showToast(
             context: context,
             message: purchaseDetails.error == null
                 ? ""
