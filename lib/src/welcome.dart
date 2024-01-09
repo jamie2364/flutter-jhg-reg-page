@@ -162,15 +162,15 @@ class _WelcomeState extends State<Welcome> {
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("ERROR IS ${purchaseDetails.error}");
-          purchaseDetails.error == null
-              ? const SizedBox()
-              : showToast(
-                  context: context,
-                  message: purchaseDetails.error == null
-                      ? ""
-                      : purchaseDetails.error!.message,
-                  isError: true,
-                );
+          // purchaseDetails.error == null
+          //     ? const SizedBox()
+          //     : showToast(
+          //         context: context,
+          //         message: purchaseDetails.error == null
+          //             ? ""
+          //             : purchaseDetails.error!.message,
+          //         isError: true,
+          //       );
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
