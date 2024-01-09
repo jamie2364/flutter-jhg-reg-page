@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -137,11 +139,13 @@ class _WelcomeState extends State<Welcome> {
       });
 
       // Ignore: use_build_context_synchronously
-      showToast(
-        context: context,
-        message: productDetailsResponse.error!.message,
-        isError: true,
-      );
+      productDetailsResponse.error == null
+          ? const SizedBox()
+          : showToast(
+              context: context,
+              message: productDetailsResponse.error!.message,
+              isError: true,
+            );
       debugPrint("Error ${productDetailsResponse.error}");
     }
   }
@@ -154,35 +158,41 @@ class _WelcomeState extends State<Welcome> {
       restorePopupDialog(context, Constant.restoreNotFound,
           Constant.restoreNotFoundDescription);
     } else {
+      // ignore: avoid_function_literals_in_foreach_calls
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("ERROR IS ${purchaseDetails.error}");
           purchaseDetails.error == null
-                ?const SizedBox(): showToast(
-            context: context,
-            message: purchaseDetails.error == null
-                ? ""
-                : purchaseDetails.error!.message,
-            isError: true,
-          );
+              ? const SizedBox()
+              : showToast(
+                  context: context,
+                  message: purchaseDetails.error == null
+                      ? ""
+                      : purchaseDetails.error!.message,
+                  isError: true,
+                );
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
           debugPrint("error");
           print("ERROR IS ${purchaseDetails.error}");
-          showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: true,
-          );
+          purchaseDetails.error == null
+              ? const SizedBox()
+              : showToast(
+                  context: context,
+                  message: purchaseDetails.error!.message,
+                  isError: true,
+                );
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
-          showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: false,
-          );
+          purchaseDetails.error == null
+              ? const SizedBox()
+              : showToast(
+                  context: context,
+                  message: purchaseDetails.error!.message,
+                  isError: false,
+                );
           // Navigator.pop(context);
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
@@ -192,11 +202,13 @@ class _WelcomeState extends State<Welcome> {
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
           print("ERROR IS::: ${purchaseDetails.error}");
-          showToast(
-            context: context,
-            message: purchaseDetails.error!.message,
-            isError: true,
-          );
+          purchaseDetails.error == null
+              ? const SizedBox()
+              : showToast(
+                  context: context,
+                  message: purchaseDetails.error!.message,
+                  isError: true,
+                );
           // Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
