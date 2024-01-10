@@ -175,6 +175,7 @@ class _WelcomeState extends State<Welcome> {
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
+          Navigator.pop(context);
           debugPrint("error");
           print("ERROR IS ${purchaseDetails.error}");
           purchaseDetails.error == null
@@ -184,9 +185,9 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: true,
                 );
-          //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
+          Navigator.pop(context);
           purchaseDetails.error == null
               ? const SizedBox()
               : showToast(
@@ -194,7 +195,6 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
-          Navigator.pop(context);
           //ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
@@ -202,6 +202,7 @@ class _WelcomeState extends State<Welcome> {
           }), (route) => false);
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
+          Navigator.pop(context);
           print("ERROR IS::: ${purchaseDetails.error}");
           purchaseDetails.error == null
               ? const SizedBox()
@@ -210,7 +211,6 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: true,
                 );
-          // Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(context);
@@ -255,7 +255,7 @@ Future<void> purchaseSubscription(int plan) async {
     if (isAvailable) {
       await  inAppPurchase.buyNonConsumable(purchaseParam: param);
       // Ignore: use_build_context_synchronously
-     // Navigator.pop(context);
+     // Navigator.pop(context);  
     }
   } on PlatformException catch (e) {
     Navigator.pop(context);
