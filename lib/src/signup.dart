@@ -67,6 +67,7 @@ class _SignUpState extends State<SignUp> {
         if (subscriptionModel.allAccessPass == "active" ||
             subscriptionModel.softwareSuite == "active") {
           // ignore: use_build_context_synchronously
+          await LocalDB.storeSubscriptionPurchase(true);
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => widget.nextPage()));
         } else {
