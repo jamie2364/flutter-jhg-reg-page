@@ -7,6 +7,7 @@ class LocalDB {
   static String userNameKey = "userName";
   static String userEmailKey = "userEmail";
   static String userIdKey = "UserId";
+  static String subscriptionPurchase = "subscriptionPurchase";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -114,6 +115,23 @@ class LocalDB {
     // Get the bearer token which we have stored in sharedPreferences before
     int? userEmail = sharedPreferences.getInt(userIdKey);
     return userEmail;
+  }
+
+  // Set subscription purchase
+  static Future<void> storeSubscriptionPurchase(bool value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Store subscription purchase in shared preferences
+    sharedPreferences.setBool(subscriptionPurchase, value);
+  }
+
+  // Get subscription purchase
+  static Future<bool?> get getSubscriptionPurchase async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the subscription purchase which we have stored in sharedPreferences before
+    bool? purchase = sharedPreferences.getBool(subscriptionPurchase);
+    return purchase;
   }
 
   // Clear bearer token

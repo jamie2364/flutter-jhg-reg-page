@@ -196,6 +196,7 @@ class _WelcomeState extends State<Welcome> {
                   isError: false,
                 );
           //ignore: use_build_context_synchronously
+          await LocalDB.storeSubscriptionPurchase(true);
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
@@ -211,10 +212,13 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: true,
                 );
-        } else if (purchaseDetails.status == PurchaseStatus.restored) {
+        }
+         else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(context);
           //ignore: use_build_context_synchronously
+          await LocalDB.storeSubscriptionPurchase(true);
+
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
