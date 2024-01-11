@@ -220,7 +220,7 @@ class _WelcomeState extends State<Welcome> {
             return widget.nextPage();
           }), (route) => false);
           restorePopupDialog(context, Constant.restoreSuccess,
-              Constant.restoreSuccessDescription);
+              Constant.restoreSuccessDescription); 
         }
         else if (purchaseDetails.pendingCompletePurchase) {
           await InAppPurchase.instance
