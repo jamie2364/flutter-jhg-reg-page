@@ -43,7 +43,6 @@ class _SignUpState extends State<SignUp> {
       passwordController.clear();
     });
   }
-
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
@@ -164,7 +163,6 @@ class _SignUpState extends State<SignUp> {
           await LocalDB.storeUserName(loginModel.userLogin!);
           await LocalDB.storeUserId(loginModel.userId!);
           await LocalDB.storeSubscriptionPurchase(false);
-
           // ignore: use_build_context_synchronously
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {

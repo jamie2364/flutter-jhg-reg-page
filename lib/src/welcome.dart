@@ -13,6 +13,7 @@ import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 import 'subscription_info_popup.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({
@@ -50,6 +51,7 @@ class _WelcomeState extends State<Welcome> {
     initializedData();
     super.initState();
   }
+
 
   int selectedPlan = 1;
 
@@ -178,13 +180,13 @@ class _WelcomeState extends State<Welcome> {
           Navigator.pop(context);
           debugPrint("error");
           print("ERROR IS ${purchaseDetails.error}");
-          purchaseDetails.error == null
-              ? const SizedBox()
-              : showToast(
-                  context: context,
-                  message: purchaseDetails.error!.message,
-                  isError: true,
-                );
+          // purchaseDetails.error == null
+          //     ? const SizedBox()
+          //     : showToast(
+          //         context: context,
+          //         message: purchaseDetails.error!.message,
+          //         isError: true,
+          //       );
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
           Navigator.pop(context);
@@ -197,34 +199,32 @@ class _WelcomeState extends State<Welcome> {
                 );
           //ignore: use_build_context_synchronously
           await LocalDB.storeSubscriptionPurchase(true);
+
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
+
           }), (route) => false);
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
           Navigator.pop(context);
           print("ERROR IS::: ${purchaseDetails.error}");
-          purchaseDetails.error == null
-              ? const SizedBox()
-              : showToast(
-                  context: context,
-                  message: purchaseDetails.error!.message,
-                  isError: true,
-                );
         }
          else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(context);
           //ignore: use_build_context_synchronously
           await LocalDB.storeSubscriptionPurchase(true);
-
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
           restorePopupDialog(context, Constant.restoreSuccess,
               Constant.restoreSuccessDescription);
+        }
+        else if (purchaseDetails.pendingCompletePurchase) {
+          await InAppPurchase.instance
+              .completePurchase(purchaseDetails);
         }
       });
     }
@@ -252,14 +252,25 @@ Future<void> purchaseSubscription(int plan) async {
     selectedProductIndex = 0;
   }
 
+
+
   final PurchaseParam param = PurchaseParam(productDetails: products[selectedProductIndex]);
   
   try {
+
+    Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
+
+    // Listen for stream
+    streamSubscription = purchaseUpdated.listen((purchaseList) async {
+      for (var purchaseDetails in purchaseList) {
+        if (purchaseDetails.pendingCompletePurchase) {
+          await inAppPurchase.completePurchase(purchaseDetails);
+        }
+      }
+    });
     bool isAvailable = await inAppPurchase.isAvailable();
     if (isAvailable) {
       await  inAppPurchase.buyNonConsumable(purchaseParam: param);
-      // Ignore: use_build_context_synchronously
-     // Navigator.pop(context);  
     }
   } on PlatformException catch (e) {
     Navigator.pop(context);
