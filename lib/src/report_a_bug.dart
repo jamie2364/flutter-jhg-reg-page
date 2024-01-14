@@ -10,11 +10,23 @@ class BugReportPage extends StatefulWidget {
   const BugReportPage(
       {super.key,
         required this.device,
-        required this.appName,});
+        required this.appName,
+
+         this.isLogout,
+         this.yearlySubscriptionId,
+         this.monthlySubscriptionId,
+         this.appVersion,
+         this.nextPage,
+      });
 
   final String device ;
   final String appName;
-  //
+  final bool? isLogout;
+  final String? yearlySubscriptionId;
+  final String? monthlySubscriptionId;
+  final String? appVersion;
+  final Widget Function()? nextPage;
+
   @override
   _BugReportPageState createState() => _BugReportPageState();
 }
@@ -22,8 +34,6 @@ class BugReportPage extends StatefulWidget {
 class _BugReportPageState extends State<BugReportPage> {
   bool _isChecked = false;
   TextEditingController issueController = TextEditingController();
-
-
 
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
@@ -206,6 +216,42 @@ class _BugReportPageState extends State<BugReportPage> {
                           ),
                         ),
                       ),
+                      widget.isLogout == true ?
+                      Center(
+                        child: InkWell(
+                          onTap: () async {
+                            await LocalDB.clearLocalDB();
+                            //ignore: use_build_context_synchronously
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                                  return Welcome(
+                                    yearlySubscriptionId: widget.yearlySubscriptionId!,
+                                    monthlySubscriptionId: widget.monthlySubscriptionId!,
+                                    appVersion: widget.appVersion!,
+                                    appName: widget.appName,
+                                    nextPage: () => widget.nextPage!() ,
+                                  );
+                                }), (route) => false);
+                          },
+                          child: Container(
+                            height: height * 0.07,
+                            width: width * 0.8,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: AppColor.primaryRed,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              "Logout",
+                              style: TextStyle(
+                                color: AppColor.primaryWhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ) :const SizedBox(),
+
                     ],
                   ),
                 ),

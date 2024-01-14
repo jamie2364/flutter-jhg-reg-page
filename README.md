@@ -266,7 +266,22 @@ static const String appName = 'JHG Rhythm Master';
             appName: AppConstant.appName,),
             ),
             );
-    
+  IF You want to include logout functionalities in reg page you have to pass these parameters
+      
+         Navigator.push(
+            context,
+            MaterialPageRoute(
+            builder: (context) => BugReportPage(
+            device: deviceName,
+            appName: AppConstant.appName,
+            isLogout: true,
+            yearlySubscriptionId: yearlySubscription(),
+            monthlySubscriptionId: monthlySubscription(),
+            appVersion: packageInfo.version,
+            //Main screen of the app
+            nextPage: () =>  GetStartBoarding(),
+            ),),);  
+
    // for app name just pass your app name 
 
    // for device you have to add package  device_info_plus:  in pubspec.yaml
