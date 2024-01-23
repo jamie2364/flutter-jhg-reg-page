@@ -337,6 +337,7 @@ class _SignUpState extends State<SignUp> {
                             showPassword == false
                                 ? Icons.visibility
                                 : Icons.visibility_off_sharp,
+                            color: AppColor.secondaryWhite,
                           ),
                         ),
                         errorStyle: TextStyle(

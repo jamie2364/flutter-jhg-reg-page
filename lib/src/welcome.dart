@@ -418,7 +418,7 @@ Future<void> purchaseSubscription(int plan) async {
                     Positioned(
                         right: width * 0.05,
                         top: height *
-                            0.0, // Adjust the bottom value to move it downwards
+                            0.03, // Adjust the bottom value to move it downwards
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(context,
