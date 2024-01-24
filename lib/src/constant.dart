@@ -39,7 +39,7 @@ class Constant {
   static const String welcomeDescription = ' to Jamie Harrison Guitar';
   static const String pleaseChoosePlan =
       'Please choose a plan below to get started';
-  static const String annualPlan = 'Annual Plan';
+  static const String annualPlan = 'Annual Plan2';
   static const String oneWeekFree = '1 week free, then ';
   static const String perYear = 'per year';
   static const String perMonth = 'per Month';
