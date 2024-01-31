@@ -52,7 +52,6 @@ class _WelcomeState extends State<Welcome> {
     super.initState();
   }
 
-
   int selectedPlan = 1;
 
   onPlanSelect(int plan) {
@@ -173,7 +172,7 @@ class _WelcomeState extends State<Welcome> {
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("productID IS ${purchaseDetails.productID}");
           print("purchaseID IS ${purchaseDetails.purchaseID}");
-          
+
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
@@ -203,14 +202,12 @@ class _WelcomeState extends State<Welcome> {
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
-
           }), (route) => false);
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
           Navigator.pop(context);
           print("ERROR IS::: ${purchaseDetails.error}");
-        }
-         else if (purchaseDetails.status == PurchaseStatus.restored) {
+        } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(context);
           //ignore: use_build_context_synchronously
@@ -220,64 +217,59 @@ class _WelcomeState extends State<Welcome> {
             return widget.nextPage();
           }), (route) => false);
           restorePopupDialog(context, Constant.restoreSuccess,
-              Constant.restoreSuccessDescription); 
-        }
-        else if (purchaseDetails.pendingCompletePurchase) {
-          await InAppPurchase.instance
-              .completePurchase(purchaseDetails);
+              Constant.restoreSuccessDescription);
+        } else if (purchaseDetails.pendingCompletePurchase) {
+          await InAppPurchase.instance.completePurchase(purchaseDetails);
         }
       });
     }
   }
 
-Future<void> purchaseSubscription(int plan) async {
-  loaderDialog(context);
-  print("SELECTED PLAN IS $plan");
+  Future<void> purchaseSubscription(int plan) async {
+    loaderDialog(context);
+    print("SELECTED PLAN IS $plan");
 
-  int selectedProductIndex = -1;
+    int selectedProductIndex = -1;
 
-  // Determine the index of the product based on the plan and keyword
-  for (int i = 0; i < products.length; i++) {
-    if (plan == 1 && products[i].id.contains("annual")) {
-      selectedProductIndex = i;
-      break;
-    } else if (plan == 2 && products[i].id.contains("monthly")) {
-      selectedProductIndex = i;
-      break;
-    }
-  }
-
-  // If no matching product is found, default to the first product
-  if (selectedProductIndex == -1) {
-    selectedProductIndex = 0;
-  }
-
-
-
-  final PurchaseParam param = PurchaseParam(productDetails: products[selectedProductIndex]);
-  
-  try {
-
-    Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
-
-    // Listen for stream
-    streamSubscription = purchaseUpdated.listen((purchaseList) async {
-      for (var purchaseDetails in purchaseList) {
-        if (purchaseDetails.pendingCompletePurchase) {
-          await inAppPurchase.completePurchase(purchaseDetails);
-        }
+    // Determine the index of the product based on the plan and keyword
+    for (int i = 0; i < products.length; i++) {
+      if (plan == 1 && products[i].id.contains("annual")) {
+        selectedProductIndex = i;
+        break;
+      } else if (plan == 2 && products[i].id.contains("monthly")) {
+        selectedProductIndex = i;
+        break;
       }
-    });
-    bool isAvailable = await inAppPurchase.isAvailable();
-    if (isAvailable) {
-      await  inAppPurchase.buyNonConsumable(purchaseParam: param);
     }
-  } on PlatformException catch (e) {
-    Navigator.pop(context);
-    showToast(context: context, message: e.message!, isError: true);
-  }
-}
 
+    // If no matching product is found, default to the first product
+    if (selectedProductIndex == -1) {
+      selectedProductIndex = 0;
+    }
+
+    final PurchaseParam param =
+        PurchaseParam(productDetails: products[selectedProductIndex]);
+
+    try {
+      Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
+
+      // Listen for stream
+      streamSubscription = purchaseUpdated.listen((purchaseList) async {
+        for (var purchaseDetails in purchaseList) {
+          if (purchaseDetails.pendingCompletePurchase) {
+            await inAppPurchase.completePurchase(purchaseDetails);
+          }
+        }
+      });
+      bool isAvailable = await inAppPurchase.isAvailable();
+      if (isAvailable) {
+        await inAppPurchase.buyNonConsumable(purchaseParam: param);
+      }
+    } on PlatformException catch (e) {
+      Navigator.pop(context);
+      showToast(context: context, message: e.message!, isError: true);
+    }
+  }
 
   Future<void> restorePurchase() async {
     try {
@@ -386,8 +378,7 @@ Future<void> purchaseSubscription(int plan) async {
                     // WELCOME TEXT WITH APP NAME
                     Positioned(
                       left: width * 0.05,
-                      bottom:
-                          0, // Adjust the bottom value to move it downwards
+                      bottom: 0, // Adjust the bottom value to move it downwards
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -477,7 +468,9 @@ Future<void> purchaseSubscription(int plan) async {
                             onPlanSelect(1);
                           },
                           child: Container(
-                            height: height * 0.13,
+                            height: selectedPlan == 1
+                                ? height * 0.13
+                                : height * 0.06,
                             width: width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -494,14 +487,14 @@ Future<void> purchaseSubscription(int plan) async {
                                 horizontal: width * 0.050,
                               ),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    height: height * 0.07,
-                                    child: ListTile(
-                                      contentPadding: EdgeInsets.zero,
-                                      title: Text(
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
                                         Constant.annualPlan,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
@@ -510,16 +503,7 @@ Future<void> purchaseSubscription(int plan) async {
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
-                                      subtitle: Text(
-                                        "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: AppColor.secondaryWhite,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                      trailing: Container(
+                                      Container(
                                         height: height * 0.027,
                                         width: height * 0.027,
                                         alignment: Alignment.center,
@@ -540,28 +524,45 @@ Future<void> purchaseSubscription(int plan) async {
                                           color: AppColor.primaryBlack,
                                           size: width * 0.04,
                                         ),
-                                      ),
-                                    ),
+                                      )
+                                    ],
                                   ),
-                                  Divider(
-                                    color: AppColor.secondaryWhite,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      showWeeklySaveInfoDialog(
-                                          context, yearlyPrice);
-                                    },
-                                    child: Text(
-                                      Constant.weeklySave,
-                                      style: TextStyle(
-                                        color: AppColor.primaryRed,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        decoration: TextDecoration
-                                            .underline, // Add underline to indicate it's clickable
-                                      ),
-                                    ),
-                                  ),
+                                  Visibility(
+                                      visible: selectedPlan == 1,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: AppColor.secondaryWhite,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          Divider(
+                                            color: AppColor.secondaryWhite,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showWeeklySaveInfoDialog(
+                                                  context, yearlyPrice);
+                                            },
+                                            child: Text(
+                                              Constant.weeklySave,
+                                              style: TextStyle(
+                                                color: AppColor.primaryRed,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                decoration: TextDecoration
+                                                    .underline, // Add underline to indicate it's clickable
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ))
                                 ],
                               ),
                             ),
@@ -581,7 +582,9 @@ Future<void> purchaseSubscription(int plan) async {
                             onPlanSelect(2);
                           },
                           child: Container(
-                            height: MediaQuery.of(context).size.height * 0.06,
+                            height: selectedPlan == 2
+                                ? MediaQuery.of(context).size.height * 0.13
+                                : MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -594,65 +597,94 @@ Future<void> purchaseSubscription(int plan) async {
                               color: AppColor.primaryBlack,
                             ),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.035,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        Constant.monthlyPlan,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: AppColor.primaryWhite,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.035,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Constant.monthlyPlan,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: AppColor.primaryWhite,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.02,
-                                      ),
-                                      Text(
-                                        "$monthlyPrice ${Constant.perMonth}",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: AppColor.secondaryWhite,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
+                                        Container(
+                                          height: height * 0.027,
+                                          width: height * 0.027,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: selectedPlan == 2
+                                                ? AppColor.primaryRed
+                                                : AppColor.primaryBlack,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: selectedPlan == 2
+                                                  ? AppColor.primaryRed
+                                                  : AppColor.primaryWhite,
+                                              width: 1.8,
+                                            ),
+                                          ),
+                                          child: Icon(
+                                            Icons.done,
+                                            color: AppColor.primaryBlack,
+                                            size: width * 0.04,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: height * 0.027,
-                                    width: height * 0.027,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: selectedPlan == 2
-                                          ? AppColor.primaryRed
-                                          : AppColor.primaryBlack,
-                                      shape: BoxShape.circle,
-                                      border: Border.all(
-                                        color: selectedPlan == 2
-                                            ? AppColor.primaryRed
-                                            : AppColor.primaryWhite,
-                                        width: 1.8,
-                                      ),
+                                      ],
                                     ),
-                                    child: Icon(
-                                      Icons.done,
-                                      color: AppColor.primaryBlack,
-                                      size: width * 0.04,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                    Visibility(
+                                        visible: selectedPlan == 2,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "$monthlyPrice ${Constant.perMonth}, renews automatically",
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: AppColor.secondaryWhite,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                            Divider(
+                                              color: AppColor.secondaryWhite,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                showMonthlySaveInfoDialog(
+                                                    context, yearlyPrice);
+                                              },
+                                              child: Text(
+                                                Constant.weeklySave,
+                                                style: TextStyle(
+                                                  color: AppColor.primaryRed,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  decoration: TextDecoration
+                                                      .underline, // Add underline to indicate it's clickable
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ))
+                                  ],
+                                )),
                           ),
                         ),
                       ),
