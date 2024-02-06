@@ -13,7 +13,6 @@ import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 import 'subscription_info_popup.dart';
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({
@@ -196,7 +195,6 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
-          //ignore: use_build_context_synchronously
           await LocalDB.storeSubscriptionPurchase(true);
 
           Navigator.pushAndRemoveUntil(context,
@@ -210,7 +208,6 @@ class _WelcomeState extends State<Welcome> {
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(context);
-          //ignore: use_build_context_synchronously
           await LocalDB.storeSubscriptionPurchase(true);
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
