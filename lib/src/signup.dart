@@ -43,6 +43,7 @@ class _SignUpState extends State<SignUp> {
       passwordController.clear();
     });
   }
+
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
@@ -61,12 +62,14 @@ class _SignUpState extends State<SignUp> {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
         Response response = await repo.getRequest(Constant.subscriptionUrl, {});
+        print("response is ${response.data}");
         subscriptionModel = SubscriptionModel.fromJson(response.data);
         setState(() {});
         if (subscriptionModel.allAccessPass == "active" ||
             subscriptionModel.softwareSuite == "active") {
           // ignore: use_build_context_synchronously
           await LocalDB.storeSubscriptionPurchase(true);
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => widget.nextPage()));
         } else {
@@ -87,18 +90,18 @@ class _SignUpState extends State<SignUp> {
                     "Error ${response.statusCode} ${response.statusMessage}",
                 isError: true);
           }
-
+          print("USER IS NOT LOGGED IN");
           // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Welcome(
-                        yearlySubscriptionId: widget.yearlySubscriptionId,
-                        monthlySubscriptionId: widget.monthlySubscriptionId,
-                        appName: widget.appName,
-                        appVersion: widget.appVersion,
-                        nextPage: () => widget.nextPage(),
-                      )));
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Welcome(
+          //               yearlySubscriptionId: widget.yearlySubscriptionId,
+          //               monthlySubscriptionId: widget.monthlySubscriptionId,
+          //               appName: widget.appName,
+          //               appVersion: widget.appVersion,
+          //               nextPage: () => widget.nextPage(),
+          //             )));
         }
       } catch (e) {
         // ignore: use_build_context_synchronously
@@ -155,23 +158,42 @@ class _SignUpState extends State<SignUp> {
         setState(() {});
         if (response.statusCode == 200 || response.statusCode == 201) {
           // ignore: use_build_context_synchronously
-          Navigator.pop(context);
-
-          // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
-          await LocalDB.storeUserEmail(loginModel.userEmail!);
-          await LocalDB.storeUserName(loginModel.userLogin!);
-          await LocalDB.storeUserId(loginModel.userId!);
-          await LocalDB.storeSubscriptionPurchase(false);
+          Response response =
+              await repo.getRequest(Constant.subscriptionUrl, {});
+          print("response is ${response.data}");
+          subscriptionModel = SubscriptionModel.fromJson(response.data);
+          setState(() {});
+          if (subscriptionModel.allAccessPass == "active" ||
+              subscriptionModel.softwareSuite == "active") {
+            await LocalDB.storeUserEmail(loginModel.userEmail!);
+            await LocalDB.storeUserName(loginModel.userLogin!);
+            await LocalDB.storeUserId(loginModel.userId!);
+            await LocalDB.storeSubscriptionPurchase(false);
+            // ignore: use_build_context_synchronously
+            Navigator.pushAndRemoveUntil(context,
+                MaterialPageRoute(builder: (context) {
+              return widget.nextPage();
+            }), (route) => false);
+
+            // CALLING MARKETING API
+            await LocalDB.storeSubscriptionPurchase(true);
+            // ignore: use_build_context_synchronously
+
+            await marketingApi(loginModel.userEmail ?? '');
+          } else {
+            await LocalDB.clearLocalDB();
+            // ignore: use_build_context_synchronously
+            showToast(
+                context: context,
+                message: Constant.serverErrorMessage,
+                isError: true);
+          }
           // ignore: use_build_context_synchronously
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return widget.nextPage();
-          }), (route) => false);
+          Navigator.pop(context);
+          // ignore: use_build_context_synchronously
 
-          // CALLING MARKETING API
-
-          await marketingApi(loginModel.userEmail ?? '');
+          // ignore: use_build_context_synchronously
         } else {
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
@@ -387,7 +409,7 @@ class _SignUpState extends State<SignUp> {
                         if (token == null) {
                           await userLogin();
                         } else {
-                          await checkSubscription();
+                          //  await checkSubscription();
                         }
                       })
                 ],

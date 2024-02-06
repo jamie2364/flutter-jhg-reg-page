@@ -1,17 +1,20 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/subscription_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen(
       {super.key,
       required this.yearlySubscriptionId,
       required this.monthlySubscriptionId,
-        required this.appName,
-        required this.appVersion,
-        required this.nextPage});
+      required this.appName,
+      required this.appVersion,
+      required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
@@ -41,6 +44,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+  ApiRepo repo = ApiRepo();
+  LoginModel loginModel = LoginModel();
+  SubscriptionModel subscriptionModel = SubscriptionModel();
   routes() async {
     animate();
     Timer(const Duration(seconds: 3), () async {
@@ -64,18 +70,44 @@ class _SplashScreenState extends State<SplashScreen> {
                 builder: (context) => Welcome(
                       yearlySubscriptionId: widget.yearlySubscriptionId,
                       monthlySubscriptionId: widget.monthlySubscriptionId,
-                      appName:  widget.appName,
-                      appVersion:  widget.appVersion,
+                      appName: widget.appName,
+                      appVersion: widget.appVersion,
                       nextPage: () => widget.nextPage(),
                     )));
       } else {
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => widget.nextPage()));
+        loaderDialog(context);
+        Response response = await repo.getRequest(Constant.subscriptionUrl, {});
+        print("response is ${response.data}");
+        subscriptionModel = SubscriptionModel.fromJson(response.data);
+        setState(() {});
+        if (subscriptionModel.allAccessPass == "active" ||
+            subscriptionModel.softwareSuite == "active") {
+          // ignore: use_build_context_synchronously
+          await LocalDB.storeSubscriptionPurchase(true);
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => widget.nextPage()));
+        } else {
+          await LocalDB.clearLocalDB();
+          // ignore: use_build_context_synchronously
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Welcome(
+                        yearlySubscriptionId: widget.yearlySubscriptionId,
+                        monthlySubscriptionId: widget.monthlySubscriptionId,
+                        appName: widget.appName,
+                        appVersion: widget.appVersion,
+                        nextPage: () => widget.nextPage(),
+                      )));
+        }
+        // ignore: use_build_context_synchronously
+        // Navigator.pushReplacement(context,
+        //     MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
