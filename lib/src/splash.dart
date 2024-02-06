@@ -77,31 +77,39 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        Response response = await repo.getRequest(Constant.subscriptionUrl, {});
-        print("response is ${response.data}");
-        subscriptionModel = SubscriptionModel.fromJson(response.data);
-        setState(() {});
-        if (subscriptionModel.allAccessPass == "active" ||
-            subscriptionModel.softwareSuite == "active") {
-          // ignore: use_build_context_synchronously
-          await LocalDB.storeSubscriptionPurchase(true);
+        if (widget.appName == "JHG Course Hub") {
+          Response response =
+              await repo.getRequest(Constant.subscriptionUrl, {});
+          print("response is ${response.data}");
+          subscriptionModel = SubscriptionModel.fromJson(response.data);
+          setState(() {});
+          if (subscriptionModel.allAccessPass == "active" ||
+              subscriptionModel.softwareSuite == "active") {
+            // ignore: use_build_context_synchronously
+            await LocalDB.storeSubscriptionPurchase(true);
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => widget.nextPage()));
+          } else {
+            await LocalDB.clearLocalDB();
+            // ignore: use_build_context_synchronously
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Welcome(
+                          yearlySubscriptionId: widget.yearlySubscriptionId,
+                          monthlySubscriptionId: widget.monthlySubscriptionId,
+                          appName: widget.appName,
+                          appVersion: widget.appVersion,
+                          nextPage: () => widget.nextPage(),
+                        )));
+          }
+        } else {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => widget.nextPage()));
-        } else {
-          await LocalDB.clearLocalDB();
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Welcome(
-                        yearlySubscriptionId: widget.yearlySubscriptionId,
-                        monthlySubscriptionId: widget.monthlySubscriptionId,
-                        appName: widget.appName,
-                        appVersion: widget.appVersion,
-                        nextPage: () => widget.nextPage(),
-                      )));
         }
+
         // ignore: use_build_context_synchronously
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => widget.nextPage()));
