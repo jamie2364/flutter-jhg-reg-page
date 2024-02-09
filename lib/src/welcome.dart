@@ -405,8 +405,8 @@ class _WelcomeState extends State<Welcome> {
 
                     Positioned(
                         right: width * 0.05,
-                        top: height *
-                            0.03, // Adjust the bottom value to move it downwards
+                        top: MediaQuery.of(context).padding.top+ height *
+                            0.01, // Adjust the bottom value to move it downwards
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(context,

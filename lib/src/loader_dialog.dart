@@ -9,13 +9,13 @@ loaderDialog(BuildContext context) {
       barrierDismissible: false,
       builder: (context) {
         return Dialog(
-            backgroundColor:AppColor.loaderBackground,
+            backgroundColor:AppColor.loaderBackground.withOpacity(0.3),
             insetPadding: EdgeInsets.zero,
             child:
              Container(
                   height: MediaQuery.sizeOf(context).height,
                   width: MediaQuery.sizeOf(context).height,
-                  color: AppColor.loaderBackground,
+                  color: AppColor.loaderBackground.withOpacity(0.7),
                   child: Center(
                       child: CircularProgressIndicator(
                         color: AppColor.primaryRed,
