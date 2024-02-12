@@ -77,57 +77,31 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        // if (widget.appName == "JHG Course Hub") {
+        //  if (widget.appName == "JHG Course Hub") {
         Response response = await repo.getRequest(Constant.subscriptionUrl, {});
-        // print("response is ${response.data}");
+        print("response is ${response.data}");
         subscriptionModel = SubscriptionModel.fromJson(response.data);
         setState(() {});
-        if (subscriptionModel.allAccessPass == "active" ||
-            subscriptionModel.softwareSuite == "active") {
-          if (widget.appName == "JHG Course Hub") {
-            if (subscriptionModel.courseHub == "active") {
-              print("object active courseHub");
-              await LocalDB.storeSubscriptionPurchase(true);
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => widget.nextPage()));
-            } else { print("object active courseHub");
-              await LocalDB.clearLocalDB();
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Welcome(
-                            yearlySubscriptionId: widget.yearlySubscriptionId,
-                            monthlySubscriptionId: widget.monthlySubscriptionId,
-                            appName: widget.appName,
-                            appVersion: widget.appVersion,
-                            nextPage: () => widget.nextPage(),
-                          )));
-            }
+
+        if (widget.appName == "JHG Course Hub") {
+          if (subscriptionModel.allCoursePass == "active" ||
+              subscriptionModel.softwareSuite == "active" ||
+              subscriptionModel.courseHub == "active") {
+            successFunction();
           } else {
-            await LocalDB.storeSubscriptionPurchase(true);
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => widget.nextPage()));
+            elseFunction();
           }
-          // ignore: use_build_context_synchronously
         } else {
-          await LocalDB.clearLocalDB();
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Welcome(
-                        yearlySubscriptionId: widget.yearlySubscriptionId,
-                        monthlySubscriptionId: widget.monthlySubscriptionId,
-                        appName: widget.appName,
-                        appVersion: widget.appVersion,
-                        nextPage: () => widget.nextPage(),
-                      )));
+          if (subscriptionModel.allAccessPass == "active" ||
+              subscriptionModel.softwareSuite == "active") {
+            // ignore: use_build_context_synchronously
+            successFunction();
+          } else {
+            elseFunction();
+          }
         }
-        // }
-        // else {
+
+        // } else {
         //   // ignore: use_build_context_synchronously
         //   Navigator.pushReplacement(context,
         //       MaterialPageRoute(builder: (context) => widget.nextPage()));
@@ -138,6 +112,28 @@ class _SplashScreenState extends State<SplashScreen> {
         //     MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
+  }
+
+  successFunction() async {
+    await LocalDB.storeSubscriptionPurchase(true);
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => widget.nextPage()));
+  }
+
+  elseFunction() async {
+    await LocalDB.clearLocalDB();
+    // ignore: use_build_context_synchronously
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Welcome(
+                  yearlySubscriptionId: widget.yearlySubscriptionId,
+                  monthlySubscriptionId: widget.monthlySubscriptionId,
+                  appName: widget.appName,
+                  appVersion: widget.appVersion,
+                  nextPage: () => widget.nextPage(),
+                )));
   }
 
   @override

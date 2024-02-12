@@ -48,91 +48,76 @@ class _SignUpState extends State<SignUp> {
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
-  checkSubscription() async {
-    bool? hasInternet = await checkInternet();
-    if (!hasInternet) {
-      // ignore: use_build_context_synchronously
-      showToast(
-          context: context,
-          message: "Please check your internet",
-          isError: true);
-      return;
-    } else {
-      try {
-        // ignore: use_build_context_synchronously
-        loaderDialog(context);
-        // if (widget.appName == "JHG Course Hub") {
-        Response response = await repo.getRequest(Constant.subscriptionUrl, {});
-        print("response is ${response.data}");
-        subscriptionModel = SubscriptionModel.fromJson(response.data);
-        setState(() {});
-        if (subscriptionModel.allAccessPass == "active" ||
-            subscriptionModel.softwareSuite == "active") {
-          if (widget.appName == "JHG Course Hub") {
-            if (subscriptionModel.courseHub == "active") {
-              await LocalDB.storeSubscriptionPurchase(true);
-              // ignore: use_build_context_synchronously
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => widget.nextPage()));
-            } else {
-              // ignore: use_build_context_synchronously
-              showToast(
-                  context: context,
-                  message: Constant.serverErrorMessage,
-                  isError: true);
-            }
-          } else {
-            await LocalDB.storeSubscriptionPurchase(true);
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => widget.nextPage()));
-          }
-          // ignore: use_build_context_synchronously
-        } else {
-          // ignore: use_build_context_synchronously
-          Navigator.pop(context);
+  // checkSubscription() async {
+  //   bool? hasInternet = await checkInternet();
+  //   if (!hasInternet) {
+  //     // ignore: use_build_context_synchronously
+  //     showToast(
+  //         context: context,
+  //         message: "Please check your internet",
+  //         isError: true);
+  //     return;
+  //   } else {
+  //     try {
+  //       // ignore: use_build_context_synchronously
+  //       loaderDialog(context);
+  //       // if (widget.appName == "JHG Course Hub") {
+  //       Response response = await repo.getRequest(Constant.subscriptionUrl, {});
+  //       print("response is ${response.data}");
+  //       subscriptionModel = SubscriptionModel.fromJson(response.data);
+  //       setState(() {});
+  //       if (subscriptionModel.allAccessPass == "active" ||
+  //           subscriptionModel.softwareSuite == "active") {
+  //         // ignore: use_build_context_synchronously
+  //         await LocalDB.storeSubscriptionPurchase(true);
+  //         // ignore: use_build_context_synchronously
+  //         Navigator.pushReplacement(context,
+  //             MaterialPageRoute(builder: (context) => widget.nextPage()));
+  //       } else {
+  //         // ignore: use_build_context_synchronously
+  //         Navigator.pop(context);
 
-          if (response.statusCode == 500) {
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message: Constant.serverErrorMessage,
-                isError: true);
-          } else {
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message:
-                    "Error ${response.statusCode} ${response.statusMessage}",
-                isError: true);
-          }
-          print("USER IS NOT LOGGED IN");
-          // ignore: use_build_context_synchronously
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => Welcome(
-          //               yearlySubscriptionId: widget.yearlySubscriptionId,
-          //               monthlySubscriptionId: widget.monthlySubscriptionId,
-          //               appName: widget.appName,
-          //               appVersion: widget.appVersion,
-          //               nextPage: () => widget.nextPage(),
-          //             )));
-        }
-        // } else {
-        //   // ignore: use_build_context_synchronously
-        //   Navigator.pushReplacement(context,
-        //       MaterialPageRoute(builder: (context) => widget.nextPage()));
-        // }
-      } catch (e) {
-        // ignore: use_build_context_synchronously
-        Navigator.pop(context);
-        // ignore: use_build_context_synchronously
-        showToast(
-            context: context, message: "Something Went Wrong ", isError: true);
-      }
-    }
-  }
+  //         if (response.statusCode == 500) {
+  //           // ignore: use_build_context_synchronously
+  //           showToast(
+  //               context: context,
+  //               message: Constant.serverErrorMessage,
+  //               isError: true);
+  //         } else {
+  //           // ignore: use_build_context_synchronously
+  //           showToast(
+  //               context: context,
+  //               message:
+  //                   "Error ${response.statusCode} ${response.statusMessage}",
+  //               isError: true);
+  //         }
+  //         print("USER IS NOT LOGGED IN");
+  //         // ignore: use_build_context_synchronously
+  //         // Navigator.pushReplacement(
+  //         //     context,
+  //         //     MaterialPageRoute(
+  //         //         builder: (context) => Welcome(
+  //         //               yearlySubscriptionId: widget.yearlySubscriptionId,
+  //         //               monthlySubscriptionId: widget.monthlySubscriptionId,
+  //         //               appName: widget.appName,
+  //         //               appVersion: widget.appVersion,
+  //         //               nextPage: () => widget.nextPage(),
+  //         //             )));
+  //       }
+  //       // } else {
+  //       //   // ignore: use_build_context_synchronously
+  //       //   Navigator.pushReplacement(context,
+  //       //       MaterialPageRoute(builder: (context) => widget.nextPage()));
+  //       // }
+  //     } catch (e) {
+  //       // ignore: use_build_context_synchronously
+  //       Navigator.pop(context);
+  //       // ignore: use_build_context_synchronously
+  //       showToast(
+  //           context: context, message: "Something Went Wrong ", isError: true);
+  //     }
+  //   }
+  // }
 
   Future marketingApi(String email) async {
     bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
@@ -183,61 +168,30 @@ class _SignUpState extends State<SignUp> {
           // if (widget.appName == "JHG Course Hub") {
           Response response =
               await repo.getRequest(Constant.subscriptionUrl, {});
-          print("response is ${response.data}");
+          //print("response is ${response.data}");
           subscriptionModel = SubscriptionModel.fromJson(response.data);
           //setState(() {});
-          if (subscriptionModel.allAccessPass == "active" ||
-              subscriptionModel.softwareSuite == "active") {
-            if (widget.appName == "JHG Course Hub") {
-              if (subscriptionModel.courseHub == "active") {
-                await LocalDB.storeUserEmail(loginModel.userEmail!);
-                await LocalDB.storeUserName(loginModel.userLogin!);
-                await LocalDB.storeUserId(loginModel.userId!);
-                await LocalDB.storeSubscriptionPurchase(false);
-                // ignore: use_build_context_synchronously
-                Navigator.pushAndRemoveUntil(context,
-                    MaterialPageRoute(builder: (context) {
-                  return widget.nextPage();
-                }), (route) => false);
 
-                // CALLING MARKETING API
-                await LocalDB.storeSubscriptionPurchase(true);
-                // ignore: use_build_context_synchronously
-
-                await marketingApi(loginModel.userEmail ?? '');
-              } else {
-                await LocalDB.clearLocalDB();
-                // ignore: use_build_context_synchronously
-                showToast(
-                    context: context,
-                    message: Constant.serverErrorMessage,
-                    isError: true);
-              }
+          if (widget.appName == "JHG Course Hub") {
+            if (subscriptionModel.allCoursePass == "active" ||
+                subscriptionModel.softwareSuite == "active" ||
+                subscriptionModel.courseHub == "active") {
+              successFunction();
             } else {
-              await LocalDB.storeUserEmail(loginModel.userEmail!);
-              await LocalDB.storeUserName(loginModel.userLogin!);
-              await LocalDB.storeUserId(loginModel.userId!);
-              await LocalDB.storeSubscriptionPurchase(false);
-              // ignore: use_build_context_synchronously
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (context) {
-                return widget.nextPage();
-              }), (route) => false);
-
-              // CALLING MARKETING API
-              await LocalDB.storeSubscriptionPurchase(true);
-              // ignore: use_build_context_synchronously
-
-              await marketingApi(loginModel.userEmail ?? '');
+              elseFunction();
             }
           } else {
-            await LocalDB.clearLocalDB();
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message: Constant.serverErrorMessage,
-                isError: true);
+            if (subscriptionModel.allAccessPass == "active" ||
+                subscriptionModel.softwareSuite == "active") {
+              // ignore: use_build_context_synchronously
+              successFunction();
+            } else {
+              elseFunction();
+            }
           }
+          // if (subscriptionModel.allAccessPass == "inactive" ||
+          //     subscriptionModel.softwareSuite == "inactive") {
+          // } else {}
           // } else {
           //   await LocalDB.storeUserEmail(loginModel.userEmail!);
           //   await LocalDB.storeUserName(loginModel.userLogin!);
@@ -295,6 +249,30 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  successFunction() async {
+    await LocalDB.storeUserEmail(loginModel.userEmail!);
+    await LocalDB.storeUserName(loginModel.userLogin!);
+    await LocalDB.storeUserId(loginModel.userId!);
+    await LocalDB.storeSubscriptionPurchase(false);
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
+      return widget.nextPage();
+    }), (route) => false);
+
+    // CALLING MARKETING API
+    await LocalDB.storeSubscriptionPurchase(true);
+    // ignore: use_build_context_synchronously
+
+    await marketingApi(loginModel.userEmail ?? '');
+  }
+
+  elseFunction() async {
+    await LocalDB.clearLocalDB();
+    // ignore: use_build_context_synchronously
+    showToast(
+        context: context, message: Constant.serverErrorMessage, isError: true);
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -305,7 +283,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    // print("appName is ${widget.appName}");
+    print("appName is ${widget.appName}");
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(
