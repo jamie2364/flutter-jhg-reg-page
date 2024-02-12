@@ -10,12 +10,14 @@ class SubscriptionModel {
   String? allAccessPass;
   String? allCoursePass;
   String? jhgRig;
+  String? courseHub;
 
   SubscriptionModel({
     this.softwareSuite,
     this.allAccessPass,
     this.allCoursePass,
     this.jhgRig,
+    this.courseHub,
   });
 
   factory SubscriptionModel.fromJson(Map<String, dynamic> json) => SubscriptionModel(
@@ -23,6 +25,7 @@ class SubscriptionModel {
     allAccessPass: json["all_access_pass"],
     allCoursePass: json["all_course_pass"],
     jhgRig: json["jhg-rig"],
+    courseHub: json["course_hub"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -30,6 +33,7 @@ class SubscriptionModel {
     "all_access_pass": allAccessPass,
     "all_course_pass": allCoursePass,
     "jhg-rig": jhgRig,
+    "course_hub":courseHub
   };
 }
 
