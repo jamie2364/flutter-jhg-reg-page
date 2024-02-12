@@ -47,11 +47,7 @@ class _SignUpState extends State<SignUp> {
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+  
 
   checkSubscription() async {
     bool? hasInternet = await checkInternet();
@@ -66,7 +62,7 @@ class _SignUpState extends State<SignUp> {
       try {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        if (widget.appName == "JHG Course Hub") {
+       // if (widget.appName == "JHG Course Hub") {
           Response response =
               await repo.getRequest(Constant.subscriptionUrl, {});
           print("response is ${response.data}");
@@ -110,11 +106,11 @@ class _SignUpState extends State<SignUp> {
             //               nextPage: () => widget.nextPage(),
             //             )));
           }
-        } else {
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => widget.nextPage()));
-        }
+        // } else {
+        //   // ignore: use_build_context_synchronously
+        //   Navigator.pushReplacement(context,
+        //       MaterialPageRoute(builder: (context) => widget.nextPage()));
+        // }
       } catch (e) {
         // ignore: use_build_context_synchronously
         Navigator.pop(context);
@@ -171,14 +167,14 @@ class _SignUpState extends State<SignUp> {
         if (response.statusCode == 200 || response.statusCode == 201) {
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
-          if (widget.appName == "JHG Course Hub") {
+         // if (widget.appName == "JHG Course Hub") {
             Response response =
                 await repo.getRequest(Constant.subscriptionUrl, {});
             print("response is ${response.data}");
             subscriptionModel = SubscriptionModel.fromJson(response.data);
-            setState(() {});
-            if (subscriptionModel.allAccessPass == "active" ||
-                subscriptionModel.softwareSuite == "active") {
+            //setState(() {});
+            if (subscriptionModel.allAccessPass == "inactive" ||
+                subscriptionModel.softwareSuite == "inactive") {
               await LocalDB.storeUserEmail(loginModel.userEmail!);
               await LocalDB.storeUserName(loginModel.userLogin!);
               await LocalDB.storeUserId(loginModel.userId!);
@@ -202,23 +198,23 @@ class _SignUpState extends State<SignUp> {
                   message: Constant.serverErrorMessage,
                   isError: true);
             }
-          } else {
-            await LocalDB.storeUserEmail(loginModel.userEmail!);
-            await LocalDB.storeUserName(loginModel.userLogin!);
-            await LocalDB.storeUserId(loginModel.userId!);
-            await LocalDB.storeSubscriptionPurchase(false);
-            // ignore: use_build_context_synchronously
-            Navigator.pushAndRemoveUntil(context,
-                MaterialPageRoute(builder: (context) {
-              return widget.nextPage();
-            }), (route) => false);
+          // } else {
+          //   await LocalDB.storeUserEmail(loginModel.userEmail!);
+          //   await LocalDB.storeUserName(loginModel.userLogin!);
+          //   await LocalDB.storeUserId(loginModel.userId!);
+          //   await LocalDB.storeSubscriptionPurchase(false);
+          //   // ignore: use_build_context_synchronously
+          //   Navigator.pushAndRemoveUntil(context,
+          //       MaterialPageRoute(builder: (context) {
+          //     return widget.nextPage();
+          //   }), (route) => false);
 
-            // CALLING MARKETING API
-            await LocalDB.storeSubscriptionPurchase(true);
-            // ignore: use_build_context_synchronously
+          //   // CALLING MARKETING API
+          //   await LocalDB.storeSubscriptionPurchase(true);
+          //   // ignore: use_build_context_synchronously
 
-            await marketingApi(loginModel.userEmail ?? '');
-          }
+          //   await marketingApi(loginModel.userEmail ?? '');
+          // }
 
           // ignore: use_build_context_synchronously
           Navigator.pop(context);
@@ -251,19 +247,24 @@ class _SignUpState extends State<SignUp> {
         }
       } catch (e) {
         // ignore: use_build_context_synchronously
-        Navigator.pop(context);
+       // Navigator.pop(context);
         // ignore: use_build_context_synchronously
         showToast(
             context: context, message: "Something Went Wrong ", isError: true);
       }
     }
   }
+@override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print("appName is ${widget.appName}");
+   // print("appName is ${widget.appName}");
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(

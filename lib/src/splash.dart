@@ -77,10 +77,10 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        if (widget.appName == "JHG Course Hub") {
+       // if (widget.appName == "JHG Course Hub") {
           Response response =
               await repo.getRequest(Constant.subscriptionUrl, {});
-          print("response is ${response.data}");
+         // print("response is ${response.data}");
           subscriptionModel = SubscriptionModel.fromJson(response.data);
           setState(() {});
           if (subscriptionModel.allAccessPass == "active" ||
@@ -104,11 +104,12 @@ class _SplashScreenState extends State<SplashScreen> {
                           nextPage: () => widget.nextPage(),
                         )));
           }
-        } else {
-          // ignore: use_build_context_synchronously
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => widget.nextPage()));
-        }
+        // } 
+        // else {
+        //   // ignore: use_build_context_synchronously
+        //   Navigator.pushReplacement(context,
+        //       MaterialPageRoute(builder: (context) => widget.nextPage()));
+        // }
 
         // ignore: use_build_context_synchronously
         // Navigator.pushReplacement(context,
