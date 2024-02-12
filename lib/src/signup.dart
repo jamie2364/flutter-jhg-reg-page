@@ -173,7 +173,7 @@ class _SignUpState extends State<SignUp> {
           //setState(() {});
 
           if (widget.appName == "JHG Course Hub") {
-            if (subscriptionModel.allCoursePass == "active" ||
+            if (subscriptionModel.allAccessPass == "active" ||
                 subscriptionModel.softwareSuite == "active" ||
                 subscriptionModel.courseHub == "active") {
               successFunction();
