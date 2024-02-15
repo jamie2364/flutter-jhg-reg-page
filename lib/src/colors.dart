@@ -11,7 +11,7 @@ class AppColor {
 
   static Color primaryRed = const Color(0xFFFE5D43);
 
-  static Color primaryGreen = Colors.green;
+  static Color primaryGreen = const Color(0xFF6BCB75);
 
   static Color greyPrimary = const Color.fromRGBO(67, 67, 67, 1);
   static Color greySecondary = const Color.fromRGBO(192, 192, 196, 1);
