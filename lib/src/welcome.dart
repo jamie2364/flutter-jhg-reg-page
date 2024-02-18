@@ -51,7 +51,7 @@ class _WelcomeState extends State<Welcome> {
     super.initState();
   }
 
-  int selectedPlan = 1;
+  int selectedPlan = 0;
 
   onPlanSelect(int plan) {
     setState(() {
@@ -405,8 +405,9 @@ class _WelcomeState extends State<Welcome> {
 
                     Positioned(
                         right: width * 0.05,
-                        top: MediaQuery.of(context).padding.top+ height *
-                            0.01, // Adjust the bottom value to move it downwards
+                        top: MediaQuery.of(context).padding.top +
+                            height *
+                                0.01, // Adjust the bottom value to move it downwards
                         child: GestureDetector(
                           onTap: () {
                             Navigator.push(context,
@@ -746,10 +747,14 @@ class _WelcomeState extends State<Welcome> {
                         buttonName: selectedPlan == 1
                             ? Constant.tryFree
                             : Constant.continueText,
-                        buttonColor: AppColor.primaryRed,
+                        buttonColor: selectedPlan == 0
+                            ? AppColor.greySecondary
+                            : AppColor.primaryRed,
                         textColor: AppColor.primaryWhite,
                         onPressed: () async {
-                          await purchaseSubscription(selectedPlan);
+                          if (selectedPlan != 0) {
+                            await purchaseSubscription(selectedPlan);
+                          }
                         },
                       ),
                     ],
