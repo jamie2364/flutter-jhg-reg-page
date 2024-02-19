@@ -7,19 +7,19 @@ import 'constant.dart';
 import 'colors.dart';
 
 class BugReportPage extends StatefulWidget {
-  const BugReportPage(
-      {super.key,
-        required this.device,
-        required this.appName,
+  const BugReportPage({
+    super.key,
+    required this.device,
+    required this.appName,
+    this.isLogout,
+    this.yearlySubscriptionId,
+    this.monthlySubscriptionId,
+    this.appVersion,
+    this.nextPage,
+  });
 
-         this.isLogout,
-         this.yearlySubscriptionId,
-         this.monthlySubscriptionId,
-         this.appVersion,
-         this.nextPage,
-      });
+  final String device;
 
-  final String device ;
   final String appName;
   final bool? isLogout;
   final String? yearlySubscriptionId;
@@ -37,11 +37,11 @@ class _BugReportPageState extends State<BugReportPage> {
 
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
-
     final token = await LocalDB.getBearerToken;
 
     final dio = Dio(BaseOptions(headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",}));
+      HttpHeaders.authorizationHeader: "Bearer $token",
+    }));
 
     try {
       loaderDialog(context);
@@ -67,7 +67,10 @@ class _BugReportPageState extends State<BugReportPage> {
           issueController.clear();
           _isChecked = false;
         });
-        showToast(context: context, message: "Your message has been succesfully delivered", isError: false);
+        showToast(
+            context: context,
+            message: "Your message has been succesfully delivered",
+            isError: false);
         // Successful API call
         // You can handle the response here if needed
       } else {
@@ -100,14 +103,13 @@ class _BugReportPageState extends State<BugReportPage> {
           width: MediaQuery.sizeOf(context).width,
           color: AppColor.primaryBlack,
           child: Padding(
-            padding:
-            EdgeInsets.symmetric(
-                horizontal: width*0.060
-                ),
+            padding: EdgeInsets.symmetric(horizontal: width * 0.060),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                SizedBox(height: height*0.060,),
+                SizedBox(
+                  height: height * 0.060,
+                ),
                 Text(
                   'Report an Issue', // Changed headline
                   style: TextStyle(
@@ -117,12 +119,16 @@ class _BugReportPageState extends State<BugReportPage> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: height*0.050,),
+                SizedBox(
+                  height: height * 0.050,
+                ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      SizedBox(height: height*0.025,),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
                       const Text(
                         'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
                         style: TextStyle(
@@ -131,10 +137,11 @@ class _BugReportPageState extends State<BugReportPage> {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(height: height*0.025,),
+                      SizedBox(
+                        height: height * 0.025,
+                      ),
                       Container(
-                        height:
-                        height*0.15,
+                        height: height * 0.15,
                         child: TextField(
                           controller: issueController,
                           minLines: 3,
@@ -154,20 +161,24 @@ class _BugReportPageState extends State<BugReportPage> {
                           // },
                         ),
                       ),
-                      SizedBox(height: height*0.020,),
+                      SizedBox(
+                        height: height * 0.020,
+                      ),
                       Row(
                         children: <Widget>[
                           Checkbox(
                             value: _isChecked,
+                            activeColor: AppColor.primaryRed,
                             onChanged: (value) {
                               setState(() {
                                 _isChecked = value!;
                               });
                             },
                           ),
-                           Flexible(
+                          Flexible(
                             child: Text(
-                              'I understand this page is only related to technical issues of ${widget.appName}', //Need to extract YourAppName from the current app name
+                              'I understand this page is only related to technical issues of ${widget.appName}',
+                              //Need to extract YourAppName from the current app name
                               style: const TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.white,
@@ -176,36 +187,36 @@ class _BugReportPageState extends State<BugReportPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: height*0.040,),
-                      ElevatedButton(
-                        onPressed: _isChecked
+                      SizedBox(
+                        height: height * 0.040,
+                      ),
+                      GestureDetector(
+                        onTap: _isChecked
                             ? () async {
-
-                             final userName = await  LocalDB.getUserName;
-                             final userEmail = await  LocalDB.getUserEmail;
-                                final name = userName ?? "user"; //insert the user's name here, taken from the logged in info of the user
-                                final email = userEmail ?? "email"; //insert the user's email here, taken from the logged in info of the user
+                                final userName = await LocalDB.getUserName;
+                                final userEmail = await LocalDB.getUserEmail;
+                                final name = userName ??
+                                    "user"; //insert the user's name here, taken from the logged in info of the user
+                                final email = userEmail ??
+                                    "email"; //insert the user's email here, taken from the logged in info of the user
                                 final issue = issueController.text;
-                                final device = widget.device; ////insert the user's device here, if possible
-                                final application = widget.appName; //insert the appName variable here
+                                final device = widget
+                                    .device; ////insert the user's device here, if possible
+                                final application = widget
+                                    .appName; //insert the appName variable here
                                 submitBugReport(
                                     name, email, issue, device, application);
                               }
                             : null,
-                        style: ElevatedButton.styleFrom(
-                          primary: _isChecked
-                              ? AppColor.primaryRed
-                              : AppColor.greyPrimary,
-                          padding: EdgeInsets.symmetric(
-                            vertical:height*0.020,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
                         child: Container(
                           width: double.infinity,
-                          child: Center(
+                          height: height * 0.065,
+                          decoration: BoxDecoration(
+                              color: _isChecked
+                                  ? AppColor.primaryRed
+                                  : AppColor.greyPrimary,
+                              borderRadius: BorderRadius.circular(8.0)),
+                          child: const Center(
                             child: Text(
                               'Submit',
                               style: TextStyle(
@@ -216,42 +227,44 @@ class _BugReportPageState extends State<BugReportPage> {
                           ),
                         ),
                       ),
-                      widget.isLogout == true ?
-                      Center(
-                        child: InkWell(
-                          onTap: () async {
-                            await LocalDB.clearLocalDB();
-                            //ignore: use_build_context_synchronously
-                            Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(builder: (context) {
-                                  return Welcome(
-                                    yearlySubscriptionId: widget.yearlySubscriptionId!,
-                                    monthlySubscriptionId: widget.monthlySubscriptionId!,
-                                    appVersion: widget.appVersion!,
-                                    appName: widget.appName,
-                                    nextPage: () => widget.nextPage!() ,
-                                  );
-                                }), (route) => false);
-                          },
-                          child: Container(
-                            height: height * 0.07,
-                            width: width * 0.8,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: AppColor.primaryRed,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "Logout",
-                              style: TextStyle(
-                                color: AppColor.primaryWhite,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
+                      widget.isLogout == true
+                          ? Center(
+                              child: InkWell(
+                                onTap: () async {
+                                  await LocalDB.clearLocalDB();
+                                  //ignore: use_build_context_synchronously
+                                  Navigator.pushAndRemoveUntil(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Welcome(
+                                      yearlySubscriptionId:
+                                          widget.yearlySubscriptionId!,
+                                      monthlySubscriptionId:
+                                          widget.monthlySubscriptionId!,
+                                      appVersion: widget.appVersion!,
+                                      appName: widget.appName,
+                                      nextPage: () => widget.nextPage!(),
+                                    );
+                                  }), (route) => false);
+                                },
+                                child: Container(
+                                  height: height * 0.07,
+                                  width: width * 0.8,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: AppColor.primaryRed,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Text(
+                                    "Logout",
+                                    style: TextStyle(
+                                      color: AppColor.primaryWhite,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      ) :const SizedBox(),
-
+                            )
+                          : const SizedBox(),
                     ],
                   ),
                 ),

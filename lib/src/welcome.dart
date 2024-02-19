@@ -51,7 +51,7 @@ class _WelcomeState extends State<Welcome> {
     super.initState();
   }
 
-  int selectedPlan = 0;
+  int selectedPlan = 1;
 
   onPlanSelect(int plan) {
     setState(() {
@@ -747,14 +747,11 @@ class _WelcomeState extends State<Welcome> {
                         buttonName: selectedPlan == 1
                             ? Constant.tryFree
                             : Constant.continueText,
-                        buttonColor: selectedPlan == 0
-                            ? AppColor.greySecondary
-                            : AppColor.primaryRed,
+                        buttonColor:AppColor.primaryRed,
                         textColor: AppColor.primaryWhite,
                         onPressed: () async {
-                          if (selectedPlan != 0) {
                             await purchaseSubscription(selectedPlan);
-                          }
+
                         },
                       ),
                     ],
