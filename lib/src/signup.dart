@@ -38,7 +38,6 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordController = TextEditingController();
 
   bool showPassword = true;
-
   onEyeTap() {
     setState(() {
       showPassword = !showPassword;
@@ -54,6 +53,7 @@ class _SignUpState extends State<SignUp> {
 
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
+  SubscriptionModel subscriptionModel = SubscriptionModel();
 
   // checkSubscription() async {
   //   bool? hasInternet = await checkInternet();
