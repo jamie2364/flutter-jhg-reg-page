@@ -16,7 +16,7 @@ class SignUp extends StatefulWidget {
       required this.appName,
       required this.appVersion,
       required this.nextPage,
-      this.loginUrl = '',
+      required this.loginUrl,
       this.platform = '',
       this.productIds = ''});
 
@@ -165,7 +165,7 @@ class _SignUpState extends State<SignUp> {
       loaderDialog(context);
       try {
         Response response = await repo.postRequest(
-            widget.loginUrl.isNotEmpty ? widget.loginUrl : Constant.loginUrl, {
+            widget.loginUrl, {
           "username": userNameController.text,
           "password": passwordController.text,
           "product_ids": widget.productIds,
