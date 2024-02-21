@@ -54,7 +54,6 @@ class _SignUpState extends State<SignUp> {
 
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
-  SubscriptionModel subscriptionModel = SubscriptionModel();
 
   // checkSubscription() async {
   //   bool? hasInternet = await checkInternet();
@@ -164,8 +163,7 @@ class _SignUpState extends State<SignUp> {
       // ignore: use_build_context_synchronously
       loaderDialog(context);
       try {
-        Response response = await repo.postRequest(
-            widget.loginUrl, {
+        Response response = await repo.postRequest(widget.loginUrl, {
           "username": userNameController.text,
           "password": passwordController.text,
           "product_ids": widget.productIds,
@@ -181,43 +179,13 @@ class _SignUpState extends State<SignUp> {
           Response response =
               await repo.getRequest(Constant.subscriptionUrl, {});
           //print("response is ${response.data}");
-          subscriptionModel = SubscriptionModel.fromJson(response.data);
-          //setState(() {});
-
-          if (widget.appName == "JHG Course Hub") {
-            if (subscriptionModel.softwareSuite == "active" ||
-                subscriptionModel.allAccessPass == "active" ||
-                subscriptionModel.allCoursePass == "active" ||
-                subscriptionModel.jhgRig == "active" ||
-                subscriptionModel.courseHub == "active") {
-              successFunction();
-            } else {
-              elseFunction();
-            }
+          bool isActive = isSubscriptionActive(response.data,
+              isCourseHubApp: widget.appName == "JHG Course Hub");
+          if (isActive) {
+            successFunction();
           } else {
-            if (subscriptionModel.softwareSuite == "active" ||
-                subscriptionModel.allAccessPass == "active" ||
-                subscriptionModel.allCoursePass == "active" ||
-                subscriptionModel.jhgRig == "active") {
-              // ignore: use_build_context_synchronously
-              successFunction();
-            } else {
-              elseFunction();
-            }
+            elseFunction();
           }
-          // if (subscriptionModel.allAccessPass == "inactive" ||
-          //     subscriptionModel.softwareSuite == "inactive") {
-          // } else {}
-          // } else {
-          //   await LocalDB.storeUserEmail(loginModel.userEmail!);
-          //   await LocalDB.storeUserName(loginModel.userLogin!);
-          //   await LocalDB.storeUserId(loginModel.userId!);
-          //   await LocalDB.storeSubscriptionPurchase(false);
-          //   // ignore: use_build_context_synchronously
-          //   Navigator.pushAndRemoveUntil(context,
-          //       MaterialPageRoute(builder: (context) {
-          //     return widget.nextPage();
-          //   }), (route) => false);
 
           //   // CALLING MARKETING API
           //   await LocalDB.storeSubscriptionPurchase(true);
@@ -263,6 +231,22 @@ class _SignUpState extends State<SignUp> {
             context: context, message: "Something Went Wrong ", isError: true);
       }
     }
+  }
+
+  bool isSubscriptionActive(Map<String, dynamic>? json,
+      {bool isCourseHubApp = false}) {
+    if (json == null) return false;
+    for (var entry in json.entries) {
+      if ((isCourseHubApp) &&
+          (entry.key == 'course_hub') &&
+          (entry.value == "active")) {
+        return true;
+      } else if (entry.value == "active") {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   successFunction() async {
