@@ -18,7 +18,8 @@ class SignUp extends StatefulWidget {
       required this.nextPage,
       required this.loginUrl,
       this.platform = '',
-      this.productIds = ''});
+      this.productIds = '',
+      required this.subscriptionUrl});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
@@ -27,6 +28,7 @@ class SignUp extends StatefulWidget {
   final String loginUrl;
   final String platform;
   final String productIds;
+  final String subscriptionUrl;
   final Widget Function() nextPage;
 
   @override
@@ -166,9 +168,6 @@ class _SignUpState extends State<SignUp> {
         Response response = await repo.postRequest(widget.loginUrl, {
           "username": userNameController.text,
           "password": passwordController.text,
-          "product_ids": widget.productIds,
-          "platform": widget.platform,
-          "app_name": widget.appName
         });
         loginModel = LoginModel.fromJson(response.data);
         setState(() {});
@@ -177,7 +176,11 @@ class _SignUpState extends State<SignUp> {
           await LocalDB.storeBearerToken(loginModel.token!);
           // if (widget.appName == "JHG Course Hub") {
           Response response =
-              await repo.getRequest(Constant.subscriptionUrl, {});
+              await repo.getRequest(widget.subscriptionUrl, {
+                "product_ids": widget.productIds,
+                "platform": widget.platform,
+                "app_name": widget.appName
+              });
           //print("response is ${response.data}");
           bool isActive = isSubscriptionActive(response.data,
               isCourseHubApp: widget.appName == "JHG Course Hub");

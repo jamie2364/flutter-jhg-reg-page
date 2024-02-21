@@ -59,5 +59,20 @@ class ApiRepo {
       return exception.response;
     }
   }
+
+
+  getRequestWithoutHeader(String url, Map<String, dynamic> data) async {
+    try {
+      Dio dio = Dio();
+      Options options = Options(
+          sendTimeout:const Duration(seconds: 60),
+          receiveTimeout:const Duration(seconds: 60),
+          receiveDataWhenStatusError: true);
+      Response response = await dio.get(url, queryParameters: data,options: options);
+      return response;
+    } on DioException catch (exception) {
+      return exception.response;
+    }
+  }
 }
 

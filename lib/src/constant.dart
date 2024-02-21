@@ -3,6 +3,8 @@ class Constant {
       "https://www.jamieharrisonguitar.com/wp-json/jwt-auth/v1/token";
   static const String subscriptionUrl =
       "https://www.jamieharrisonguitar.com/wp-json/myplugin/v1/jwt-check-subscription/";
+  static const String subscriptionUrlEvolo =
+      "https://www.evolo.app/wp-json/myplugin/v1/jwt-check-subscription/";
   static const String marketingUrl =
       "https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f";
     static const String checkSubscriptionUrl =
@@ -15,8 +17,10 @@ class Constant {
   static const String termAndServicesUrl =
       'https://www.Jamieharrisonguitar.com/terms-of-service';
   static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
+  static const String evoloUrl = 'https://www.evolo.app/';
 
   static const String evoloBaseUrl= 'https://www.evolo.app/wp-json/jwt-auth/v1/token';
+  static const String productIdEndPoint = 'wp-json/jhg-apps/v1/product-ids';
 
   static const String jamieHarrison = 'JAMIE HARRISON';
   static const String login = 'Login';

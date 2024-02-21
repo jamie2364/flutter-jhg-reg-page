@@ -1,3 +1,6 @@
+import 'dart:isolate';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -27,11 +30,20 @@ class SubscriptionUrlScreen extends StatefulWidget {
 
 class _SubcriptionState extends State<SubscriptionUrlScreen> {
   int selectedPosition = 1;
+  ApiRepo repo = ApiRepo();
+  String productIdEvolo = '';
+  String productIdJamieHarrison = '';
 
   onUrlSelect(int plan) {
     setState(() {
       selectedPosition = plan;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getProductIds(true);
   }
 
   @override
@@ -74,8 +86,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                     height: height * 0.05,
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       onUrlSelect(1);
+                      getProductIds(true);
                     },
                     child: Container(
                       height: height * 0.06,
@@ -143,8 +156,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                     height: height * 0.03,
                   ),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       onUrlSelect(2);
+                      getProductIds(false);
                     },
                     child: Container(
                       height: height * 0.06,
@@ -230,11 +244,14 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                                     ? Constant.evoloBaseUrl
                                     : Constant.loginUrl,
                                 platform: selectedPosition == 1
-                                    ? 'evolo'
-                                    : 'jamieharrisonguitar',
+                                    ? Constant.evoloUrl
+                                    : Constant.jamieUrl,
                                 productIds: selectedPosition == 1
-                                    ? ''
-                                    : '1144975,1144971',
+                                    ? productIdEvolo
+                                    : productIdJamieHarrison,
+                                subscriptionUrl: selectedPosition == 1
+                                    ? Constant.subscriptionUrlEvolo
+                                    : Constant.subscriptionUrl,
                               );
                             },
                           ),
@@ -243,5 +260,20 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                 ],
               )),
         ));
+  }
+
+  Future<void> getProductIds(bool isEvolo) async {
+    try {
+      Response response = await repo.getRequestWithoutHeader(
+          "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
+          {});
+      if (response.data != null && response.data["product_ids"] != null) {
+        if (isEvolo) {
+          productIdEvolo = response.data["product_ids"];
+        } else {
+          productIdJamieHarrison = response.data["product_ids"];
+        }
+      }
+    } catch (e) {}
   }
 }
