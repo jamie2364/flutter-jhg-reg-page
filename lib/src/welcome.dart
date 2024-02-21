@@ -8,6 +8,7 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/info_screen.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
+import 'package:reg_page/src/subcription_url_screen.dart';
 import 'constant.dart';
 import 'colors.dart';
 import 'custom_button.dart';
@@ -711,7 +712,7 @@ class _WelcomeState extends State<Welcome> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return SignUp(
+                                    return SubscriptionUrlScreen(
                                       yearlySubscriptionId:
                                           widget.yearlySubscriptionId,
                                       monthlySubscriptionId:

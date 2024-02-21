@@ -16,6 +16,8 @@ class Constant {
       'https://www.Jamieharrisonguitar.com/terms-of-service';
   static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
 
+  static const String evoloBaseUrl= 'https://www.evolo.app/wp-json/jwt-auth/v1/token';
+
   static const String jamieHarrison = 'JAMIE HARRISON';
   static const String login = 'Login';
   static const String enterName = 'Enter Your Name';
@@ -58,6 +60,10 @@ class Constant {
   static const String williamShakespeare = 'William Shakespeare';
   static const String visitJamieHarrisonGuitar = 'Visit Jamie Harrison Guitar';
   static const String renewMonthlyText = 'Renews automatically every month.\n Cancel anytime';
+  static const String chooseYourSubscriptionText = 'Choose your subscription';
+  static const String evoloUrlText = 'Evolo.app';
+  static const String jamieUrlText = 'Jamieharrisonguitar.com';
+  static const String subscriptionUrlSubText ='Please choose the platform from the list\nbelow where you have your active subscription to Evolo';
   static const String appQuotes =
       '“If music be the food of love, play on,\n my friend...”';
   static const String copyRight =
