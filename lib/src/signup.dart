@@ -15,11 +15,13 @@ class SignUp extends StatefulWidget {
       required this.monthlySubscriptionId,
       required this.appName,
       required this.appVersion,
-      required this.nextPage});
+      required this.nextPage,
+      required this.loginUrl});
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
+  final String loginUrl;
   final Widget Function() nextPage;
 
   @override
@@ -156,7 +158,7 @@ class _SignUpState extends State<SignUp> {
       // ignore: use_build_context_synchronously
       loaderDialog(context);
       try {
-        Response response = await repo.postRequest(Constant.loginUrl, {
+        Response response = await repo.postRequest(widget.loginUrl, {
           "username": userNameController.text,
           "password": passwordController.text,
         });
