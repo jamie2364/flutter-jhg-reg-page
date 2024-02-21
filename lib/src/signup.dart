@@ -16,12 +16,17 @@ class SignUp extends StatefulWidget {
       required this.appName,
       required this.appVersion,
       required this.nextPage,
-      required this.loginUrl});
+      this.loginUrl = '',
+      this.platform = '',
+      this.productIds = ''});
+
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
   final String loginUrl;
+  final String platform;
+  final String productIds;
   final Widget Function() nextPage;
 
   @override
@@ -33,6 +38,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordController = TextEditingController();
 
   bool showPassword = true;
+
   onEyeTap() {
     setState(() {
       showPassword = !showPassword;
@@ -158,9 +164,13 @@ class _SignUpState extends State<SignUp> {
       // ignore: use_build_context_synchronously
       loaderDialog(context);
       try {
-        Response response = await repo.postRequest(widget.loginUrl, {
+        Response response = await repo.postRequest(
+            widget.loginUrl.isNotEmpty ? widget.loginUrl : Constant.loginUrl, {
           "username": userNameController.text,
           "password": passwordController.text,
+          "product_ids": widget.productIds,
+          "platform": widget.platform,
+          "app_name": widget.appName
         });
         loginModel = LoginModel.fromJson(response.data);
         setState(() {});
@@ -175,16 +185,20 @@ class _SignUpState extends State<SignUp> {
           //setState(() {});
 
           if (widget.appName == "JHG Course Hub") {
-            if (subscriptionModel.allAccessPass == "active" ||
-                subscriptionModel.softwareSuite == "active" ||
+            if (subscriptionModel.softwareSuite == "active" ||
+                subscriptionModel.allAccessPass == "active" ||
+                subscriptionModel.allCoursePass == "active" ||
+                subscriptionModel.jhgRig == "active" ||
                 subscriptionModel.courseHub == "active") {
               successFunction();
             } else {
               elseFunction();
             }
           } else {
-            if (subscriptionModel.allAccessPass == "active" ||
-                subscriptionModel.softwareSuite == "active") {
+            if (subscriptionModel.softwareSuite == "active" ||
+                subscriptionModel.allAccessPass == "active" ||
+                subscriptionModel.allCoursePass == "active" ||
+                subscriptionModel.jhgRig == "active") {
               // ignore: use_build_context_synchronously
               successFunction();
             } else {

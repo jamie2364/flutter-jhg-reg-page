@@ -229,6 +229,12 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                                 loginUrl: selectedPosition == 1
                                     ? Constant.evoloBaseUrl
                                     : Constant.loginUrl,
+                                platform: selectedPosition == 1
+                                    ? 'evolo'
+                                    : 'jamieharrisonguitar',
+                                productIds: selectedPosition == 1
+                                    ? ''
+                                    : '1144975,1144971',
                               );
                             },
                           ),
