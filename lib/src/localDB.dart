@@ -8,6 +8,7 @@ class LocalDB {
   static String userEmailKey = "userEmail";
   static String userIdKey = "UserId";
   static String subscriptionPurchase = "subscriptionPurchase";
+  static String baseUrl = "base_url";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -140,5 +141,22 @@ class LocalDB {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the bearer token which we have stored in sharedPreferences before
     await sharedPreferences.clear();
+  }
+
+  // save the  BaseUrl
+  static Future<void> saveBaseUrl(String value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Save BaseUrl in shared preferences
+    sharedPreferences.setString(baseUrl, value);
+  }
+
+  // Get BaseUrl
+  static Future<String?> get getBaseurl async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the BaseUrl which we have stored in sharedPreferences before
+    String? purchase = sharedPreferences.getString(baseUrl);
+    return purchase;
   }
 }
