@@ -287,7 +287,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print("appName is ${widget.appName}");
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(

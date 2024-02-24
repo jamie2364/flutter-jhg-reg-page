@@ -27,7 +27,7 @@ class SubscriptionUrlScreen extends StatefulWidget {
 }
 
 class _SubcriptionState extends State<SubscriptionUrlScreen> {
-  int selectedPosition = 1;
+  int selectedPosition = 2;
   ApiRepo repo = ApiRepo();
   String productIdEvolo = '';
   String productIdJamieHarrison = '';
@@ -41,7 +41,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   @override
   void initState() {
     super.initState();
-    getProductIds(true);
+    getProductIds(false);
   }
 
   @override
@@ -82,76 +82,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                   ),
                   SizedBox(
                     height: height * 0.05,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      onUrlSelect(1);
-                      getProductIds(true);
-                    },
-                    child: Container(
-                      height: height * 0.06,
-                      width: width * 0.85,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: selectedPosition == 1
-                              ? AppColor.primaryRed
-                              : AppColor.primaryWhite,
-                          width: 1.5,
-                        ),
-                        color: AppColor.primaryBlack,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.050,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  Constant.evoloUrlText,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: AppColor.greySecondary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Container(
-                                  height: height * 0.027,
-                                  width: height * 0.027,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: selectedPosition == 1
-                                        ? AppColor.primaryRed
-                                        : AppColor.primaryBlack,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: selectedPosition == 1
-                                          ? AppColor.primaryRed
-                                          : AppColor.primaryWhite,
-                                      width: 1.8,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.done,
-                                    color: AppColor.primaryBlack,
-                                    size: width * 0.04,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -202,6 +132,76 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       color: selectedPosition == 2
+                                          ? AppColor.primaryRed
+                                          : AppColor.primaryWhite,
+                                      width: 1.8,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.done,
+                                    color: AppColor.primaryBlack,
+                                    size: width * 0.04,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      onUrlSelect(1);
+                      getProductIds(true);
+                    },
+                    child: Container(
+                      height: height * 0.06,
+                      width: width * 0.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: selectedPosition == 1
+                              ? AppColor.primaryRed
+                              : AppColor.primaryWhite,
+                          width: 1.5,
+                        ),
+                        color: AppColor.primaryBlack,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.050,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Constant.evoloUrlText,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: AppColor.greySecondary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Container(
+                                  height: height * 0.027,
+                                  width: height * 0.027,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: selectedPosition == 1
+                                        ? AppColor.primaryRed
+                                        : AppColor.primaryBlack,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: selectedPosition == 1
                                           ? AppColor.primaryRed
                                           : AppColor.primaryWhite,
                                       width: 1.8,
