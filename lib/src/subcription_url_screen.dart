@@ -8,13 +8,12 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
 
 class SubscriptionUrlScreen extends StatefulWidget {
-  const SubscriptionUrlScreen(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.appVersion,
-      required this.nextPage});
+  const SubscriptionUrlScreen({super.key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.appName,
+    required this.appVersion,
+    required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
@@ -27,7 +26,7 @@ class SubscriptionUrlScreen extends StatefulWidget {
 }
 
 class _SubcriptionState extends State<SubscriptionUrlScreen> {
-  int selectedPosition = 2;
+  int selectedPosition = 2; // 2 for jamieharrisonguitar.com  and 1 for evolo.app
   ApiRepo repo = ApiRepo();
   String productIdEvolo = '';
   String productIdJamieHarrison = '';
@@ -39,18 +38,15 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(milliseconds: 200),(){
-      getProductIds(false);
-    });
-
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
         backgroundColor: AppColor.primaryBlack,
         body: SafeArea(
@@ -89,7 +85,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                   GestureDetector(
                     onTap: () async {
                       onUrlSelect(2);
-                      getProductIds(false);
                     },
                     child: Container(
                       height: height * 0.06,
@@ -159,7 +154,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                   GestureDetector(
                     onTap: () async {
                       onUrlSelect(1);
-                      getProductIds(true);
                     },
                     child: Container(
                       height: height * 0.06,
@@ -229,34 +223,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                       buttonColor: AppColor.primaryRed,
                       textColor: AppColor.primaryWhite,
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SignUp(
-                                yearlySubscriptionId:
-                                    widget.yearlySubscriptionId,
-                                monthlySubscriptionId:
-                                    widget.monthlySubscriptionId,
-                                appName: widget.appName,
-                                appVersion: widget.appVersion,
-                                nextPage: widget.nextPage,
-                                loginUrl: selectedPosition == 1
-                                    ? Constant.evoloBaseUrl
-                                    : Constant.loginUrl,
-                                platform: selectedPosition == 1
-                                    ? Constant.evoloUrl
-                                    : Constant.jamieUrl,
-                                productIds: selectedPosition == 1
-                                    ? productIdEvolo
-                                    : productIdJamieHarrison,
-                                subscriptionUrl: selectedPosition == 1
-                                    ? Constant.subscriptionUrlEvolo
-                                    : Constant.subscriptionUrl,
-                              );
-                            },
-                          ),
-                        );
+                        getProductIds(selectedPosition == 1);
                       })
                 ],
               )),
@@ -267,7 +234,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
-          "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
+          "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant
+              .productIdEndPoint}",
           {});
       if (response.data != null && response.data["product_ids"] != null) {
         if (isEvolo) {
@@ -275,12 +243,47 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         } else {
           productIdJamieHarrison = response.data["product_ids"];
         }
-      }else{
+        Navigator.pop(context);
+        launchSignupPage();
+      } else {
+        Navigator.pop(context);
         showToast(
-            context: context, message: Constant.productIdsFailedMessage, isError: true);
+            context: context,
+            message: Constant.productIdsFailedMessage,
+            isError: true);
       }
-      Navigator.pop(context);
-    } catch (e) {
-    }
+
+    } catch (e) {}
+  }
+
+  void launchSignupPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return SignUp(
+            yearlySubscriptionId:
+            widget.yearlySubscriptionId,
+            monthlySubscriptionId:
+            widget.monthlySubscriptionId,
+            appName: widget.appName,
+            appVersion: widget.appVersion,
+            nextPage: widget.nextPage,
+            loginUrl: selectedPosition == 1
+                ? Constant.evoloBaseUrl
+                : Constant.loginUrl,
+            platform: selectedPosition == 1
+                ? Constant.evoloUrl
+                : Constant.jamieUrl,
+            productIds: selectedPosition == 1
+                ? productIdEvolo
+                : productIdJamieHarrison,
+            subscriptionUrl: selectedPosition == 1
+                ? Constant.subscriptionUrlEvolo
+                : Constant.subscriptionUrl,
+          );
+        },
+      ),
+    );
   }
 }
