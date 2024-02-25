@@ -41,7 +41,10 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   @override
   void initState() {
     super.initState();
-    getProductIds(false);
+    Future.delayed(const Duration(milliseconds: 200),(){
+      getProductIds(false);
+    });
+
   }
 
   @override
@@ -261,6 +264,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   Future<void> getProductIds(bool isEvolo) async {
+    loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
           "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
@@ -271,7 +275,12 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         } else {
           productIdJamieHarrison = response.data["product_ids"];
         }
+      }else{
+        showToast(
+            context: context, message: Constant.productIdsFailedMessage, isError: true);
       }
-    } catch (e) {}
+      Navigator.pop(context);
+    } catch (e) {
+    }
   }
 }

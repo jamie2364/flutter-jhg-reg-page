@@ -258,6 +258,7 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storeUserId(loginModel.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
     await LocalDB.saveBaseUrl(widget.platform);
+    await LocalDB.saveProductIds(widget.productIds);
     // ignore: use_build_context_synchronously
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       return widget.nextPage();

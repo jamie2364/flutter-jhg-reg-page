@@ -9,6 +9,7 @@ class LocalDB {
   static String userIdKey = "UserId";
   static String subscriptionPurchase = "subscriptionPurchase";
   static String baseUrl = "base_url";
+  static String productIds = "product_ids";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -157,6 +158,23 @@ class LocalDB {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the BaseUrl which we have stored in sharedPreferences before
     String? purchase = sharedPreferences.getString(baseUrl);
+    return purchase;
+  }
+
+  // save the  product_ids
+  static Future<void> saveProductIds(String value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Save product_ids in shared preferences
+    sharedPreferences.setString(productIds, value);
+  }
+
+  // Get productIds
+  static Future<String?> get getproductIds async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the product_ids which we have stored in sharedPreferences before
+    String? purchase = sharedPreferences.getString(productIds);
     return purchase;
   }
 }

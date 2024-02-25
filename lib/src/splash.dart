@@ -77,28 +77,20 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
+        final productId= await LocalDB.getproductIds;
         //  if (widget.appName == "JHG Course Hub") {
-        Response response = await repo.getRequest(Constant.subscriptionUrl, {});
+        Response response = await repo.getRequest(Constant.subscriptionUrl, {
+          "product_ids": productId,
+        });
         print("response is ${response.data}");
         subscriptionModel = SubscriptionModel.fromJson(response.data);
         setState(() {});
 
-        if (widget.appName == "JHG Course Hub") {
-          if (subscriptionModel.allAccessPass == "active" ||
-              subscriptionModel.softwareSuite == "active" ||
-              subscriptionModel.courseHub == "active") {
-            successFunction();
-          } else {
-            elseFunction();
-          }
+        final isActive = isSubscriptionActive(response.data,isCourseHubApp:widget.appName == "JHG Course Hub");
+        if (isActive) {
+          successFunction();
         } else {
-          if (subscriptionModel.allAccessPass == "active" ||
-              subscriptionModel.softwareSuite == "active") {
-            // ignore: use_build_context_synchronously
-            successFunction();
-          } else {
-            elseFunction();
-          }
+          elseFunction();
         }
 
         // } else {
@@ -112,6 +104,21 @@ class _SplashScreenState extends State<SplashScreen> {
         //     MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
+  }
+  bool isSubscriptionActive(Map<String, dynamic>? json,
+      {bool isCourseHubApp = false}) {
+    if (json == null) return false;
+    for (var entry in json.entries) {
+      if ((isCourseHubApp) &&
+          (entry.key == 'course_hub') &&
+          (entry.value == "active")) {
+        return true;
+      } else if (entry.value == "active") {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   successFunction() async {
