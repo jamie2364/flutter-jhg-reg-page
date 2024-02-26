@@ -257,6 +257,8 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storeUserName(loginModel.userLogin!);
     await LocalDB.storeUserId(loginModel.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
+    await LocalDB.saveBaseUrl(widget.platform);
+    await LocalDB.saveProductIds(widget.productIds);
     // ignore: use_build_context_synchronously
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       return widget.nextPage();
@@ -286,7 +288,6 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print("appName is ${widget.appName}");
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(

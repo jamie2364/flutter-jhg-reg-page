@@ -8,13 +8,12 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
 
 class SubscriptionUrlScreen extends StatefulWidget {
-  const SubscriptionUrlScreen(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.appVersion,
-      required this.nextPage});
+  const SubscriptionUrlScreen({super.key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.appName,
+    required this.appVersion,
+    required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
@@ -27,7 +26,7 @@ class SubscriptionUrlScreen extends StatefulWidget {
 }
 
 class _SubcriptionState extends State<SubscriptionUrlScreen> {
-  int selectedPosition = 1;
+  int selectedPosition = 2; // 2 for jamieharrisonguitar.com  and 1 for evolo.app
   ApiRepo repo = ApiRepo();
   String productIdEvolo = '';
   String productIdJamieHarrison = '';
@@ -39,15 +38,15 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getProductIds(true);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     return Scaffold(
         backgroundColor: AppColor.primaryBlack,
         body: SafeArea(
@@ -85,78 +84,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      onUrlSelect(1);
-                      getProductIds(true);
-                    },
-                    child: Container(
-                      height: height * 0.06,
-                      width: width * 0.85,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: selectedPosition == 1
-                              ? AppColor.primaryRed
-                              : AppColor.primaryWhite,
-                          width: 1.5,
-                        ),
-                        color: AppColor.primaryBlack,
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: width * 0.050,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  Constant.evoloUrlText,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    color: AppColor.greySecondary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Container(
-                                  height: height * 0.027,
-                                  width: height * 0.027,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: selectedPosition == 1
-                                        ? AppColor.primaryRed
-                                        : AppColor.primaryBlack,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: selectedPosition == 1
-                                          ? AppColor.primaryRed
-                                          : AppColor.primaryWhite,
-                                      width: 1.8,
-                                    ),
-                                  ),
-                                  child: Icon(
-                                    Icons.done,
-                                    color: AppColor.primaryBlack,
-                                    size: width * 0.04,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.03,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
                       onUrlSelect(2);
-                      getProductIds(false);
                     },
                     child: Container(
                       height: height * 0.06,
@@ -220,40 +148,82 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: height * 0.03,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      onUrlSelect(1);
+                    },
+                    child: Container(
+                      height: height * 0.06,
+                      width: width * 0.85,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: selectedPosition == 1
+                              ? AppColor.primaryRed
+                              : AppColor.primaryWhite,
+                          width: 1.5,
+                        ),
+                        color: AppColor.primaryBlack,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: width * 0.050,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  Constant.evoloUrlText,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    color: AppColor.greySecondary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Container(
+                                  height: height * 0.027,
+                                  width: height * 0.027,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: selectedPosition == 1
+                                        ? AppColor.primaryRed
+                                        : AppColor.primaryBlack,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: selectedPosition == 1
+                                          ? AppColor.primaryRed
+                                          : AppColor.primaryWhite,
+                                      width: 1.8,
+                                    ),
+                                  ),
+                                  child: Icon(
+                                    Icons.done,
+                                    color: AppColor.primaryBlack,
+                                    size: width * 0.04,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   const Spacer(),
                   CustomButton(
                       buttonName: Constant.continueText,
                       buttonColor: AppColor.primaryRed,
                       textColor: AppColor.primaryWhite,
                       onPressed: () async {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SignUp(
-                                yearlySubscriptionId:
-                                    widget.yearlySubscriptionId,
-                                monthlySubscriptionId:
-                                    widget.monthlySubscriptionId,
-                                appName: widget.appName,
-                                appVersion: widget.appVersion,
-                                nextPage: widget.nextPage,
-                                loginUrl: selectedPosition == 1
-                                    ? Constant.evoloBaseUrl
-                                    : Constant.loginUrl,
-                                platform: selectedPosition == 1
-                                    ? Constant.evoloUrl
-                                    : Constant.jamieUrl,
-                                productIds: selectedPosition == 1
-                                    ? productIdEvolo
-                                    : productIdJamieHarrison,
-                                subscriptionUrl: selectedPosition == 1
-                                    ? Constant.subscriptionUrlEvolo
-                                    : Constant.subscriptionUrl,
-                              );
-                            },
-                          ),
-                        );
+                        getProductIds(selectedPosition == 1);
                       })
                 ],
               )),
@@ -261,9 +231,11 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   Future<void> getProductIds(bool isEvolo) async {
+    loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
-          "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
+          "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant
+              .productIdEndPoint}",
           {});
       if (response.data != null && response.data["product_ids"] != null) {
         if (isEvolo) {
@@ -271,7 +243,47 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         } else {
           productIdJamieHarrison = response.data["product_ids"];
         }
+        Navigator.pop(context);
+        launchSignupPage();
+      } else {
+        Navigator.pop(context);
+        showToast(
+            context: context,
+            message: Constant.productIdsFailedMessage,
+            isError: true);
       }
+
     } catch (e) {}
+  }
+
+  void launchSignupPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return SignUp(
+            yearlySubscriptionId:
+            widget.yearlySubscriptionId,
+            monthlySubscriptionId:
+            widget.monthlySubscriptionId,
+            appName: widget.appName,
+            appVersion: widget.appVersion,
+            nextPage: widget.nextPage,
+            loginUrl: selectedPosition == 1
+                ? Constant.evoloBaseUrl
+                : Constant.loginUrl,
+            platform: selectedPosition == 1
+                ? Constant.evoloUrl
+                : Constant.jamieUrl,
+            productIds: selectedPosition == 1
+                ? productIdEvolo
+                : productIdJamieHarrison,
+            subscriptionUrl: selectedPosition == 1
+                ? Constant.subscriptionUrlEvolo
+                : Constant.subscriptionUrl,
+          );
+        },
+      ),
+    );
   }
 }

@@ -35,7 +35,7 @@ class _InfoScreenState extends State<InfoScreen> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
-      body: Stack(
+      body: Column(
         children: [
           Container(
             height: height,
@@ -148,7 +148,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     },
                   ),
                   SizedBox(
-                    height: height * 0.055,
+                    height: height * 0.045,
                   ),
                   Center(
                     child: Text(
@@ -177,7 +177,21 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.19,
+                      height: height * 0.16,
+                      width: width,
+                      child: Center(
+                        child: SizedBox(
+                          height: height * 0.16,
+                          width: width * 0.6,
+                          child: Image.asset(
+                            "assets/images/jhg_sign.png",
+                            package: 'reg_page',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                      )),
+                  SizedBox(
+                    height: height * 0.02,
                   ),
                   Center(
                     child: Text(
@@ -191,19 +205,6 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                   ),
                 ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: height * 0.73,
-            left: width * 0.25,
-            child: SizedBox(
-              height: height * 0.16,
-              width: width * 0.5,
-              child: Image.asset(
-                "assets/images/jhg_sign.png",
-                package: 'reg_page',
-                fit: BoxFit.fill,
               ),
             ),
           ),
