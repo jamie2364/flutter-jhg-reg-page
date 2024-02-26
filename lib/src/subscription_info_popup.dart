@@ -19,7 +19,7 @@ void showWeeklySaveInfoDialog(BuildContext context, String? price) {
             ),
           ),
           content: Text(
-            "Get a free trial for 7 days, after which you will be automatically charged $price. You may cancel at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
+            "Get a free trial for 7 days, after which you will be automatically charged $price. You will then be charged this amount each year, starting from your initial payment. You may cancel your subscription at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
             style: TextStyle(
               color: AppColor.secondaryWhite,
               fontSize: 14,
@@ -45,7 +45,6 @@ void showWeeklySaveInfoDialog(BuildContext context, String? price) {
     },
   );
 }
-
 
 void showMonthlySaveInfoDialog(BuildContext context, String? price) {
   showDialog(
