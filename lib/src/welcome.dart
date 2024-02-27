@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -91,6 +92,12 @@ class _WelcomeState extends State<Welcome> {
 
     yearlyKey = widget.yearlySubscriptionId;
     monthlyKey = widget.monthlySubscriptionId;
+    if (kIsWeb) {
+      setState(() {
+        loading = false;
+      });
+      return;
+    }
     await subscriptionStream();
   }
 
@@ -752,7 +759,6 @@ class _WelcomeState extends State<Welcome> {
                         textColor: AppColor.primaryWhite,
                         onPressed: () async {
                             await purchaseSubscription(selectedPlan);
-
                         },
                       ),
                     ],
