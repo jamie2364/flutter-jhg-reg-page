@@ -52,7 +52,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         body: SafeArea(
           child: Container(
               margin: EdgeInsets.only(
-                  top: height * 0.1,
                   bottom: height * 0.1,
                   left: width * 0.090,
                   right: width * 0.090),
@@ -60,6 +59,20 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    height: height * 0.030,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: AppColor.primaryWhite,
+                      size: width * 0.060,
+                    ),
+                  ),
+                  SizedBox(height: height * 0.1,),
                   Text(
                     Constant.chooseYourSubscriptionText,
                     style: TextStyle(
