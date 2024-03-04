@@ -163,7 +163,7 @@ class _SignUpState extends State<SignUp> {
       return;
     } else {
       // ignore: use_build_context_synchronously
-      loaderDialog(context);
+      //loaderDialog(context);
       try {
         Response response = await repo.postRequest(widget.loginUrl, {
           "username": userNameController.text,
