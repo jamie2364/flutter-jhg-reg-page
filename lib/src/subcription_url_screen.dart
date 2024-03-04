@@ -234,15 +234,15 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                       buttonColor: AppColor.primaryRed,
                       textColor: AppColor.primaryWhite,
                       onPressed: () async {
-                        getProductIds(selectedPosition == 1, context);
+                        getProductIds(selectedPosition == 1);
                       })
                 ],
               )),
         ));
   }
 
-  Future<void> getProductIds(bool isEvolo, context) async {
-   // loaderDialog(context);
+  Future<void> getProductIds(bool isEvolo) async {
+   loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
           "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
@@ -253,7 +253,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         } else {
           productIdJamieHarrison = response.data["product_ids"];
         }
-       // Navigator.pop(context);
+       Navigator.pop(context);
       launchSignupPage();
       } else {
         Navigator.pop(context);

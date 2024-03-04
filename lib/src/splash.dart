@@ -76,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     )));
       } else {
         // ignore: use_build_context_synchronously
-       // loaderDialog(context);
+       loaderDialog(context);
         final productId= await LocalDB.getproductIds;
         //  if (widget.appName == "JHG Course Hub") {
         Response response = await repo.getRequest(Constant.subscriptionUrl, {
