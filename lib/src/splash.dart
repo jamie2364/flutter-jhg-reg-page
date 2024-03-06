@@ -47,6 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
   ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
+
   routes() async {
     animate();
     Timer(const Duration(seconds: 3), () async {
@@ -76,17 +77,23 @@ class _SplashScreenState extends State<SplashScreen> {
                     )));
       } else {
         // ignore: use_build_context_synchronously
-       loaderDialog(context);
-        final productId= await LocalDB.getproductIds;
+        loaderDialog(context);
+        final productId = await LocalDB.getproductIds;
+        final baseUrl = await LocalDB.getBaseurl;
         //  if (widget.appName == "JHG Course Hub") {
-        Response response = await repo.getRequest(Constant.subscriptionUrl, {
-          "product_ids": productId,
-        });
+        Response response = await repo.getRequest(
+            baseUrl == Constant.evoloUrl
+                ? Constant.subscriptionUrlEvolo
+                : Constant.subscriptionUrl,
+            {
+              "product_ids": productId,
+            });
         print("response is ${response.data}");
         subscriptionModel = SubscriptionModel.fromJson(response.data);
         setState(() {});
 
-        final isActive = isSubscriptionActive(response.data,isCourseHubApp:widget.appName == "JHG Course Hub");
+        final isActive = isSubscriptionActive(response.data,
+            isCourseHubApp: widget.appName == "JHG Course Hub");
         if (isActive) {
           successFunction();
         } else {
@@ -105,6 +112,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
     });
   }
+
   bool isSubscriptionActive(Map<String, dynamic>? json,
       {bool isCourseHubApp = false}) {
     if (json == null) return false;
