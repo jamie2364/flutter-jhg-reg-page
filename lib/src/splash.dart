@@ -21,7 +21,7 @@ class SplashScreen extends StatefulWidget {
   final String appName;
   final String appVersion;
   final Widget Function() nextPage;
-
+  static int selectedUrlPos = 2;
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -64,6 +64,10 @@ class _SplashScreenState extends State<SplashScreen> {
 
       String? token = await LocalDB.getBearerToken;
       if (token == null) {
+        final url = await LocalDB.getBaseurl;
+        if (url != null) {
+          SplashScreen.selectedUrlPos = url.contains('evolo') ? 1 : 2;
+        }
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
             context,

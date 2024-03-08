@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
@@ -36,6 +34,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   onUrlSelect(int plan) {
     setState(() {
       selectedPosition = plan;
+      SplashScreen.selectedUrlPos = plan;
     });
   }
 
@@ -242,7 +241,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   Future<void> getProductIds(bool isEvolo) async {
-   loaderDialog(context);
+    loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
           "${isEvolo ? Constant.evoloUrl : Constant.jamieUrl}${Constant.productIdEndPoint}",
@@ -253,8 +252,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         } else {
           productIdJamieHarrison = response.data["product_ids"];
         }
-       Navigator.pop(context);
-      launchSignupPage();
+        Navigator.pop(context);
+        launchSignupPage();
       } else {
         Navigator.pop(context);
         showToast(
