@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
+
 import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
@@ -175,12 +176,11 @@ class _SignUpState extends State<SignUp> {
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
           // if (widget.appName == "JHG Course Hub") {
-          Response response =
-              await repo.getRequest(widget.subscriptionUrl, {
-                "product_ids": widget.productIds,
-                "platform": widget.platform,
-                "app_name": widget.appName
-              });
+          Response response = await repo.getRequest(widget.subscriptionUrl, {
+            "product_ids": widget.productIds,
+            "platform": widget.platform,
+            "app_name": widget.appName
+          });
           //print("response is ${response.data}");
           bool isActive = isSubscriptionActive(response.data,
               isCourseHubApp: widget.appName == "JHG Course Hub");
@@ -255,6 +255,7 @@ class _SignUpState extends State<SignUp> {
   successFunction() async {
     await LocalDB.storeUserEmail(loginModel.userEmail!);
     await LocalDB.storeUserName(loginModel.userLogin!);
+    await LocalDB.storePassword(passwordController.text);
     await LocalDB.storeUserId(loginModel.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
     await LocalDB.saveBaseUrl(widget.platform);

@@ -5,6 +5,7 @@ class LocalDB {
   static String endDateKey = "endDateKey";
   static String firstTimeLoginKey = "firstTimerLogin";
   static String userNameKey = "userName";
+  static String passwordKey = "password";
   static String userEmailKey = "userEmail";
   static String userIdKey = "UserId";
   static String subscriptionPurchase = "subscriptionPurchase";
@@ -83,6 +84,22 @@ class LocalDB {
     // Get the bearer token which we have stored in sharedPreferences before
     String? userName = sharedPreferences.getString(userNameKey);
     return userName;
+  }
+
+  // Set password
+  static Future<void> storePassword(String value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Store bearer token in shared preferences
+    sharedPreferences.setString(passwordKey, value);
+  }
+
+  // Get password
+  static Future<String?> get getPassword async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the bearer token which we have stored in sharedPreferences before
+    return sharedPreferences.getString(passwordKey);
   }
 
   // Set user name
