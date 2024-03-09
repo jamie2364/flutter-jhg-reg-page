@@ -34,7 +34,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   onUrlSelect(int plan) {
     setState(() {
       selectedPosition = plan;
-      SplashScreen.selectedUrlPos = plan;
+      // SplashScreen.selectedUrlPos = plan;
     });
   }
 

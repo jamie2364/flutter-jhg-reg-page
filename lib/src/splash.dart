@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:dio/dio.dart';
@@ -6,6 +7,15 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
+
+class UserSession {
+  int urlPos;
+  String token;
+  UserSession({
+    required this.urlPos,
+    required this.token,
+  });
+}
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen(
@@ -21,7 +31,7 @@ class SplashScreen extends StatefulWidget {
   final String appName;
   final String appVersion;
   final Widget Function() nextPage;
-  static int selectedUrlPos = 2;
+  static UserSession session = UserSession(urlPos: 2, token: '');
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -63,11 +73,15 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       String? token = await LocalDB.getBearerToken;
+      final url = await LocalDB.getBaseurl;
+      SplashScreen.session = UserSession(
+          urlPos: url != null
+              ? url.contains('evolo')
+                  ? 1
+                  : 2
+              : 0,
+          token: token ?? '');
       if (token == null) {
-        final url = await LocalDB.getBaseurl;
-        if (url != null) {
-          SplashScreen.selectedUrlPos = url.contains('evolo') ? 1 : 2;
-        }
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
             context,

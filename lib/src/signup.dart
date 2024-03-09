@@ -261,6 +261,9 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.saveBaseUrl(widget.platform);
     await LocalDB.saveProductIds(widget.productIds);
     // ignore: use_build_context_synchronously
+    SplashScreen.session = UserSession(
+        urlPos: widget.loginUrl.contains('evolo') ? 1 : 2,
+        token: loginModel.token ?? '');
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       return widget.nextPage();
     }), (route) => false);
