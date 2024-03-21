@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -203,8 +204,14 @@ class _WelcomeState extends State<Welcome> {
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
-          await LocalDB.storeSubscriptionPurchase(true);
 
+          //purchased Success
+          try {
+            await onPurchasedSuccess();
+          } catch (e) {
+            print('exception on $e');
+          }
+          //
           Navigator.pushAndRemoveUntil(context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
@@ -288,49 +295,30 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
-  // void showWeeklySaveInfoDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Padding(
-  //         padding:
-  //             EdgeInsets.only(top: 100.0), // Adjust the top padding as needed
-  //         child: AlertDialog(
-  //           title: Text(
-  //             "Annual Subscription Info",
-  //             style: TextStyle(
-  //               color: AppColor.secondaryWhite,
-  //               fontSize: 22, // Adjust the font size as needed
-  //               fontWeight: FontWeight.bold, // Adjust the font weight as needed
-  //             ),
-  //           ),
-  //           content: Text(
-  //             "Get a free trial for 7 days, after which you will be automatically charged the annual fee. You may cancel at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment.",
-  //             style: TextStyle(
-  //               color: AppColor.secondaryWhite,
-  //               fontSize: 14,
-  //               fontWeight: FontWeight.w400,
-  //             ),
-  //           ),
-  //           backgroundColor: AppColor.primaryBlack,
-  //           actions: <Widget>[
-  //             TextButton(
-  //               child: Text(
-  //                 "OK",
-  //                 style: TextStyle(
-  //                   color: AppColor.primaryRed, // Set the text color here
-  //                 ),
-  //               ),
-  //               onPressed: () {
-  //                 Navigator.of(context).pop(); // Close the dialog
-  //               },
-  //             ),
-  //           ],
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
+  onPurchasedSuccess() async {
+    loaderDialog(context);
+    await LocalDB.storeSubscriptionPurchase(true);
+    final proIds = await getProductIds();
+    if (proIds == null) return;
+    print('product ids onPurchasedSuccess $proIds');
+    await LocalDB.saveProductIds(proIds);
+    await LocalDB.saveBaseUrl(Constant.evoloUrl);
+    Navigator.pop(context);
+  }
+
+  Future<String?> getProductIds() async {
+    try {
+      Response response = await ApiRepo().getRequestWithoutHeader(
+          "${Constant.evoloUrl}${Constant.productIdEndPoint}", {});
+      if (response.data != null && response.data["product_ids"] != null) {
+        return response.data["product_ids"];
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -755,10 +743,10 @@ class _WelcomeState extends State<Welcome> {
                         buttonName: selectedPlan == 1
                             ? Constant.tryFree
                             : Constant.continueText,
-                        buttonColor:AppColor.primaryRed,
+                        buttonColor: AppColor.primaryRed,
                         textColor: AppColor.primaryWhite,
                         onPressed: () async {
-                            await purchaseSubscription(selectedPlan);
+                          await purchaseSubscription(selectedPlan);
                         },
                       ),
                     ],
