@@ -93,4 +93,5 @@ class Constant {
 
   static const String productIdsFailedMessage =
       'Sorry, Something went wrong, please try again.';
+  static const String done ='Done';
 }

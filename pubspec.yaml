@@ -34,7 +34,7 @@ flutter:
     - assets/images/jhg_logo.png
     - assets/images/jhg_sign.png
     - assets/images/icon_cross.png
-
+    - assets/images/plus.png
   # To add assets to your package, add an assets section, like this:
   #
   # For details regarding assets in packages, see

@@ -15,6 +15,7 @@ class BugReportPage extends StatefulWidget {
     this.yearlySubscriptionId,
     this.monthlySubscriptionId,
     this.appVersion,
+    this.featuresList,
     this.nextPage,
   });
 
@@ -25,6 +26,7 @@ class BugReportPage extends StatefulWidget {
   final String? yearlySubscriptionId;
   final String? monthlySubscriptionId;
   final String? appVersion;
+  final List<String>? featuresList;
   final Widget Function()? nextPage;
 
   @override
@@ -242,6 +244,8 @@ class _BugReportPageState extends State<BugReportPage> {
                                           widget.monthlySubscriptionId!,
                                       appVersion: widget.appVersion!,
                                       appName: widget.appName,
+                                      featuresList:
+                                          widget.featuresList ?? List.empty(),
                                       nextPage: () => widget.nextPage!(),
                                     );
                                   }), (route) => false);

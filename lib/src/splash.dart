@@ -11,6 +11,7 @@ import 'package:reg_page/src/subscription_model.dart';
 class UserSession {
   int urlPos;
   String token;
+
   UserSession({
     required this.urlPos,
     required this.token,
@@ -24,14 +25,17 @@ class SplashScreen extends StatefulWidget {
       required this.monthlySubscriptionId,
       required this.appName,
       required this.appVersion,
+      required this.featuresList,
       required this.nextPage});
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
+  final List<String> featuresList;
   final Widget Function() nextPage;
   static UserSession session = UserSession(urlPos: 2, token: '');
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -91,6 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       monthlySubscriptionId: widget.monthlySubscriptionId,
                       appName: widget.appName,
                       appVersion: widget.appVersion,
+                      featuresList: widget.featuresList,
                       nextPage: () => widget.nextPage(),
                     )));
       } else {
@@ -165,6 +170,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   monthlySubscriptionId: widget.monthlySubscriptionId,
                   appName: widget.appName,
                   appVersion: widget.appVersion,
+                  featuresList: widget.featuresList,
                   nextPage: () => widget.nextPage(),
                 )));
   }

@@ -24,6 +24,7 @@ class Welcome extends StatefulWidget {
     required this.monthlySubscriptionId,
     required this.appName,
     required this.appVersion,
+    required this.featuresList,
     required this.nextPage,
   }) : super(key: key);
 
@@ -31,6 +32,7 @@ class Welcome extends StatefulWidget {
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
+  final List<String> featuresList;
   final Widget Function() nextPage;
 
   @override
@@ -542,7 +544,9 @@ class _WelcomeState extends State<Welcome> {
                                           GestureDetector(
                                             onTap: () {
                                               showWeeklySaveInfoDialog(
-                                                  context, yearlyPrice);
+                                                  context,
+                                                  yearlyPrice,
+                                                  widget.featuresList);
                                             },
                                             child: Text(
                                               Constant.weeklySave,
@@ -662,7 +666,9 @@ class _WelcomeState extends State<Welcome> {
                                             GestureDetector(
                                               onTap: () {
                                                 showMonthlySaveInfoDialog(
-                                                    context, yearlyPrice);
+                                                    context,
+                                                    yearlyPrice,
+                                                    widget.featuresList);
                                               },
                                               child: Text(
                                                 Constant.weeklySave,
