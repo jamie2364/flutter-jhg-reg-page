@@ -709,22 +709,7 @@ class _WelcomeState extends State<Welcome> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return SubscriptionUrlScreen(
-                                      yearlySubscriptionId:
-                                          widget.yearlySubscriptionId,
-                                      monthlySubscriptionId:
-                                          widget.monthlySubscriptionId,
-                                      appName: widget.appName,
-                                      appVersion: widget.appVersion,
-                                      nextPage: widget.nextPage,
-                                    );
-                                  },
-                                ),
-                              );
+                              launchNextPage();
                             },
                             child: Text(
                               Constant.logIn,
@@ -761,5 +746,43 @@ class _WelcomeState extends State<Welcome> {
               ],
             ),
     );
+  }
+
+  void launchNextPage() {
+    if (widget.appName.toLowerCase().contains("evolo")) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return SubscriptionUrlScreen(
+              yearlySubscriptionId: widget.yearlySubscriptionId,
+              monthlySubscriptionId: widget.monthlySubscriptionId,
+              appName: widget.appName,
+              appVersion: widget.appVersion,
+              nextPage: widget.nextPage,
+            );
+          },
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return SignUp(
+              yearlySubscriptionId: widget.yearlySubscriptionId,
+              monthlySubscriptionId: widget.monthlySubscriptionId,
+              appName: widget.appName,
+              appVersion: widget.appVersion,
+              nextPage: widget.nextPage,
+              loginUrl: Constant.loginUrl,
+              platform: Constant.jamieUrl,
+              productIds: "",
+              subscriptionUrl: Constant.subscriptionUrl,
+            );
+          },
+        ),
+      );
+    }
   }
 }
