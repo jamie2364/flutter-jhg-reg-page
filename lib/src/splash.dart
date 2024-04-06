@@ -104,23 +104,31 @@ class _SplashScreenState extends State<SplashScreen> {
         final productId = await LocalDB.getproductIds;
         final baseUrl = await LocalDB.getBaseurl;
         //  if (widget.appName == "JHG Course Hub") {
-        Response response = await repo.getRequest(
+        Response? response = await repo.getRequest(
             baseUrl == Constant.evoloUrl
                 ? Constant.subscriptionUrlEvolo
                 : Constant.subscriptionUrl,
             {
               "product_ids": productId,
             });
-        print("response is ${response.data}");
-        subscriptionModel = SubscriptionModel.fromJson(response.data);
-        setState(() {});
-
-        final isActive = isSubscriptionActive(response.data,
-            isCourseHubApp: widget.appName == "JHG Course Hub");
-        if (isActive) {
-          successFunction();
+      //  print("response is ${response?.data}");
+        if (response == null) {
+          if (await LocalDB.isLoginTimeExpired) {
+            elseFunction();
+          } else {
+            successFunction();
+          }
         } else {
-          elseFunction();
+          subscriptionModel = SubscriptionModel.fromJson(response.data);
+          setState(() {});
+
+          final isActive = isSubscriptionActive(response.data,
+              isCourseHubApp: widget.appName == "JHG Course Hub");
+          if (isActive) {
+            successFunction();
+          } else {
+            elseFunction();
+          }
         }
 
         // } else {

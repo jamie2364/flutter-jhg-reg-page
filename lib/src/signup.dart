@@ -260,6 +260,7 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storeSubscriptionPurchase(false);
     await LocalDB.saveBaseUrl(widget.platform);
     await LocalDB.saveProductIds(widget.productIds);
+    await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
     // ignore: use_build_context_synchronously
     SplashScreen.session = UserSession(
         urlPos: widget.loginUrl.contains('evolo') ? 1 : 2,

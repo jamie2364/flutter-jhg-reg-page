@@ -11,6 +11,7 @@ class LocalDB {
   static String subscriptionPurchase = "subscriptionPurchase";
   static String baseUrl = "base_url";
   static String productIds = "product_ids";
+  static String loginDateTime = "loginDateTime";
 
   static Future<SharedPreferences?> get getPref async {
     // Initialized shared preferences
@@ -193,5 +194,33 @@ class LocalDB {
     // Get the product_ids which we have stored in sharedPreferences before
     String? purchase = sharedPreferences.getString(productIds);
     return purchase;
+  }
+
+  // save the user login date time
+  static Future<void> saveLoginTime(String dateTime) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // storing the  date time when the user login successfully
+    sharedPreferences.setString(loginDateTime, dateTime);
+  }
+
+  // get the user login Time Difference status
+  static Future<bool> get isLoginTimeExpired async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // get the last login time
+    String? lastLoginTime = sharedPreferences.getString(loginDateTime);
+    if (lastLoginTime != null) {
+      // calculating the difference of 3 days
+      var difference =
+          DateTime.now().difference(DateTime.parse(lastLoginTime)).inDays;
+      if (difference > 3) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 }
