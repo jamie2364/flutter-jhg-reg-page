@@ -2,11 +2,14 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_in_store_app_version_checker/flutter_in_store_app_version_checker.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
+import 'package:reg_page/src/update_popup_dialog.dart';
 
 class UserSession {
   int urlPos;
@@ -44,8 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    routes();
-    animate();
+    checkVersion();
   }
 
   double logoSize = 1;
@@ -55,6 +57,33 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(() {
         logoSize = 1.1;
       });
+    });
+  }
+
+  final _checker = InStoreAppVersionChecker();
+
+  void checkVersion() async {
+    _checker.checkUpdate().then((value) {
+      if (kDebugMode) {
+        print(value.appURL);
+        print(value.canUpdate); // Return true if update is available
+        print(value.currentVersion); // Return current app version
+        print(value
+            .errorMessage); // Return error message if found else it will return null
+        print(value.newVersion); // Return the new app version
+      } // Return the app url
+
+      if (value.canUpdate) {
+        updatePopupDialog(
+          context,
+          Constant.newUpdateAvailable,
+          Constant.newUpdateAvailableDescription,
+          value,
+        );
+      } else {
+        routes();
+        animate();
+      }
     });
   }
 
@@ -111,7 +140,7 @@ class _SplashScreenState extends State<SplashScreen> {
             {
               "product_ids": productId,
             });
-      //  print("response is ${response?.data}");
+        //  print("response is ${response?.data}");
         if (response == null) {
           if (await LocalDB.isLoginTimeExpired) {
             elseFunction();

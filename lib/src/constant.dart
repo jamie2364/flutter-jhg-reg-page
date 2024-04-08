@@ -37,6 +37,7 @@ class Constant {
   static const String media = 'MEDIA';
   static const String link = 'LINK';
   static const String close = 'Close';
+  static const String update = 'UPDATE';
   static const String emailAnd = 'EMAIL &';
   static const String messages = 'MESSAGES';
   static const String emailDescription =
@@ -83,7 +84,9 @@ class Constant {
   static const String restoreNotFound = 'Nothing to restore!';
   static const String restoreNotFoundDescription =
       'Sorry, we have found no previous\npurchases from you!';
-
+  static const String newUpdateAvailable = 'New Update Available';
+  static const String newUpdateAvailableDescription =
+      'New update is available please update the app to enjoy new features!';
   static const String continueText = 'Continue';
   static const String emailPasswordInCorrect =
       'Your username or password is incorrect!';
@@ -93,5 +96,5 @@ class Constant {
 
   static const String productIdsFailedMessage =
       'Sorry, Something went wrong, please try again.';
-  static const String done ='Done';
+  static const String done = 'Done';
 }

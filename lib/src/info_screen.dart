@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/report_a_bug.dart'; // Import your ReportABugScreen here
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
