@@ -118,6 +118,7 @@ class _BugReportPageState extends State<BugReportPage> {
                     fontSize: 32.0,
                     fontWeight: FontWeight.bold,
                     color: AppColor.primaryRed,
+                      fontFamily: Constant.kFontFamilySS3
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -136,6 +137,7 @@ class _BugReportPageState extends State<BugReportPage> {
                         style: TextStyle(
                           fontSize: 16.0,
                           color: Colors.white,
+                            fontFamily: Constant.kFontFamilySS3
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -184,6 +186,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               style: const TextStyle(
                                 fontSize: 14.0,
                                 color: Colors.white,
+                                  fontFamily: Constant.kFontFamilySS3
                               ),
                             ),
                           ),
@@ -224,6 +227,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 18.0,
+                                  fontFamily: Constant.kFontFamilySS3
                               ),
                             ),
                           ),
@@ -263,6 +267,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                       color: AppColor.primaryWhite,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
+                                        fontFamily: Constant.kFontFamilySS3
                                     ),
                                   ),
                                 ),

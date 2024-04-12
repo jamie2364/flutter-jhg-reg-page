@@ -385,6 +385,7 @@ class _WelcomeState extends State<Welcome> {
                               color: AppColor.primaryWhite,
                               fontSize: 18,
                               fontWeight: FontWeight.w400,
+                              fontFamily: Constant.kFontFamilySS3
                             ),
                           ),
                           Text(
@@ -393,6 +394,7 @@ class _WelcomeState extends State<Welcome> {
                               color: AppColor.primaryWhite,
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
+                                fontFamily: Constant.kFontFamilySS3
                             ),
                           ),
                         ],
@@ -448,6 +450,7 @@ class _WelcomeState extends State<Welcome> {
                           color: AppColor.secondaryWhite,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
+                            fontFamily: Constant.kFontFamilySS3
                         ),
                       ),
 
@@ -497,6 +500,7 @@ class _WelcomeState extends State<Welcome> {
                                           color: AppColor.primaryWhite,
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
+                                            fontFamily: Constant.kFontFamilySS3
                                         ),
                                       ),
                                       Container(
@@ -536,6 +540,7 @@ class _WelcomeState extends State<Welcome> {
                                               color: AppColor.secondaryWhite,
                                               fontSize: 14,
                                               fontWeight: FontWeight.w400,
+                                                fontFamily: Constant.kFontFamilySS3
                                             ),
                                           ),
                                           Divider(
@@ -555,7 +560,8 @@ class _WelcomeState extends State<Welcome> {
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
                                                 decoration: TextDecoration
-                                                    .underline, // Add underline to indicate it's clickable
+                                                    .underline,
+                                                  fontFamily: Constant.kFontFamilySS3// Add underline to indicate it's clickable
                                               ),
                                             ),
                                           )
@@ -617,6 +623,7 @@ class _WelcomeState extends State<Welcome> {
                                                 color: AppColor.primaryWhite,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w600,
+                                                  fontFamily: Constant.kFontFamilySS3
                                               ),
                                             ),
                                           ],
@@ -658,6 +665,7 @@ class _WelcomeState extends State<Welcome> {
                                                 color: AppColor.secondaryWhite,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
+                                                  fontFamily: Constant.kFontFamilySS3
                                               ),
                                             ),
                                             Divider(
@@ -678,6 +686,7 @@ class _WelcomeState extends State<Welcome> {
                                                   fontWeight: FontWeight.w400,
                                                   decoration: TextDecoration
                                                       .underline, // Add underline to indicate it's clickable
+                                                    fontFamily: Constant.kFontFamilySS3
                                                 ),
                                               ),
                                             )
@@ -705,6 +714,7 @@ class _WelcomeState extends State<Welcome> {
                               color: AppColor.primaryWhite,
                               fontSize: 16,
                               fontWeight: FontWeight.w300,
+                                fontFamily: Constant.kFontFamilySS3
                             ),
                           ),
                           GestureDetector(
@@ -718,6 +728,7 @@ class _WelcomeState extends State<Welcome> {
                                 color: AppColor.primaryWhite,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
+                                  fontFamily: Constant.kFontFamilySS3
                               ),
                             ),
                           ),

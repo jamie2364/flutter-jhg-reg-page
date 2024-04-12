@@ -76,6 +76,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                       color: AppColor.primaryWhite,
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
+                        fontFamily: Constant.kFontFamilySS3
                     ),
                   ),
                   SizedBox(
@@ -87,6 +88,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                       color: AppColor.greySecondary,
                       fontSize: 14,
                       fontWeight: FontWeight.w400,
+                        fontFamily: Constant.kFontFamilySS3
                     ),
                   ),
                   SizedBox(
@@ -127,6 +129,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                                     color: AppColor.greySecondary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
+                                      fontFamily: Constant.kFontFamilySS3
                                   ),
                                 ),
                                 Container(
@@ -196,6 +199,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                                     color: AppColor.greySecondary,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w400,
+                                      fontFamily: Constant.kFontFamilySS3
                                   ),
                                 ),
                                 Container(

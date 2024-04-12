@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/src/constant.dart';
 import 'colors.dart';
 
 class Heading extends StatelessWidget {
@@ -12,7 +13,8 @@ class Heading extends StatelessWidget {
       style:  TextStyle(
           color: AppColor.primaryRed,
           fontSize: 36,
-          fontWeight: FontWeight.bold
+          fontWeight: FontWeight.w800,
+          fontFamily: Constant.kFontFamilySS3
       ),
     );
   }

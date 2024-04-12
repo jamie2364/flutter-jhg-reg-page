@@ -159,6 +159,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         color: AppColor.secondaryWhite,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
+                          fontFamily: Constant.kFontFamilySS3
                       ),
                     ),
                   ),
@@ -173,6 +174,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         color: AppColor.secondaryWhite,
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
+                          fontFamily: Constant.kFontFamilySS3
                       ),
                     ),
                   ),
@@ -201,6 +203,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         color: AppColor.secondaryWhite,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
+                          fontFamily: Constant.kFontFamilySS3,
                       ),
                     ),
                   ),
@@ -239,6 +242,7 @@ class AppInfoSection extends StatelessWidget {
               color: AppColor.secondaryWhite,
               fontSize: 14,
               fontWeight: FontWeight.bold,
+                fontFamily: Constant.kFontFamilySS3
             ),
           ),
           Text(
@@ -247,6 +251,7 @@ class AppInfoSection extends StatelessWidget {
               color: AppColor.secondaryWhite,
               fontSize: 14,
               fontWeight: FontWeight.w400,
+                fontFamily: Constant.kFontFamilySS3
             ),
           ),
         ],
@@ -291,6 +296,7 @@ class InfoButtonSection extends StatelessWidget {
                   color: AppColor.secondaryWhite,
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
+                    fontFamily: Constant.kFontFamilySS3
                 ),
               ),
               Icon(

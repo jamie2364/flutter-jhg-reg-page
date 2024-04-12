@@ -35,6 +35,18 @@ flutter:
     - assets/images/jhg_sign.png
     - assets/images/icon_cross.png
     - assets/images/plus.png
+
+  fonts:
+    - family: SourceSans3
+      fonts:
+        - asset: fonts/SourceSans3-Regular.ttf
+        - asset: fonts/SourceSans3-Italic.ttf
+          style: italic
+        - asset: fonts/SourceSans3-Bold.ttf
+          weight: 700
+        - asset: fonts/SourceSans3-SemiBold.ttf
+          weight: 600
+
   # To add assets to your package, add an assets section, like this:
   #
   # For details regarding assets in packages, see

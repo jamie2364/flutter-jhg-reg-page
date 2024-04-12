@@ -64,6 +64,7 @@ restorePopupDialog(
                           color: AppColor.primaryWhite,
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
+                            fontFamily: Constant.kFontFamilySS3
                         ),
                       ),
 
@@ -77,6 +78,7 @@ restorePopupDialog(
                           color: AppColor.greySecondary,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
+                            fontFamily: Constant.kFontFamilySS3
                         ),
                       ),
 
@@ -102,6 +104,7 @@ restorePopupDialog(
                                 color: AppColor.primaryWhite,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
+                                  fontFamily: Constant.kFontFamilySS3
                               ),
                             ),
                           ),

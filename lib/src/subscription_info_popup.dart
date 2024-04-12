@@ -37,7 +37,8 @@ void showWeeklySaveInfoDialog(
                             fontSize: 26,
                             // Adjust the font size as needed
                             fontWeight: FontWeight
-                                .w700 // Adjust the font weight as needed
+                                .w700, // Adjust the font weight as needed
+                            fontFamily: Constant.kFontFamilySS3
                             ),
                       ),
                       SizedBox(
@@ -49,6 +50,7 @@ void showWeeklySaveInfoDialog(
                           color: AppColor.secondaryWhite,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
+                            fontFamily: Constant.kFontFamilySS3
                         ),
                       ),
                       SizedBox(
@@ -113,7 +115,8 @@ void showMonthlySaveInfoDialog(
                               fontSize: 26,
                               // Adjust the font size as needed
                               fontWeight: FontWeight
-                                  .w700 // Adjust the font weight as needed
+                                  .w700, // Adjust the font weight as needed
+                              fontFamily: Constant.kFontFamilySS3
                               ),
                         ),
                         SizedBox(
@@ -125,6 +128,7 @@ void showMonthlySaveInfoDialog(
                             color: AppColor.secondaryWhite,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
+                              fontFamily: Constant.kFontFamilySS3
                           ),
                         ),
                         SizedBox(
@@ -171,6 +175,7 @@ Widget itemFeature(String feature) {
               color: AppColor.secondaryWhite,
               fontSize: 18,
               fontWeight: FontWeight.w600,
+                fontFamily: Constant.kFontFamilySS3
             ),
           ))
         ],

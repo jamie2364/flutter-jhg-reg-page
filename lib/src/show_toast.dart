@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/constant.dart';
 showToast({required BuildContext context, required String message,required bool isError}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text(
@@ -9,6 +10,7 @@ showToast({required BuildContext context, required String message,required bool 
       style:  TextStyle(
         color: AppColor.primaryWhite,
         fontSize: 16,
+          fontFamily: Constant.kFontFamilySS3
       ),
     ),
     backgroundColor: isError ? AppColor.primaryRed : AppColor.primaryGreen,

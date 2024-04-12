@@ -41,6 +41,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordController = TextEditingController();
 
   bool showPassword = true;
+
   onEyeTap() {
     setState(() {
       showPassword = !showPassword;
@@ -359,15 +360,17 @@ class _SignUpState extends State<SignUp> {
                     autovalidateMode: userNameController.text.isNotEmpty
                         ? AutovalidateMode.always
                         : AutovalidateMode.onUserInteraction,
-                    style:
-                        TextStyle(fontSize: 14, color: AppColor.primaryWhite),
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: AppColor.primaryWhite,
+                        fontFamily: Constant.kFontFamilySS3),
                     obscureText: false,
                     inputFormatters: [LengthLimitingTextInputFormatter(50)],
                     decoration: InputDecoration(
                       errorStyle: TextStyle(
-                        fontSize: 12,
-                        color: AppColor.primaryRed,
-                      ),
+                          fontSize: 12,
+                          color: AppColor.primaryRed,
+                          fontFamily: Constant.kFontFamilySS3),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Colors.red.shade500,
@@ -383,10 +386,10 @@ class _SignUpState extends State<SignUp> {
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       hintText: Constant.userNameHint,
                       hintStyle: TextStyle(
-                        fontSize: 14,
-                        color: AppColor.secondaryWhite,
-                        fontWeight: FontWeight.w400,
-                      ),
+                          fontSize: 14,
+                          color: AppColor.secondaryWhite,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: Constant.kFontFamilySS3),
                       contentPadding:
                           const EdgeInsets.only(left: 16.0, bottom: 12.0),
                     ),
@@ -407,8 +410,10 @@ class _SignUpState extends State<SignUp> {
                       autovalidateMode: passwordController.text.isNotEmpty
                           ? AutovalidateMode.always
                           : AutovalidateMode.onUserInteraction,
-                      style:
-                          TextStyle(fontSize: 14, color: AppColor.primaryWhite),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: AppColor.primaryWhite,
+                          fontFamily: Constant.kFontFamilySS3),
                       obscureText: showPassword,
                       inputFormatters: [LengthLimitingTextInputFormatter(50)],
                       decoration: InputDecoration(
@@ -424,9 +429,9 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                         errorStyle: TextStyle(
-                          fontSize: 12,
-                          color: AppColor.primaryRed,
-                        ),
+                            fontSize: 12,
+                            color: AppColor.primaryRed,
+                            fontFamily: Constant.kFontFamilySS3),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.red.shade500,
@@ -442,10 +447,10 @@ class _SignUpState extends State<SignUp> {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         hintText: Constant.passwordHint,
                         hintStyle: TextStyle(
-                          fontSize: 14,
-                          color: AppColor.secondaryWhite,
-                          fontWeight: FontWeight.w400,
-                        ),
+                            fontSize: 14,
+                            color: AppColor.secondaryWhite,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: Constant.kFontFamilySS3),
                         contentPadding: const EdgeInsets.only(left: 16.0),
                       )),
 

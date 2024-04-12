@@ -93,5 +93,7 @@ class Constant {
 
   static const String productIdsFailedMessage =
       'Sorry, Something went wrong, please try again.';
-  static const String done ='Done';
+  static const String done = 'Done';
+
+  static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
 }
