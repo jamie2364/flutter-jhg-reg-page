@@ -63,8 +63,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         },
                         child: Icon(
                           Icons.arrow_back_ios,
-                          color: AppColor.secondaryWhite,
-                          size: width * 0.050,
+                          color: AppColor.primaryWhite,
+                          size: width * 0.060,
                         ),
                       ),
                       // Swap the positions of the Report a Bug icon and text

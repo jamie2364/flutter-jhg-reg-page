@@ -559,8 +559,6 @@ class _WelcomeState extends State<Welcome> {
                                                 color: AppColor.primaryRed,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400,
-                                                decoration: TextDecoration
-                                                    .underline,
                                                   fontFamily: Constant.kFontFamilySS3// Add underline to indicate it's clickable
                                               ),
                                             ),
@@ -684,8 +682,6 @@ class _WelcomeState extends State<Welcome> {
                                                   color: AppColor.primaryRed,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  decoration: TextDecoration
-                                                      .underline, // Add underline to indicate it's clickable
                                                     fontFamily: Constant.kFontFamilySS3
                                                 ),
                                               ),
