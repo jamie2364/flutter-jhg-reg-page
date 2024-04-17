@@ -16,4 +16,5 @@ class AppColor {
   static Color greyPrimary = const Color.fromRGBO(67, 67, 67, 1);
   static Color greySecondary = const Color.fromRGBO(192, 192, 196, 1);
   static const Color charcol = Color(0xFF434343);
+  static const Color dialogBackground = Color(0xff363636);
 }

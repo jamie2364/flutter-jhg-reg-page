@@ -13,7 +13,7 @@ void showWeeklySaveInfoDialog(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(12.0))),
         surfaceTintColor: Colors.transparent,
-        backgroundColor: AppColor.charcol,
+        backgroundColor: AppColor.dialogBackground,
         shadowColor: Theme.of(context).shadowColor,
         insetPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 32),
         contentPadding:
@@ -21,15 +21,28 @@ void showWeeklySaveInfoDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(
+              height: height * 0.02,
+            ),
+            Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(
+                  Icons.close,
+                  color: Color(0xFFE0E0E0),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: height * 0.02,
+            ),
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(bottom: height * 0.04),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
                       Text(
                         "Annual Subscription",
                         style: TextStyle(
@@ -90,7 +103,7 @@ void showMonthlySaveInfoDialog(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12.0))),
           surfaceTintColor: Colors.transparent,
-          backgroundColor: AppColor.charcol,
+          backgroundColor: AppColor.dialogBackground,
           shadowColor: Theme.of(context).shadowColor,
           insetPadding:
               const EdgeInsets.symmetric(horizontal: 14, vertical: 32),
@@ -99,15 +112,28 @@ void showMonthlySaveInfoDialog(
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              SizedBox(
+                height: height * 0.02,
+              ),
+              Align(
+                alignment: Alignment.topRight,
+                child: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: const Icon(
+                    Icons.close,
+                    color: Color(0xFFE0E0E0),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: height * 0.02,
+              ),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(bottom: height * 0.04),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        SizedBox(
-                          height: height * 0.04,
-                        ),
                         Text(
                           "Monthly Subscription",
                           style: TextStyle(
