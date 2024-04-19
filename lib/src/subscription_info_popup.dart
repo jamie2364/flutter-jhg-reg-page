@@ -17,7 +17,7 @@ void showWeeklySaveInfoDialog(
         shadowColor: Theme.of(context).shadowColor,
         insetPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 32),
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 50, vertical: 32),
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
