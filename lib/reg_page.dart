@@ -10,3 +10,4 @@ export 'src/login_model.dart';
 export 'src/splash.dart';
 export 'src/report_a_bug.dart';
 export 'src/strings_download_service.dart';
+export 'src/assets_utils.dart';
