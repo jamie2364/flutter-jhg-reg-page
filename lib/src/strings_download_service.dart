@@ -94,14 +94,15 @@ class StringsDownloadService {
 // Extract the contents of the Zip archive to disk.
     for (final file in archive) {
       final filename = file.name;
+      final updatedFileName = filename.replaceFirst("$appName/", '');
       if (file.isFile) {
         final data = file.content as List<int>;
-        File("${dir!.path}/assets/${filename.replaceFirst("$appName/", '')}")
+        File("${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
           ..createSync(recursive: true)
           ..writeAsBytesSync(data);
       } else {
         Directory(
-                "${dir!.path}/assets/${filename.replaceFirst("$appName/", '')}")
+                "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
             .create(recursive: true);
       }
     }
