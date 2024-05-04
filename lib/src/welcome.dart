@@ -11,8 +11,9 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/info_screen.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:reg_page/src/subcription_url_screen.dart';
-import 'constant.dart';
+
 import 'colors.dart';
+import 'constant.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 import 'subscription_info_popup.dart';
@@ -169,7 +170,7 @@ class _WelcomeState extends State<Welcome> {
 
   listenToPurchase(List<PurchaseDetails> purchaseDetailsList) {
     print("list");
-    print("PList :${purchaseDetailsList}");
+    print("PList :$purchaseDetailsList");
 
     if (purchaseDetailsList.isEmpty) {
       restorePopupDialog(context, Constant.restoreNotFound,
@@ -382,20 +383,18 @@ class _WelcomeState extends State<Welcome> {
                           Text(
                             Constant.welcomeDescription,
                             style: TextStyle(
-                              color: AppColor.primaryWhite,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: Constant.kFontFamilySS3
-                            ),
+                                color: AppColor.primaryWhite,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                fontFamily: Constant.kFontFamilySS3),
                           ),
                           Text(
                             replaceAppName(),
                             style: TextStyle(
-                              color: AppColor.primaryWhite,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700,
-                                fontFamily: Constant.kFontFamilySS3
-                            ),
+                                color: AppColor.primaryWhite,
+                                fontSize: 30,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: Constant.kFontFamilySS3),
                           ),
                         ],
                       ),
@@ -447,11 +446,10 @@ class _WelcomeState extends State<Welcome> {
                       Text(
                         Constant.pleaseChoosePlan,
                         style: TextStyle(
-                          color: AppColor.secondaryWhite,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                            fontFamily: Constant.kFontFamilySS3
-                        ),
+                            color: AppColor.secondaryWhite,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: Constant.kFontFamilySS3),
                       ),
 
                       // SPACER
@@ -497,11 +495,11 @@ class _WelcomeState extends State<Welcome> {
                                         Constant.annualPlan,
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
-                                          color: AppColor.primaryWhite,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                            fontFamily: Constant.kFontFamilySS3
-                                        ),
+                                            color: AppColor.primaryWhite,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily:
+                                                Constant.kFontFamilySS3),
                                       ),
                                       Container(
                                         height: height * 0.027,
@@ -537,11 +535,11 @@ class _WelcomeState extends State<Welcome> {
                                             "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                              color: AppColor.secondaryWhite,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w400,
-                                                fontFamily: Constant.kFontFamilySS3
-                                            ),
+                                                color: AppColor.secondaryWhite,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily:
+                                                    Constant.kFontFamilySS3),
                                           ),
                                           Divider(
                                             color: AppColor.secondaryWhite,
@@ -556,11 +554,12 @@ class _WelcomeState extends State<Welcome> {
                                             child: Text(
                                               Constant.weeklySave,
                                               style: TextStyle(
-                                                color: AppColor.primaryRed,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                  fontFamily: Constant.kFontFamilySS3// Add underline to indicate it's clickable
-                                              ),
+                                                  color: AppColor.primaryRed,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: Constant
+                                                      .kFontFamilySS3 // Add underline to indicate it's clickable
+                                                  ),
                                             ),
                                           )
                                         ],
@@ -618,11 +617,11 @@ class _WelcomeState extends State<Welcome> {
                                               Constant.monthlyPlan,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: AppColor.primaryWhite,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                  fontFamily: Constant.kFontFamilySS3
-                                              ),
+                                                  color: AppColor.primaryWhite,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      Constant.kFontFamilySS3),
                                             ),
                                           ],
                                         ),
@@ -660,11 +659,12 @@ class _WelcomeState extends State<Welcome> {
                                               "$monthlyPrice ${Constant.perMonth}, renews automatically",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: AppColor.secondaryWhite,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                  fontFamily: Constant.kFontFamilySS3
-                                              ),
+                                                  color:
+                                                      AppColor.secondaryWhite,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily:
+                                                      Constant.kFontFamilySS3),
                                             ),
                                             Divider(
                                               color: AppColor.secondaryWhite,
@@ -679,11 +679,11 @@ class _WelcomeState extends State<Welcome> {
                                               child: Text(
                                                 Constant.weeklySave,
                                                 style: TextStyle(
-                                                  color: AppColor.primaryRed,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                    fontFamily: Constant.kFontFamilySS3
-                                                ),
+                                                    color: AppColor.primaryRed,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: Constant
+                                                        .kFontFamilySS3),
                                               ),
                                             )
                                           ],
@@ -707,11 +707,10 @@ class _WelcomeState extends State<Welcome> {
                             Constant.alreadySubscribed,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                              color: AppColor.primaryWhite,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w300,
-                                fontFamily: Constant.kFontFamilySS3
-                            ),
+                                color: AppColor.primaryWhite,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w300,
+                                fontFamily: Constant.kFontFamilySS3),
                           ),
                           GestureDetector(
                             onTap: () {
@@ -721,11 +720,10 @@ class _WelcomeState extends State<Welcome> {
                               Constant.logIn,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: AppColor.primaryWhite,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                                  fontFamily: Constant.kFontFamilySS3
-                              ),
+                                  color: AppColor.primaryWhite,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: Constant.kFontFamilySS3),
                             ),
                           ),
                         ],
@@ -756,7 +754,7 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void launchNextPage() {
-    if (widget.appName.toLowerCase().contains("evolo")) {
+    if (widget.appName.contains("Practice Routines")) {
       Navigator.push(
         context,
         MaterialPageRoute(
