@@ -34,7 +34,7 @@ class StringsDownloadService {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
         max: 100,
-        msg: 'Downloading Strings audio',
+        msg: 'Downloading Audio Files',
         backgroundColor: AppColor.dialogBackground,
         surfaceTintColor: AppColor.dialogBackground,
         progressBgColor: AppColor.secondaryWhite,
@@ -53,7 +53,7 @@ class StringsDownloadService {
         if (progress == 100) {
           showToast(
               context: context,
-              message: "Strings audio downloaded",
+              message: "Audio files downloaded",
               isError: false);
           extractFiles(appName);
         }

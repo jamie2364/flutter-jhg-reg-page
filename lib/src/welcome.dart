@@ -356,7 +356,7 @@ class _WelcomeState extends State<Welcome> {
                     Positioned(
                       child: Container(
                         width: width,
-                        height: height * 0.44,
+                        height: height * 0.46,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
