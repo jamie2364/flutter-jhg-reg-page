@@ -192,7 +192,7 @@ Widget itemFeature(String feature) {
               width: 17,
               height: 17,
               child: Image.asset("assets/images/plus.png",
-                  package: 'reg_page', fit: BoxFit.cover)),
+                  package: 'reg_page', fit: BoxFit.cover,color: AppColor.primaryRed,)),
           const SizedBox(width: 15),
           Expanded(
               child: Text(

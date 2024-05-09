@@ -9,7 +9,7 @@ class AppColor {
   static Color primaryWhite = Colors.white;
   static Color secondaryWhite = Colors.white70;
 
-  static Color primaryRed = const Color(0xFFFE5D43);
+  static Color primaryRed = const Color(0xFFEB684E);
 
   static Color primaryGreen = const Color(0xFF6BCB75);
 

@@ -373,7 +373,7 @@ class _SignUpState extends State<SignUp> {
                           fontFamily: Constant.kFontFamilySS3),
                       focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                          color: Colors.red.shade500,
+                          color: AppColor.primaryRed,
                           width: 2.0, // Thickness when selected
                         ),
                       ),
@@ -434,7 +434,7 @@ class _SignUpState extends State<SignUp> {
                             fontFamily: Constant.kFontFamilySS3),
                         focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Colors.red.shade500,
+                            color: AppColor.primaryRed,
                             width: 2.0, // Thickness when selected
                           ),
                         ),
