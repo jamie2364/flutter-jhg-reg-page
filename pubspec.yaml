@@ -12,8 +12,8 @@ dependencies:
     sdk: flutter
   shared_preferences: ^2.2.1
   dio: ^5.3.3
-  connectivity_plus: ^5.0.2
-  internet_connection_checker: ^1.0.0+1
+  connectivity_plus: ^6.0.3
+  internet_connection_checker_plus: ^2.3.0
   in_app_purchase: ^3.1.11
   url_launcher: ^6.2.1
   sn_progress_dialog: ^1.1.4
