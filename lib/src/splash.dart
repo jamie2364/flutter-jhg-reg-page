@@ -9,12 +9,15 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
 
 class UserSession {
-  int urlPos;
+  String url;
   String token;
-
+  int userId;
+  String userName;
   UserSession({
-    required this.urlPos,
+    required this.url,
     required this.token,
+    required this.userId,
+    required this.userName,
   });
 }
 
@@ -34,7 +37,8 @@ class SplashScreen extends StatefulWidget {
   final String appVersion;
   final List<String> featuresList;
   final Widget Function() nextPage;
-  static UserSession session = UserSession(urlPos: 2, token: '');
+  static UserSession session =
+      UserSession(url: 'jhg', token: '', userId: -1, userName: '');
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -77,14 +81,18 @@ class _SplashScreenState extends State<SplashScreen> {
       }
 
       String? token = await LocalDB.getBearerToken;
+      int? userId = await LocalDB.getUserId;
       final url = await LocalDB.getBaseurl;
+      final uName = await LocalDB.getUserName;
       SplashScreen.session = UserSession(
-          urlPos: url != null
+          url: url != null
               ? url.contains('evolo')
-                  ? 1
-                  : 2
-              : 0,
-          token: token ?? '');
+                  ? 'evolo'
+                  : 'jhg'
+              : 'jhg',
+          token: token ?? '',
+          userId: userId ?? -1,
+          userName: uName ?? '');
       if (token == null) {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
@@ -111,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen> {
             {
               "product_ids": productId,
             });
-      //  print("response is ${response?.data}");
+        //  print("response is ${response?.data}");
         if (response == null) {
           if (await LocalDB.isLoginTimeExpired) {
             elseFunction();

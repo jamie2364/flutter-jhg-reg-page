@@ -264,8 +264,10 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
     // ignore: use_build_context_synchronously
     SplashScreen.session = UserSession(
-        urlPos: widget.loginUrl.contains('evolo') ? 1 : 2,
-        token: loginModel.token ?? '');
+        url: widget.loginUrl.contains('evolo') ? 'evolo' : 'jhg',
+        token: loginModel.token ?? '',
+        userId: loginModel.userId ?? -1,
+        userName: loginModel.userNicename ?? '');
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
       return widget.nextPage();
     }), (route) => false);
