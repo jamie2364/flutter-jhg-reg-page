@@ -131,7 +131,6 @@ class _WelcomeState extends State<Welcome> {
     ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(variant);
     print("VARIANT IS $variant");
-
     if (productDetailsResponse.error == null) {
       products = productDetailsResponse.productDetails;
       debugPrint("$products");

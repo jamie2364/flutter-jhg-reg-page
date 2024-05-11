@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/report_a_bug.dart'; // Import your ReportABugScreen here
@@ -103,7 +105,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: height * 0.050,
+                    height: height * 0.030,
                   ),
                   AppInfoSection(
                     title: Constant.appName,
@@ -117,7 +119,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     subtitle: widget.appVersion,
                   ),
                   SizedBox(
-                    height: height * 0.050,
+                    height: height * 0.030,
                   ),
                   InfoButtonSection(
                     title: Constant.viewPrivacyPolicy,
@@ -141,6 +143,13 @@ class _InfoScreenState extends State<InfoScreen> {
                       );
                     },
                   ),
+                  Platform.isAndroid ?
+                  InfoButtonSection(
+                    title: Constant.cancelSubscription,
+                    onPressed: () {
+                      _launchUrl(Constant.cancelSubscriptionUrl);
+                    },
+                  ):const SizedBox(),
                   InfoButtonSection(
                     title: Constant.visitJamieHarrisonGuitar,
                     onPressed: () {

@@ -18,6 +18,7 @@ class Constant {
       'https://www.Jamieharrisonguitar.com/terms-of-service';
   static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://www.evolo.app/';
+  static const String cancelSubscriptionUrl = 'https://play.google.com/store/account/subscriptions';
 
   static const String evoloBaseUrl =
       'https://www.evolo.app/wp-json/jwt-auth/v1/token';
@@ -64,6 +65,7 @@ class Constant {
   static const String restorePurchases = 'Restore Purchases';
   static const String williamShakespeare = 'William Shakespeare';
   static const String visitJamieHarrisonGuitar = 'Visit Jamie Harrison Guitar';
+  static const String cancelSubscription = 'Cancel Subscription';
   static const String renewMonthlyText =
       'Renews automatically every month.\n Cancel anytime';
   static const String chooseYourSubscriptionText = 'Choose your subscription';
