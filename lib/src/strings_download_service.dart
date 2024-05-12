@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
@@ -35,6 +36,7 @@ class StringsDownloadService {
     pd.show(
         max: 100,
         msg: 'Downloading Audio Files',
+        barrierColor: Colors.black87,
         backgroundColor: AppColor.dialogBackground,
         surfaceTintColor: AppColor.dialogBackground,
         progressBgColor: AppColor.secondaryWhite,
