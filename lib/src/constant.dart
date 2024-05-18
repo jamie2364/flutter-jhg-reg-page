@@ -18,7 +18,8 @@ class Constant {
       'https://www.Jamieharrisonguitar.com/terms-of-service';
   static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://www.evolo.app/';
-  static const String cancelSubscriptionUrl = 'https://play.google.com/store/account/subscriptions';
+  static const String cancelSubscriptionUrl =
+      'https://play.google.com/store/account/subscriptions';
 
   static const String evoloBaseUrl =
       'https://www.evolo.app/wp-json/jwt-auth/v1/token';
@@ -50,6 +51,12 @@ class Constant {
   static const String pleaseChoosePlan =
       'Please choose a plan below to get started';
   static const String annualPlan = 'Annual Plan';
+  static const String freeWithAds = 'Free Plan';
+  // static const String freeWithAdsSubtitle = 'Enjoy the app for free with ads';
+  static const String freeWithAdsSubtitle =
+      'Enjoy limited use of the app for free with ads';
+  static const String freeWithAdsNote =
+      'Experience all the features of our app at no cost, supported by mobile advertisements.';
   static const String oneWeekFree = '7 days free, then ';
   static const String perYear = 'per year';
   static const String perMonth = 'per month';

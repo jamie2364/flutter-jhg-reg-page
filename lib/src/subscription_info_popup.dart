@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
+
 import 'colors.dart';
 
 void showWeeklySaveInfoDialog(
-    BuildContext context, String? price, List<String> featuresList) {
+    BuildContext context, String? price, List<String> featuresList,
+    {String? label, String? desc}) {
   final height = MediaQuery.of(context).size.height;
   showDialog(
     context: context,
@@ -44,27 +46,26 @@ void showWeeklySaveInfoDialog(
                   child: Column(
                     children: [
                       Text(
-                        "Annual Subscription",
+                        label ?? "Annual Subscription",
                         style: TextStyle(
                             color: AppColor.secondaryWhite,
                             fontSize: 26,
                             // Adjust the font size as needed
                             fontWeight: FontWeight
                                 .w700, // Adjust the font weight as needed
-                            fontFamily: Constant.kFontFamilySS3
-                            ),
+                            fontFamily: Constant.kFontFamilySS3),
                       ),
                       SizedBox(
                         height: height * 0.04,
                       ),
                       Text(
-                        "Get a free trial for 7 days, after which you will be automatically charged $price. You will then be charged this amount each year, starting from your initial payment. You may cancel your subscription at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment. For this price, you will receive unlimited and unrestricted access to all features the app, the ability to report issues within the app, and full customer support.",
+                        desc ??
+                            "Get a free trial for 7 days, after which you will be automatically charged $price. You will then be charged this amount each year, starting from your initial payment. You may cancel your subscription at any time during the trial period, or anytime after. Upon cancellation, your subscription will remain active for one year after your previous payment. For this price, you will receive unlimited and unrestricted access to all features the app, the ability to report issues within the app, and full customer support.",
                         style: TextStyle(
-                          color: AppColor.secondaryWhite,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                            fontFamily: Constant.kFontFamilySS3
-                        ),
+                            color: AppColor.secondaryWhite,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: Constant.kFontFamilySS3),
                       ),
                       SizedBox(
                         height: height * 0.03,
@@ -142,8 +143,7 @@ void showMonthlySaveInfoDialog(
                               // Adjust the font size as needed
                               fontWeight: FontWeight
                                   .w700, // Adjust the font weight as needed
-                              fontFamily: Constant.kFontFamilySS3
-                              ),
+                              fontFamily: Constant.kFontFamilySS3),
                         ),
                         SizedBox(
                           height: height * 0.04,
@@ -151,11 +151,10 @@ void showMonthlySaveInfoDialog(
                         Text(
                           "Monthly plan will start immediately and renews automatically every month.\nCancel anytime. For this price, you will receive unlimited and unrestricted access to all features the app, the ability to report issues within the app, and full customer support.",
                           style: TextStyle(
-                            color: AppColor.secondaryWhite,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                              fontFamily: Constant.kFontFamilySS3
-                          ),
+                              color: AppColor.secondaryWhite,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: Constant.kFontFamilySS3),
                         ),
                         SizedBox(
                           height: height * 0.03,
@@ -191,18 +190,21 @@ Widget itemFeature(String feature) {
           SizedBox(
               width: 17,
               height: 17,
-              child: Image.asset("assets/images/plus.png",
-                  package: 'reg_page', fit: BoxFit.cover,color: AppColor.primaryRed,)),
+              child: Image.asset(
+                "assets/images/plus.png",
+                package: 'reg_page',
+                fit: BoxFit.cover,
+                color: AppColor.primaryRed,
+              )),
           const SizedBox(width: 15),
           Expanded(
               child: Text(
             feature,
             style: TextStyle(
-              color: AppColor.secondaryWhite,
-              fontSize: 18,
-              fontWeight: FontWeight.w600,
-                fontFamily: Constant.kFontFamilySS3
-            ),
+                color: AppColor.secondaryWhite,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                fontFamily: Constant.kFontFamilySS3),
           ))
         ],
       ));

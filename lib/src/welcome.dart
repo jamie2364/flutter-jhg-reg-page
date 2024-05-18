@@ -57,7 +57,7 @@ class _WelcomeState extends State<Welcome> {
     super.initState();
   }
 
-  int selectedPlan = 1;
+  int selectedPlan = 0;
 
   onPlanSelect(int plan) {
     setState(() {
@@ -373,7 +373,8 @@ class _WelcomeState extends State<Welcome> {
                     // WELCOME TEXT WITH APP NAME
                     Positioned(
                       left: width * 0.05,
-                      bottom: 0, // Adjust the bottom value to move it downwards
+                      bottom:
+                          20, // Adjust the bottom value to move it downwards
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,9 +438,9 @@ class _WelcomeState extends State<Welcome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // SPACER
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
+                      // SizedBox(
+                      //   height: height * 0.02,
+                      // ),
 
                       // PLEASE CHOOSE TEXT
                       Text(
@@ -455,125 +456,131 @@ class _WelcomeState extends State<Welcome> {
                       SizedBox(
                         height: height * 0.02,
                       ),
-
-                      // ANNUAL PLAN BUTTON
-
-                      Center(
-                        child: GestureDetector(
-                          onTap: () {
-                            onPlanSelect(1);
-                          },
-                          child: Container(
-                            height: selectedPlan == 1
-                                ? height * 0.13
-                                : height * 0.06,
-                            width: width * 0.85,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: selectedPlan == 1
-                                    ? AppColor.primaryRed
-                                    : AppColor.primaryWhite,
-                                width: 1.5,
+                      //FREE WITH ADS
+                      if (!widget.appName.contains("Practice Routines"))
+                        Center(
+                          child: GestureDetector(
+                            onTap: () {
+                              onPlanSelect(0);
+                            },
+                            child: Container(
+                              height: selectedPlan == 0
+                                  ? height * 0.13
+                                  : height * 0.06,
+                              width: width * 0.85,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: selectedPlan == 0
+                                      ? AppColor.primaryRed
+                                      : AppColor.primaryWhite,
+                                  width: 1.5,
+                                ),
+                                color: AppColor.primaryBlack,
                               ),
-                              color: AppColor.primaryBlack,
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: width * 0.050,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        Constant.annualPlan,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: AppColor.primaryWhite,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily:
-                                                Constant.kFontFamilySS3),
-                                      ),
-                                      Container(
-                                        height: height * 0.027,
-                                        width: height * 0.027,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: selectedPlan == 1
-                                              ? AppColor.primaryRed
-                                              : AppColor.primaryBlack,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            color: selectedPlan == 1
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.050,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          Constant.freeWithAds,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: AppColor.primaryWhite,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily:
+                                                  Constant.kFontFamilySS3),
+                                        ),
+                                        Container(
+                                          height: height * 0.027,
+                                          width: height * 0.027,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: selectedPlan == 0
                                                 ? AppColor.primaryRed
-                                                : AppColor.primaryWhite,
-                                            width: 1.8,
+                                                : AppColor.primaryBlack,
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: selectedPlan == 0
+                                                  ? AppColor.primaryRed
+                                                  : AppColor.primaryWhite,
+                                              width: 1.8,
+                                            ),
                                           ),
-                                        ),
-                                        child: Icon(
-                                          Icons.done,
-                                          color: AppColor.primaryBlack,
-                                          size: width * 0.04,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Visibility(
-                                      visible: selectedPlan == 1,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: AppColor.secondaryWhite,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily:
-                                                    Constant.kFontFamilySS3),
+                                          child: Icon(
+                                            Icons.done,
+                                            color: AppColor.primaryBlack,
+                                            size: width * 0.04,
                                           ),
-                                          Divider(
-                                            color: AppColor.secondaryWhite,
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              showWeeklySaveInfoDialog(
-                                                  context,
-                                                  yearlyPrice,
-                                                  widget.featuresList);
-                                            },
-                                            child: Text(
-                                              Constant.weeklySave,
+                                        )
+                                      ],
+                                    ),
+                                    Visibility(
+                                        visible: selectedPlan == 0,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              Constant.freeWithAdsSubtitle,
+                                              overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                  color: AppColor.primaryRed,
+                                                  color:
+                                                      AppColor.secondaryWhite,
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w400,
-                                                  fontFamily: Constant
-                                                      .kFontFamilySS3 // Add underline to indicate it's clickable
-                                                  ),
+                                                  fontFamily:
+                                                      Constant.kFontFamilySS3),
                                             ),
-                                          )
-                                        ],
-                                      ))
-                                ],
+                                            Divider(
+                                              color: AppColor.secondaryWhite,
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                showWeeklySaveInfoDialog(
+                                                    context,
+                                                    yearlyPrice,
+                                                    widget.featuresList,
+                                                    label: Constant.freeWithAds,
+                                                    desc: Constant
+                                                        .freeWithAdsNote);
+                                              },
+                                              child: Text(
+                                                Constant.weeklySave,
+                                                style: TextStyle(
+                                                    color: AppColor.primaryRed,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: Constant
+                                                        .kFontFamilySS3 // Add underline to indicate it's clickable
+                                                    ),
+                                              ),
+                                            )
+                                          ],
+                                        ))
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
 
                       // SPACER
-                      SizedBox(
-                        height: height * 0.03,
-                      ),
+                      if (!widget.appName.contains("Practice Routines"))
+                        SizedBox(
+                          height: height * 0.03,
+                        ),
+
+                      // ANNUAL PLAN BUTTON
 
                       // MONTHLY PLAN BUTTON
                       Center(
@@ -698,6 +705,123 @@ class _WelcomeState extends State<Welcome> {
                         height: height * 0.02,
                       ),
 
+                      Center(
+                        child: GestureDetector(
+                          onTap: () {
+                            onPlanSelect(1);
+                          },
+                          child: Container(
+                            height: selectedPlan == 1
+                                ? height * 0.13
+                                : height * 0.06,
+                            width: width * 0.85,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: selectedPlan == 1
+                                    ? AppColor.primaryRed
+                                    : AppColor.primaryWhite,
+                                width: 1.5,
+                              ),
+                              color: AppColor.primaryBlack,
+                            ),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: width * 0.050,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        Constant.annualPlan,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            color: AppColor.primaryWhite,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily:
+                                                Constant.kFontFamilySS3),
+                                      ),
+                                      Container(
+                                        height: height * 0.027,
+                                        width: height * 0.027,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: selectedPlan == 1
+                                              ? AppColor.primaryRed
+                                              : AppColor.primaryBlack,
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            color: selectedPlan == 1
+                                                ? AppColor.primaryRed
+                                                : AppColor.primaryWhite,
+                                            width: 1.8,
+                                          ),
+                                        ),
+                                        child: Icon(
+                                          Icons.done,
+                                          color: AppColor.primaryBlack,
+                                          size: width * 0.04,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Visibility(
+                                      visible: selectedPlan == 1,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: AppColor.secondaryWhite,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily:
+                                                    Constant.kFontFamilySS3),
+                                          ),
+                                          Divider(
+                                            color: AppColor.secondaryWhite,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              showWeeklySaveInfoDialog(
+                                                  context,
+                                                  yearlyPrice,
+                                                  widget.featuresList);
+                                            },
+                                            child: Text(
+                                              Constant.weeklySave,
+                                              style: TextStyle(
+                                                  color: AppColor.primaryRed,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: Constant
+                                                      .kFontFamilySS3 // Add underline to indicate it's clickable
+                                                  ),
+                                            ),
+                                          )
+                                        ],
+                                      ))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // SPACER
+                      SizedBox(
+                        height: height * 0.03,
+                      ),
+
                       // ALREADY SUBSCRIBED AND LOGIN TEXT BUTTON
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -741,6 +865,14 @@ class _WelcomeState extends State<Welcome> {
                         buttonColor: AppColor.primaryRed,
                         textColor: AppColor.primaryWhite,
                         onPressed: () async {
+                          if (selectedPlan == 0) {
+                            LocalDB.setIsFreePlan(true);
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return widget.nextPage();
+                            }), (route) => false);
+                            return;
+                          }
                           await purchaseSubscription(selectedPlan);
                         },
                       ),

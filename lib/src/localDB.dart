@@ -223,4 +223,14 @@ class LocalDB {
       return true;
     }
   }
+
+  static Future<void> setIsFreePlan(bool isFreePlan) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('free_plan', isFreePlan);
+  }
+
+  static Future<bool> getIsFreePlan() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('free_plan')??false;
+  }
 }

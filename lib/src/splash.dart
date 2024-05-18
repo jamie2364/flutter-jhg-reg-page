@@ -79,7 +79,14 @@ class _SplashScreenState extends State<SplashScreen> {
           }
         }
       }
-
+      bool isFreePlan = await LocalDB.getIsFreePlan();
+      // print('is Free Plan $isFreePlan');
+      if (isFreePlan) {
+        print('This user is on free Plan');
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => widget.nextPage()));
+        return;
+      }
       String? token = await LocalDB.getBearerToken;
       int? userId = await LocalDB.getUserId;
       final url = await LocalDB.getBaseurl;
