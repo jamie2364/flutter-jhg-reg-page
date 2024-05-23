@@ -57,7 +57,7 @@ class _WelcomeState extends State<Welcome> {
     super.initState();
   }
 
-  int selectedPlan = 0;
+  int selectedPlan = 2;
 
   onPlanSelect(int plan) {
     setState(() {
