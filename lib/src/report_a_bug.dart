@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:reg_page/reg_page.dart';
 import 'constant.dart';
 import 'colors.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class BugReportPage extends StatefulWidget {
   const BugReportPage({
@@ -92,6 +93,7 @@ class _BugReportPageState extends State<BugReportPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: AppColor.primaryBlack,
       appBar: AppBar(
         title: null,
         backgroundColor: AppColor.primaryBlack,
@@ -101,11 +103,15 @@ class _BugReportPageState extends State<BugReportPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          color: AppColor.primaryBlack,
           height: MediaQuery.sizeOf(context).height,
           width: MediaQuery.sizeOf(context).width,
-          color: AppColor.primaryBlack,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: width * 0.060),
+          alignment:kIsWeb?Alignment.center: Alignment.topLeft,
+          padding: EdgeInsets.symmetric(horizontal: width * 0.060),
+          child: Container(
+            height: MediaQuery.sizeOf(context).height,
+            width: kIsWeb ? MediaQuery.sizeOf(context).width*0.40:MediaQuery.sizeOf(context).width,
+            color: AppColor.primaryBlack,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
@@ -168,9 +174,10 @@ class _BugReportPageState extends State<BugReportPage> {
                       SizedBox(
                         height: height * 0.020,
                       ),
-                      Row(
+                      Row(  
                         children: <Widget>[
-                          Checkbox(
+                          Checkbox.adaptive(
+                            visualDensity: VisualDensity.standard,
                             value: _isChecked,
                             activeColor: AppColor.primaryRed,
                             onChanged: (value) {
@@ -188,6 +195,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                 color: Colors.white,
                                   fontFamily: Constant.kFontFamilySS3
                               ),
+                              textAlign: TextAlign.left,
                             ),
                           ),
                         ],
