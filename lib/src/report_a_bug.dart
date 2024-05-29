@@ -147,7 +147,7 @@ class _BugReportPageState extends State<BugReportPage> {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(
+                      SizedBox(  
                         height: height * 0.025,
                       ),
                       Container(
@@ -174,18 +174,21 @@ class _BugReportPageState extends State<BugReportPage> {
                       SizedBox(
                         height: height * 0.020,
                       ),
-                      Row(  
+                      Row(
                         children: <Widget>[
-                          Checkbox.adaptive(
-                            visualDensity: VisualDensity.standard,
-                            value: _isChecked,
-                            activeColor: AppColor.primaryRed,
-                            onChanged: (value) {
-                              setState(() {
-                                _isChecked = value!;
-                              });
-                            },
-                          ),
+                            Transform.scale(
+                              scale:1.5,
+                              child: Checkbox.adaptive(
+                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                value: _isChecked,
+                                activeColor: AppColor.primaryRed,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _isChecked = value!;
+                                  });
+                                },
+                              ),
+                            ),
                           Flexible(
                             child: Text(
                               'I understand this page is only related to technical issues of ${widget.appName}',
