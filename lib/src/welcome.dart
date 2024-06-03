@@ -454,7 +454,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.02,
+                        height: height * 0.03,
                       ),
                       //FREE WITH ADS
                       if (!widget.appName.contains("Practice Routines"))
@@ -577,7 +577,7 @@ class _WelcomeState extends State<Welcome> {
                       // SPACER
                       if (!widget.appName.contains("Practice Routines"))
                         SizedBox(
-                          height: height * 0.03,
+                          height: height * 0.02,
                         ),
 
                       // ANNUAL PLAN BUTTON
