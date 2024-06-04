@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:reg_page/reg_page.dart';
-import 'constant.dart';
-import 'colors.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
+
+import 'colors.dart';
+import 'constant.dart';
 
 class BugReportPage extends StatefulWidget {
   const BugReportPage({
@@ -106,11 +107,13 @@ class _BugReportPageState extends State<BugReportPage> {
           color: AppColor.primaryBlack,
           height: MediaQuery.sizeOf(context).height,
           width: MediaQuery.sizeOf(context).width,
-          alignment:kIsWeb?Alignment.center: Alignment.topLeft,
+          alignment: kIsWeb ? Alignment.center : Alignment.topLeft,
           padding: EdgeInsets.symmetric(horizontal: width * 0.060),
           child: Container(
             height: MediaQuery.sizeOf(context).height,
-            width: kIsWeb ? MediaQuery.sizeOf(context).width*0.40:MediaQuery.sizeOf(context).width,
+            width: kIsWeb
+                ? MediaQuery.sizeOf(context).width * 0.40
+                : MediaQuery.sizeOf(context).width,
             color: AppColor.primaryBlack,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -121,11 +124,10 @@ class _BugReportPageState extends State<BugReportPage> {
                 Text(
                   'Report an Issue', // Changed headline
                   style: TextStyle(
-                    fontSize: 32.0,
-                    fontWeight: FontWeight.bold,
-                    color: AppColor.primaryRed,
-                      fontFamily: Constant.kFontFamilySS3
-                  ),
+                      fontSize: 32.0,
+                      fontWeight: FontWeight.bold,
+                      color: AppColor.primaryRed,
+                      fontFamily: Constant.kFontFamilySS3),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(
@@ -141,16 +143,15 @@ class _BugReportPageState extends State<BugReportPage> {
                       const Text(
                         'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
                         style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.white,
-                            fontFamily: Constant.kFontFamilySS3
-                        ),
+                            fontSize: 16.0,
+                            color: Colors.white,
+                            fontFamily: Constant.kFontFamilySS3),
                         textAlign: TextAlign.left,
                       ),
-                      SizedBox(  
+                      SizedBox(
                         height: height * 0.025,
                       ),
-                      Container(
+                      SizedBox(
                         height: height * 0.15,
                         child: TextField(
                           controller: issueController,
@@ -175,29 +176,31 @@ class _BugReportPageState extends State<BugReportPage> {
                         height: height * 0.020,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                            Transform.scale(
-                              scale:1.5,
-                              child: Checkbox.adaptive(
-                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                value: _isChecked,
-                                activeColor: AppColor.primaryRed,
-                                onChanged: (value) {
-                                  setState(() {
-                                    _isChecked = value!;
-                                  });
-                                },
-                              ),
+                          Transform.scale(
+                            scale: 1.1,
+                            child: Checkbox.adaptive(
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              value: _isChecked,
+                              activeColor: AppColor.primaryRed,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isChecked = value!;
+                                });
+                              },
                             ),
+                          ),
+                          const SizedBox(width: 5),
                           Flexible(
                             child: Text(
                               'I understand this page is only related to technical issues of ${widget.appName}',
                               //Need to extract YourAppName from the current app name
                               style: const TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.white,
-                                  fontFamily: Constant.kFontFamilySS3
-                              ),
+                                  fontSize: 14.0,
+                                  color: Colors.white,
+                                  fontFamily: Constant.kFontFamilySS3),
                               textAlign: TextAlign.left,
                             ),
                           ),
@@ -236,10 +239,9 @@ class _BugReportPageState extends State<BugReportPage> {
                             child: Text(
                               'Submit',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                  fontFamily: Constant.kFontFamilySS3
-                              ),
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontFamily: Constant.kFontFamilySS3),
                             ),
                           ),
                         ),
@@ -275,11 +277,10 @@ class _BugReportPageState extends State<BugReportPage> {
                                   child: Text(
                                     "Logout",
                                     style: TextStyle(
-                                      color: AppColor.primaryWhite,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600,
-                                        fontFamily: Constant.kFontFamilySS3
-                                    ),
+                                        color: AppColor.primaryWhite,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: Constant.kFontFamilySS3),
                                   ),
                                 ),
                               ),
