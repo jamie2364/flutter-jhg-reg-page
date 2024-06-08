@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,8 @@ class _WelcomeState extends State<Welcome> {
       return;
     }
     await subscriptionStream();
+    WidgetsFlutterBinding.ensureInitialized()
+        .addPostFrameCallback((_) => initTrackingTransparency());
   }
 
   // Payment stream listener
@@ -920,5 +923,27 @@ class _WelcomeState extends State<Welcome> {
         ),
       );
     }
+  }
+
+  initTrackingTransparency() async {
+    const String authStatus = 'Unknown';
+    final TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    // setState(() => _authStatus = '$status');
+    // print("Auth Status: $_authStatus");
+
+    // If the system can show an authorization request dialog
+    if (status == TrackingStatus.notDetermined) {
+      // Show a custom explainer dialog before the system dialog
+      // await showCustomTrackingDialog(context);
+      // Wait for dialog popping animation
+      await Future.delayed(const Duration(milliseconds: 200));
+      // Request system's tracking authorization dialog
+      // final TrackingStatus status =
+      await AppTrackingTransparency.requestTrackingAuthorization();
+    }
+
+    final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
+    print("Auth Status: $authStatus, UUID: $uuid");
   }
 }
