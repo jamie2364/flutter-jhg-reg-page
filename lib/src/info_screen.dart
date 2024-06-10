@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/report_a_bug.dart'; // Import your ReportABugScreen here
@@ -143,13 +144,16 @@ class _InfoScreenState extends State<InfoScreen> {
                       );
                     },
                   ),
-                  Platform.isAndroid ?
-                  InfoButtonSection(
-                    title: Constant.cancelSubscription,
-                    onPressed: () {
-                      _launchUrl(Constant.cancelSubscriptionUrl);
-                    },
-                  ):const SizedBox(),
+                  kIsWeb
+                      ? const SizedBox()
+                      : Platform.isAndroid
+                          ? InfoButtonSection(
+                              title: Constant.cancelSubscription,
+                              onPressed: () {
+                                _launchUrl(Constant.cancelSubscriptionUrl);
+                              },
+                            )
+                          : const SizedBox(),
                   InfoButtonSection(
                     title: Constant.visitJamieHarrisonGuitar,
                     onPressed: () {
@@ -164,12 +168,11 @@ class _InfoScreenState extends State<InfoScreen> {
                       Constant.appQuotes,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: AppColor.secondaryWhite,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                          fontFamily: Constant.kFontFamilySS3
-                      ),
+                          fontStyle: FontStyle.italic,
+                          color: AppColor.secondaryWhite,
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: Constant.kFontFamilySS3),
                     ),
                   ),
                   SizedBox(
@@ -180,11 +183,10 @@ class _InfoScreenState extends State<InfoScreen> {
                       Constant.williamShakespeare,
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: AppColor.secondaryWhite,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
-                          fontFamily: Constant.kFontFamilySS3
-                      ),
+                          color: AppColor.secondaryWhite,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: Constant.kFontFamilySS3),
                     ),
                   ),
                   SizedBox(
@@ -212,7 +214,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         color: AppColor.secondaryWhite,
                         fontSize: 12,
                         fontWeight: FontWeight.w400,
-                          fontFamily: Constant.kFontFamilySS3,
+                        fontFamily: Constant.kFontFamilySS3,
                       ),
                     ),
                   ),
@@ -248,20 +250,18 @@ class AppInfoSection extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
-              color: AppColor.secondaryWhite,
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-                fontFamily: Constant.kFontFamilySS3
-            ),
+                color: AppColor.secondaryWhite,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                fontFamily: Constant.kFontFamilySS3),
           ),
           Text(
             subtitle,
             style: TextStyle(
-              color: AppColor.secondaryWhite,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-                fontFamily: Constant.kFontFamilySS3
-            ),
+                color: AppColor.secondaryWhite,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: Constant.kFontFamilySS3),
           ),
         ],
       ),
@@ -302,11 +302,10 @@ class InfoButtonSection extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                  color: AppColor.secondaryWhite,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                    fontFamily: Constant.kFontFamilySS3
-                ),
+                    color: AppColor.secondaryWhite,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: Constant.kFontFamilySS3),
               ),
               Icon(
                 Icons.arrow_forward_ios,
