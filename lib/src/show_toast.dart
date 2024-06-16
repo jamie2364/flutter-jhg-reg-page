@@ -4,6 +4,17 @@ import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
 showToast({required BuildContext context, required String message,required bool isError}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    margin: EdgeInsets.symmetric(
+
+
+
+      horizontal: MediaQuery.of(context).size.width < 850
+          ? 24
+          : MediaQuery.of(context).size.width < 1100 &&
+          MediaQuery.of(context).size.width >= 850
+          ? MediaQuery.sizeOf(context).width * .25
+          : MediaQuery.sizeOf(context).width * .30,
+    ),
     content: Text(
       message,
       textAlign: TextAlign.center,
@@ -14,14 +25,8 @@ showToast({required BuildContext context, required String message,required bool 
       ),
     ),
     backgroundColor: isError ? AppColor.primaryRed : AppColor.primaryGreen,
-    padding: EdgeInsets.symmetric(
-      horizontal: MediaQuery.of(context).size.width < 850
-          ? 24
-          : MediaQuery.of(context).size.width < 1100 &&
-          MediaQuery.of(context).size.width >= 850
-          ? MediaQuery.sizeOf(context).width * .25
-          : MediaQuery.sizeOf(context).width * .30,
-    ),
+    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.02, vertical:  MediaQuery.of(context).size.height*0.02),
+
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height*0.01),
     ),
