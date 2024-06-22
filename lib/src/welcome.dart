@@ -460,7 +460,7 @@ class _WelcomeState extends State<Welcome> {
                         height: height * 0.03,
                       ),
                       //FREE WITH ADS
-                      if (!widget.appName.contains("Practice Routines"))
+                      if (!widget.appName.contains("Practice Routines") && !widget.appName.contains("Course Hub"))
                         Center(
                           child: GestureDetector(
                             onTap: () {
@@ -578,7 +578,7 @@ class _WelcomeState extends State<Welcome> {
                         ),
 
                       // SPACER
-                      if (!widget.appName.contains("Practice Routines"))
+                      if (!widget.appName.contains("Practice Routines") && !widget.appName.contains("Course Hub"))
                         SizedBox(
                           height: height * 0.02,
                         ),
