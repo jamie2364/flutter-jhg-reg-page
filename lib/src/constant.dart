@@ -57,7 +57,7 @@ class Constant {
       'Enjoy limited use of the app for free with ads';
   static const String freeWithAdsNote =
       'Experience all the features of our app at no cost, supported by mobile advertisements.';
-  static const String oneWeekFree = '7 days free, then ';
+  static const String oneWeekFree = '7 days free trial, then ';
   static const String perYear = 'per year';
   static const String perMonth = 'per month';
   static const String weeklySave = 'More Info';
