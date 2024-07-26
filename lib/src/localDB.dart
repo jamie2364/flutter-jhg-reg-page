@@ -9,6 +9,7 @@ class LocalDB {
   static String userEmailKey = "userEmail";
   static String userIdKey = "UserId";
   static String subscriptionPurchase = "subscriptionPurchase";
+  static String subscriptionInAppPurchase = "subscriptionInAppPurchase";
   static String baseUrl = "base_url";
   static String productIds = "product_ids";
   static String loginDateTime = "loginDateTime";
@@ -144,6 +145,13 @@ class LocalDB {
     // Store subscription purchase in shared preferences
     sharedPreferences.setBool(subscriptionPurchase, value);
   }
+  // Set subscription purchase
+  static Future<void> storeInAppSubscriptionPurchase(bool value) async {
+    // initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Store subscription purchase in shared preferences
+    sharedPreferences.setBool(subscriptionInAppPurchase, value);
+  }
 
   // Get subscription purchase
   static Future<bool?> get getSubscriptionPurchase async {
@@ -151,6 +159,13 @@ class LocalDB {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     // Get the subscription purchase which we have stored in sharedPreferences before
     bool? purchase = sharedPreferences.getBool(subscriptionPurchase);
+    return purchase;
+  }  // Get subscription purchase
+  static Future<bool?> get getSubscriptionInAppPurchase async {
+    // Initialized shared preferences
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // Get the subscription purchase which we have stored in sharedPreferences before
+    bool? purchase = sharedPreferences.getBool(subscriptionInAppPurchase);
     return purchase;
   }
 

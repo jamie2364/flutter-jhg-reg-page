@@ -90,11 +90,11 @@ class _WelcomeState extends State<Welcome> {
     print(widget.monthlySubscriptionId);
 
     variant.clear();
-    print("VARIANT IS $variant");
+    print("VARIANT VVV IS $variant");
 
     variant.add(widget.yearlySubscriptionId);
     variant.add(widget.monthlySubscriptionId);
-    print("VARIANT IS $variant");
+    print("VARIANT VVV IS $variant");
 
     yearlyKey = widget.yearlySubscriptionId;
     monthlyKey = widget.monthlySubscriptionId;
@@ -111,14 +111,20 @@ class _WelcomeState extends State<Welcome> {
 
   // Payment stream listener
   Future<void> subscriptionStream() async {
+    print("subscriptionStream Calllled");
     // Clear the product list
     products.clear();
 
     // Instance of the purchase stream
     Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
 
+    bool isAvailable=await InAppPurchase.instance.isAvailable();
+    print("isAvailable : $isAvailable");
+   // int purchaseList=await purchaseUpdated.length;
+   //  print("purchaseList : Before : ${purchaseList}");
     // Listen for stream
     streamSubscription = purchaseUpdated.listen((purchaseList) async {
+      print("in Listen");
       // Calling for purchases
       await listenToPurchase(purchaseList);
     }, onDone: () {
@@ -178,17 +184,20 @@ class _WelcomeState extends State<Welcome> {
     if (purchaseDetailsList.isEmpty) {
       restorePopupDialog(context, Constant.restoreNotFound,
           Constant.restoreNotFoundDescription);
-    } else {
+    }
+    else {
       // ignore: avoid_function_literals_in_foreach_calls
       purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-        print("productID IS ${purchaseDetails.productID}");
-        print("purchaseID IS ${purchaseDetails.purchaseID}");
+        print("purchaseDetails.status : ${purchaseDetails.status}");
+        // print("productID IS ${purchaseDetails.productID}");
+        // print("purchaseID IS ${purchaseDetails.purchaseID}");
         if (purchaseDetails.status == PurchaseStatus.pending) {
           print("productID IS ${purchaseDetails.productID}");
           print("purchaseID IS ${purchaseDetails.purchaseID}");
 
           debugPrint("pending");
           //Navigator.pop(context);
+
         } else if (purchaseDetails.status == PurchaseStatus.error) {
           Navigator.pop(context);
           debugPrint("error");
@@ -304,6 +313,7 @@ class _WelcomeState extends State<Welcome> {
   onPurchasedSuccess() async {
     loaderDialog(context);
     await LocalDB.storeSubscriptionPurchase(true);
+    await LocalDB.storeInAppSubscriptionPurchase(true);
     final proIds = await getProductIds();
     if (proIds == null) return;
     print('product ids onPurchasedSuccess $proIds');
@@ -904,7 +914,8 @@ class _WelcomeState extends State<Welcome> {
           },
         ),
       );
-    } else {
+    }
+    else {
       Navigator.push(
         context,
         MaterialPageRoute(

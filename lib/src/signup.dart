@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/subscription_model.dart';
@@ -183,7 +184,7 @@ class _SignUpState extends State<SignUp> {
             "app_name": widget.appName
           });
           //print("response is ${response.data}");
-          bool isActive = isSubscriptionActive(response.data,
+          bool isActive =await  isSubscriptionActive(response.data,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
             successFunction();
@@ -237,8 +238,10 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  bool isSubscriptionActive(Map<String, dynamic>? json,
-      {bool isCourseHubApp = false}) {
+  Future<bool> isSubscriptionActive(Map<String, dynamic>? json,
+      {bool isCourseHubApp = false}) async {
+
+
     if (json == null) return false;
     for (var entry in json.entries) {
       if ((isCourseHubApp) &&
