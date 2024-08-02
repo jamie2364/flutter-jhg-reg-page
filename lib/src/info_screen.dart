@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/report_a_bug.dart'; // Import your ReportABugScreen here
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'colors.dart';
@@ -240,7 +239,7 @@ class AppInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
+    // final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),

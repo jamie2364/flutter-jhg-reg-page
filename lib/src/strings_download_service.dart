@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
@@ -43,7 +42,7 @@ class StringsDownloadService {
         progressValueColor: AppColor.primaryRed,
         msgColor: AppColor.primaryWhite,
         valueColor: AppColor.primaryWhite);
-    File file = File("${dir!.path}/${folderAndFileName}.zip");
+    File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
     try {
       await dio.download(
@@ -62,12 +61,12 @@ class StringsDownloadService {
       });
     } on Exception catch (ex) {
       pd.close();
-      print("downloadString exception==${ex}");
+      print("downloadString exception==$ex");
     }
   }
 
   Future<void> isStringsDownloaded(BuildContext context, String appName) async {
-    File file = File("${dir!.path}/${folderAndFileName}.zip");
+    File file = File("${dir!.path}/$folderAndFileName.zip");
 
     if (!(await file.exists())) {
       _downloadStrings(context, appName);
@@ -89,7 +88,7 @@ class StringsDownloadService {
 
   void extractFiles(String appName) async {
     final bytes =
-        File("${dir!.path}/${folderAndFileName}.zip").readAsBytesSync();
+        File("${dir!.path}/$folderAndFileName.zip").readAsBytesSync();
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
