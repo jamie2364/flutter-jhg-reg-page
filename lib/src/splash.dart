@@ -22,24 +22,27 @@ class UserSession {
 }
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.appVersion,
-      required this.featuresList,
-      required this.nextPage});
+  const SplashScreen({
+    super.key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.appName,
+    required this.appVersion,
+    required this.featuresList,
+    required this.nextPage,
+    this.navKey,
+  });
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
   final List<String> featuresList;
+  final GlobalKey<NavigatorState>? navKey;
   final Widget Function() nextPage;
   static UserSession session =
       UserSession(url: 'jhg', token: '', userId: -1, userName: '');
-
+  static GlobalKey<NavigatorState>? staticNavKey;
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -48,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    SplashScreen.staticNavKey = widget.navKey;
     routes();
     animate();
   }

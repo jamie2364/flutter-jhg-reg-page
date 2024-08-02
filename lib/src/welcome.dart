@@ -118,10 +118,10 @@ class _WelcomeState extends State<Welcome> {
     // Instance of the purchase stream
     Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
 
-    bool isAvailable=await InAppPurchase.instance.isAvailable();
+    bool isAvailable = await InAppPurchase.instance.isAvailable();
     print("isAvailable : $isAvailable");
-   // int purchaseList=await purchaseUpdated.length;
-   //  print("purchaseList : Before : ${purchaseList}");
+    // int purchaseList=await purchaseUpdated.length;
+    //  print("purchaseList : Before : ${purchaseList}");
     // Listen for stream
     streamSubscription = purchaseUpdated.listen((purchaseList) async {
       print("in Listen");
@@ -177,17 +177,20 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
-  listenToPurchase(List<PurchaseDetails> purchaseDetailsList) {
+  listenToPurchase(List<PurchaseDetails> purchaseDetailsList) async {
     print("list");
     print("PList :$purchaseDetailsList");
 
     if (purchaseDetailsList.isEmpty) {
-      restorePopupDialog(context, Constant.restoreNotFound,
+      restorePopupDialog(getContext() ?? context, Constant.restoreNotFound,
           Constant.restoreNotFoundDescription);
-    }
-    else {
+    } else {
       // ignore: avoid_function_literals_in_foreach_calls
-      purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      int check = 0;
+      for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
+        // }
+        // purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+        if (check == 1) break;
         print("purchaseDetails.status : ${purchaseDetails.status}");
         // print("productID IS ${purchaseDetails.productID}");
         // print("purchaseID IS ${purchaseDetails.purchaseID}");
@@ -197,9 +200,8 @@ class _WelcomeState extends State<Welcome> {
 
           debugPrint("pending");
           //Navigator.pop(context);
-
         } else if (purchaseDetails.status == PurchaseStatus.error) {
-          Navigator.pop(context);
+          Navigator.pop(getContext() ?? context);
           debugPrint("error");
           print("ERROR IS ${purchaseDetails.error}");
           // purchaseDetails.error == null
@@ -211,11 +213,11 @@ class _WelcomeState extends State<Welcome> {
           //       );
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
-          Navigator.pop(context);
+          Navigator.pop(getContext() ?? context);
           purchaseDetails.error == null
               ? const SizedBox()
               : showToast(
-                  context: context,
+                  context: getContext() ?? context,
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
@@ -227,28 +229,31 @@ class _WelcomeState extends State<Welcome> {
             print('exception on $e');
           }
           //
-          Navigator.pushAndRemoveUntil(context,
+          Navigator.pushAndRemoveUntil(getContext() ?? context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
+          print('pushed to the next page ${widget.nextPage()}');
+          check = 1;
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
-          Navigator.pop(context);
+          Navigator.pop(getContext() ?? context);
           print("ERROR IS::: ${purchaseDetails.error}");
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
-          Navigator.pop(context);
+          Navigator.pop(getContext() ?? context);
           await LocalDB.storeSubscriptionPurchase(true);
-          Navigator.pushAndRemoveUntil(context,
+          Navigator.pushAndRemoveUntil(getContext() ?? context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
-          restorePopupDialog(context, Constant.restoreSuccess,
+          restorePopupDialog(getContext() ?? context, Constant.restoreSuccess,
               Constant.restoreSuccessDescription);
         } else if (purchaseDetails.pendingCompletePurchase) {
           await InAppPurchase.instance.completePurchase(purchaseDetails);
         }
-      });
+      }
+      // );
     }
   }
 
@@ -310,8 +315,12 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
+  BuildContext? getContext() {
+    return SplashScreen.staticNavKey?.currentState?.context;
+  }
+
   onPurchasedSuccess() async {
-    loaderDialog(context);
+    loaderDialog(getContext() ?? context);
     await LocalDB.storeSubscriptionPurchase(true);
     await LocalDB.storeInAppSubscriptionPurchase(true);
     final proIds = await getProductIds();
@@ -319,7 +328,7 @@ class _WelcomeState extends State<Welcome> {
     print('product ids onPurchasedSuccess $proIds');
     await LocalDB.saveProductIds(proIds);
     await LocalDB.saveBaseUrl(Constant.evoloUrl);
-    Navigator.pop(context);
+    Navigator.pop(getContext() ?? context);
   }
 
   Future<String?> getProductIds() async {
@@ -589,9 +598,9 @@ class _WelcomeState extends State<Welcome> {
                         ),
 
                       // SPACER
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
 
                       // ANNUAL PLAN BUTTON
 
@@ -914,8 +923,7 @@ class _WelcomeState extends State<Welcome> {
           },
         ),
       );
-    }
-    else {
+    } else {
       Navigator.push(
         context,
         MaterialPageRoute(
