@@ -5,6 +5,8 @@ class Constant {
       "https://www.jamieharrisonguitar.com/wp-json/myplugin/v1/jwt-check-subscription/";
   static const String subscriptionUrlEvolo =
       "https://www.evolo.app/wp-json/myplugin/v1/jwt-check-subscription/";
+  static const String subscriptionUrlMusicTool =
+      "https://www.musictools.io/wp-json/myplugin/v1/jwt-check-subscription/";
   static const String marketingUrl =
       "https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f";
   static const String checkSubscriptionUrl =
@@ -18,11 +20,14 @@ class Constant {
       'https://www.Jamieharrisonguitar.com/terms-of-service';
   static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://www.evolo.app/';
+  static const String musicUrl = 'https://www.musictools.io/';
   static const String cancelSubscriptionUrl =
       'https://play.google.com/store/account/subscriptions';
 
-  static const String evoloBaseUrl =
+  static const String evoloLoginUrl =
       'https://www.evolo.app/wp-json/jwt-auth/v1/token';
+  static const String musicLoginUrl =
+      'https://www.musictools.io/wp-json/jwt-auth/v1/token';
   static const String productIdEndPoint = 'wp-json/jhg-apps/v1/product-ids';
 
   static const String jamieHarrison = 'JAMIE HARRISON';
@@ -78,6 +83,7 @@ class Constant {
   static const String chooseYourSubscriptionText = 'Choose your subscription';
   static const String evoloUrlText = 'Evolo.app';
   static const String jamieUrlText = 'Jamieharrisonguitar.com';
+  static const String musicToolUrlText = 'musictools.io';
   static const String subscriptionUrlSubText =
       'Please choose the platform from the list\nbelow where you have your active subscription to Evolo';
   static const String appQuotes =
