@@ -42,8 +42,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     platformsList = PlatformUtils.getList();
     if (!widget.appName.contains("Practice Routines")) {
       platformsList.removeAt(1);
-    } else {
-      platformsList.removeAt(2);
     }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
