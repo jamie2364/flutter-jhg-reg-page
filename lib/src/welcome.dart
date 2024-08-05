@@ -119,7 +119,7 @@ class _WelcomeState extends State<Welcome> {
     Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
 
     bool isAvailable = await InAppPurchase.instance.isAvailable();
-    print("isAvailable : $isAvailable");
+    print("InAppPurchase isAvailable : $isAvailable");
     // int purchaseList=await purchaseUpdated.length;
     //  print("purchaseList : Before : ${purchaseList}");
     // Listen for stream
@@ -143,7 +143,7 @@ class _WelcomeState extends State<Welcome> {
     print("VARIANT IS $variant");
     if (productDetailsResponse.error == null) {
       products = productDetailsResponse.productDetails;
-      debugPrint("$products");
+      debugPrint("products $products");
       for (var element in products) {
         print("products id  IS ${element.id}");
 
@@ -908,41 +908,20 @@ class _WelcomeState extends State<Welcome> {
   }
 
   void launchNextPage() {
-    if (widget.appName.contains("Practice Routines")) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return SubscriptionUrlScreen(
-              yearlySubscriptionId: widget.yearlySubscriptionId,
-              monthlySubscriptionId: widget.monthlySubscriptionId,
-              appName: widget.appName,
-              appVersion: widget.appVersion,
-              nextPage: widget.nextPage,
-            );
-          },
-        ),
-      );
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return SignUp(
-              yearlySubscriptionId: widget.yearlySubscriptionId,
-              monthlySubscriptionId: widget.monthlySubscriptionId,
-              appName: widget.appName,
-              appVersion: widget.appVersion,
-              nextPage: widget.nextPage,
-              loginUrl: Constant.loginUrl,
-              platform: Constant.jamieUrl,
-              productIds: "",
-              subscriptionUrl: Constant.subscriptionUrl,
-            );
-          },
-        ),
-      );
-    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return SubscriptionUrlScreen(
+            yearlySubscriptionId: widget.yearlySubscriptionId,
+            monthlySubscriptionId: widget.monthlySubscriptionId,
+            appName: widget.appName,
+            appVersion: widget.appVersion,
+            nextPage: widget.nextPage,
+          );
+        },
+      ),
+    );
   }
 
   initTrackingTransparency() async {

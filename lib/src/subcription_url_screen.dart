@@ -40,6 +40,11 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   void initState() {
     super.initState();
     platformsList = PlatformUtils.getList();
+    if (!widget.appName.contains("Practice Routines")) {
+      platformsList.removeAt(1);
+    } else {
+      platformsList.removeAt(2);
+    }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
   }
@@ -135,10 +140,10 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         Navigator.pop(context);
         launchSignupPage();
       } else {
-       showFailureMessage();
+        showFailureMessage();
       }
     } catch (e) {
-     showFailureMessage();
+      showFailureMessage();
     }
   }
 
@@ -163,7 +168,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     );
   }
 
-  void showFailureMessage(){
+  void showFailureMessage() {
     Navigator.pop(context);
     showToast(
         context: context,
