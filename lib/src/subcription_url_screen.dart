@@ -132,7 +132,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     loaderDialog(context);
     try {
       Response response = await repo.getRequestWithoutHeader(
-          "${selectedModel?.baseUrl}${Constant.productIdEndPoint}", {});
+          "${selectedModel?.baseUrl}${Constant.productIdEndPoint}",
+          {'app_name': formatAppName(widget.appName)});
       if (response.data != null && response.data["product_ids"] != null) {
         productIds = response.data["product_ids"];
         Navigator.pop(context);
@@ -172,5 +173,14 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         context: context,
         message: Constant.productIdsFailedMessage,
         isError: true);
+  }
+
+  String formatAppName(String input) {
+    if (input.toLowerCase().startsWith('jhg')) {
+      input = input.substring(3);
+    }
+    input = input.trim();
+    input = input.replaceAll(' ', '-');
+    return input;
   }
 }

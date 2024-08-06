@@ -59,77 +59,6 @@ class _SignUpState extends State<SignUp> {
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
-  // checkSubscription() async {
-  //   bool? hasInternet = await checkInternet();
-  //   if (!hasInternet) {
-  //     // ignore: use_build_context_synchronously
-  //     showToast(
-  //         context: context,
-  //         message: "Please check your internet",
-  //         isError: true);
-  //     return;
-  //   } else {
-  //     try {
-  //       // ignore: use_build_context_synchronously
-  //       loaderDialog(context);
-  //       // if (widget.appName == "JHG Course Hub") {
-  //       Response response = await repo.getRequest(Constant.subscriptionUrl, {});
-  //       print("response is ${response.data}");
-  //       subscriptionModel = SubscriptionModel.fromJson(response.data);
-  //       setState(() {});
-  //       if (subscriptionModel.allAccessPass == "active" ||
-  //           subscriptionModel.softwareSuite == "active") {
-  //         // ignore: use_build_context_synchronously
-  //         await LocalDB.storeSubscriptionPurchase(true);
-  //         // ignore: use_build_context_synchronously
-  //         Navigator.pushReplacement(context,
-  //             MaterialPageRoute(builder: (context) => widget.nextPage()));
-  //       } else {
-  //         // ignore: use_build_context_synchronously
-  //         Navigator.pop(context);
-
-  //         if (response.statusCode == 500) {
-  //           // ignore: use_build_context_synchronously
-  //           showToast(
-  //               context: context,
-  //               message: Constant.serverErrorMessage,
-  //               isError: true);
-  //         } else {
-  //           // ignore: use_build_context_synchronously
-  //           showToast(
-  //               context: context,
-  //               message:
-  //                   "Error ${response.statusCode} ${response.statusMessage}",
-  //               isError: true);
-  //         }
-  //         print("USER IS NOT LOGGED IN");
-  //         // ignore: use_build_context_synchronously
-  //         // Navigator.pushReplacement(
-  //         //     context,
-  //         //     MaterialPageRoute(
-  //         //         builder: (context) => Welcome(
-  //         //               yearlySubscriptionId: widget.yearlySubscriptionId,
-  //         //               monthlySubscriptionId: widget.monthlySubscriptionId,
-  //         //               appName: widget.appName,
-  //         //               appVersion: widget.appVersion,
-  //         //               nextPage: () => widget.nextPage(),
-  //         //             )));
-  //       }
-  //       // } else {
-  //       //   // ignore: use_build_context_synchronously
-  //       //   Navigator.pushReplacement(context,
-  //       //       MaterialPageRoute(builder: (context) => widget.nextPage()));
-  //       // }
-  //     } catch (e) {
-  //       // ignore: use_build_context_synchronously
-  //       Navigator.pop(context);
-  //       // ignore: use_build_context_synchronously
-  //       showToast(
-  //           context: context, message: "Something Went Wrong ", isError: true);
-  //     }
-  //   }
-  // }
-
   Future marketingApi(String email) async {
     bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
 
@@ -179,11 +108,9 @@ class _SignUpState extends State<SignUp> {
           // if (widget.appName == "JHG Course Hub") {
           Response response = await repo.getRequest(widget.subscriptionUrl, {
             "product_ids": widget.productIds,
-            "platform": widget.platform,
-            "app_name": widget.appName
           });
           //print("response is ${response.data}");
-          bool isActive =await  isSubscriptionActive(response.data,
+          bool isActive = await isSubscriptionActive(response.data,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
             successFunction();
@@ -239,8 +166,6 @@ class _SignUpState extends State<SignUp> {
 
   Future<bool> isSubscriptionActive(Map<String, dynamic>? json,
       {bool isCourseHubApp = false}) async {
-
-
     if (json == null) return false;
     for (var entry in json.entries) {
       if ((isCourseHubApp) &&
