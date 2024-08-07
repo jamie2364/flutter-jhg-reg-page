@@ -350,4 +350,4 @@ At this screen, we will try to login the user into the app through the credentia
 - If the username and password are not matched then the user will be moved to the register screen.
 
 ### Following is the graphical representation of flow
-![Flow](flow.png)
+![Flow](https://evolo.app/wp-content/uploads/reg_page_flow/flow.png)
