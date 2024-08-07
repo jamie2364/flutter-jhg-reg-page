@@ -314,40 +314,40 @@ Here we are showing an animation of the JHG logo and on the back of it we are ch
 
 If the user is not logged in then the user will be redirected to the Welcome screen.
 
-If the user is logged in then we are checking the status of the user’s subscription by calling the _jwt-check-subscription_ endpoint if the status is active then the user will be moved to the app otherwise the user will be redirected to the Welcome screen.
+If the user is logged in then we are checking the status of the user’s subscription by calling the _jwt-check-subscription_ endpoint if the status is active then the user will be moved to the app otherwise the user will be redirected to the Welcome screen. If user is not connected to the internet, we will refer to the last login and if user logged in and had an active subscription less than 7 days ago then user will be allowed in. After 7 days this cache will automatically clear and user must connect to the internet again to login.
 
 ### **Welcome:**
 
-At the welcome screen, the user will buy a subscription plan. If the user already has a subscription then the user can login. By pressing the login button user will navigate to the select platform screen.
+At the welcome screen, the user will buy a subscription plan. Or if the user already has a subscription then the user can login. By pressing the login button user will navigate to the select platform screen.
 
 ### **Select Platform:**
 
-From this screen, the user will select a platform that will be used as the API’s base URL. We will get Product IDs from the selected platform with the _product_ids_ endpoint by passing _app_name_ as a parameter and saving them locally.
+From this screen, the user will select a platform that will be used as the API’s base URL for the API call made on the next page to check subscription. On this page we will also get Product IDs from the selected platform with the _product_ids_ endpoint by passing _app_name_ as a parameter and saving them locally. This will return the relevant product ids that the current app are part of. For example, if app is ‘Tuner’ then it will return the product id for the tuner subscription, and bundles that contain that app like an all access pass.
 
 Curl Example to get product IDs of the app:
 
-        curl --location '<https://www.musictools.io/wp-json/jhg-apps/v1/product-ids?app_name=practice-routines>'
+    curl --location 'https://www.musictools.io/wp-json/jhg-apps/v1/product-ids?app_name=practice-routines'
 
 ### **Login**
 
-The user will login using credentials i.e. username and password. After successful login, we will check the user’s subscription on the platform by using the _jwt-check-subscription_ endpoint. This endpoint required the _product_ids_ that we got from the previous step. In response, it will return us the subscription status of the app for that user. If the user has a subscription then we will navigate the user to the app, otherwise, the user will have to buy a subscription plan first to use the app.
+The user will login using credentials i.e. username and password. After successful login, we will check the user’s subscription on the platform they selected on the previous page by using the _jwt-check-subscription_ endpoint. This endpoint requires the _product_ids_ that we got from the previous step to be sent as parameters. In the response, it will return us the subscription status of the app for that user. If the user has a subscription on any of the returned products (ie. the product says ‘active’) then we will navigate the user to the app, otherwise, it will let the user know that there is no active subscription found for them and the user will have to buy a subscription plan first to use the app.
 
 Curl Example to login:
 
-        curl --location --request POST '<https://www.musictools.io/wp-json/jwt-auth/v1/token?username=usmanmujahid&password=usmanmujahid>'
+    curl --location --request POST 'https://www.musictools.io/wp-json/jwt-auth/v1/token?username=usmanmujahid&password=usmanmujahid'
 
 Curl Example to check subscription:
 
-        curl --location '<https://www.jamieharrisonguitar.com/wp-json/myplugin/v1/jwt-check-subscription?product_ids=2>' 
-        \\\--header 'Authorization: Bearer token'
+    curl --location 'https://www.musictools.io/wp-json/myplugin/v1/jwt-check-subscription?product_ids=2' \ --header 'Authorization: Bearer token'
 
 ### **Account Check:**
 
-At this screen, we will try to login the user into the app through the credentials that the user has used on the reg_page to log in.
+At this screen, we will try to login the user into the app through the credentials that the user has used on the reg_page to log in. Here we are assuming that the credentials for the subscription platform and the app platform are the same and we are using he same credentials for both calls.  
 
 - If the user name and password match then the user will be moved to the dashboard screen.
 - If the user name matches but the password does not match, then the user will be moved to the login screen.
 - If the username and password are not matched then the user will be moved to the register screen.
 
 ### Following is the graphical representation of flow
+
 ![Flow](https://evolo.app/wp-content/uploads/reg_page_flow/flow.png)
