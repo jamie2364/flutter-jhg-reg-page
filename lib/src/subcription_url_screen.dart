@@ -1,11 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
 import 'package:reg_page/src/models/platform_model.dart';
-import 'package:reg_page/src/utils/platform_utils.dart';
+import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/utils/app_urls.dart';
 import 'package:reg_page/src/widgets/patform_selection_widget.dart';
 
 class SubscriptionUrlScreen extends StatefulWidget {
@@ -28,7 +28,7 @@ class SubscriptionUrlScreen extends StatefulWidget {
 }
 
 class _SubcriptionState extends State<SubscriptionUrlScreen> {
-  ApiRepo repo = ApiRepo();
+  // ApiRepo repo = ApiRepo();
 
   var platformsList = <PlatformModel>[];
   String selectedPlatform = "";
@@ -39,12 +39,13 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   @override
   void initState() {
     super.initState();
-    platformsList = PlatformUtils.getList();
+    platformsList = PlatformModel.getList();
     if (!widget.appName.contains("Practice Routines")) {
       platformsList.removeAt(1);
     }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
+    AppUrls.baseUrl = platformsList[0].baseUrl;
   }
 
   @override
@@ -112,6 +113,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                               selectedPlatform = model.platform;
                               selectedModel = model;
                             });
+                            AppUrls.baseUrl = model.baseUrl;
                           });
                     },
                     itemCount: platformsList.length,
@@ -131,11 +133,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   Future<void> getProductIds() async {
     loaderDialog(context);
     try {
-      Response response = await repo.getRequestWithoutHeader(
-          "${selectedModel?.baseUrl}${Constant.productIdEndPoint}",
-          {'app_name': formatAppName(widget.appName)});
-      if (response.data != null && response.data["product_ids"] != null) {
-        productIds = response.data["product_ids"];
+      final res = await Repo().getProductIds(widget.appName);
+      if (res != null) {
+        productIds = res;
         Navigator.pop(context);
         launchSignupPage();
       } else {
@@ -157,10 +157,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
             appName: widget.appName,
             appVersion: widget.appVersion,
             nextPage: widget.nextPage,
-            loginUrl: selectedModel!.loginUrl,
-            platform: selectedModel!.baseUrl,
             productIds: productIds,
-            subscriptionUrl: selectedModel!.subscriptionURL,
           );
         },
       ),
@@ -173,14 +170,5 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         context: context,
         message: Constant.productIdsFailedMessage,
         isError: true);
-  }
-
-  String formatAppName(String input) {
-    if (input.toLowerCase().startsWith('jhg')) {
-      input = input.substring(3);
-    }
-    input = input.trim();
-    input = input.replaceAll(' ', '-');
-    return input;
   }
 }

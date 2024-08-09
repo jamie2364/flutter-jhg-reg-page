@@ -1,9 +1,7 @@
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/repositories/repo.dart';
 
 import 'colors.dart';
 import 'constant.dart';
@@ -41,12 +39,6 @@ class _BugReportPageState extends State<BugReportPage> {
 
   Future<void> submitBugReport(String name, String email, String issue,
       String device, String application) async {
-    final token = await LocalDB.getBearerToken;
-
-    final dio = Dio(BaseOptions(headers: {
-      HttpHeaders.authorizationHeader: "Bearer $token",
-    }));
-
     try {
       loaderDialog(context);
       final Map<String, dynamic> requestData = {
@@ -57,14 +49,10 @@ class _BugReportPageState extends State<BugReportPage> {
         'application': application,
       };
 
-      final Response response = await dio.post(
-        Constant.reportBugUrl,
-        data: requestData,
-      );
-
+      final response = await Repo().postBug(requestData);
       print('Response : $response');
 
-      if (response.statusCode == 200) {
+      if (response != null) {
         Navigator.pop(context);
 
         setState(() {
@@ -80,7 +68,7 @@ class _BugReportPageState extends State<BugReportPage> {
       } else {
         Navigator.pop(context);
         // Handle error cases
-        print('Error: ${response.statusCode}');
+        print('Error: $response');
       }
     } catch (e) {
       Navigator.pop(context);

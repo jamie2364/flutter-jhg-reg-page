@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
-
 
 loaderDialog(BuildContext context) {
   return showDialog(
-
       context: context,
       barrierDismissible: false,
       useSafeArea: false,
@@ -19,8 +18,12 @@ loaderDialog(BuildContext context) {
               color: AppColor.loaderBackground.withOpacity(0.7),
               child: Center(
                   child: CircularProgressIndicator(
-                    color: AppColor.primaryRed,
-                  ))),
+                color: AppColor.primaryRed,
+              ))),
         );
       });
+}
+
+hideLoading([BuildContext? context]) {
+  Navigator.pop(context??SplashScreen.staticNavKey!.currentState!.context);
 }

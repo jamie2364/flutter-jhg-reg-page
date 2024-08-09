@@ -3,15 +3,16 @@
 import 'dart:async';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/info_screen.dart';
+import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:reg_page/src/subcription_url_screen.dart';
+import 'package:reg_page/src/utils/app_urls.dart';
 
 import 'colors.dart';
 import 'constant.dart';
@@ -323,26 +324,14 @@ class _WelcomeState extends State<Welcome> {
     loaderDialog(getContext() ?? context);
     await LocalDB.storeSubscriptionPurchase(true);
     await LocalDB.storeInAppSubscriptionPurchase(true);
-    final proIds = await getProductIds();
+
+    final proIds =
+        await Repo().getProductIds(widget.appName, baseUrl: AppUrls.evoloUrl);
     if (proIds == null) return;
     print('product ids onPurchasedSuccess $proIds');
     await LocalDB.saveProductIds(proIds);
-    await LocalDB.saveBaseUrl(Constant.evoloUrl);
+    await LocalDB.saveBaseUrl(AppUrls.evoloUrl);
     Navigator.pop(getContext() ?? context);
-  }
-
-  Future<String?> getProductIds() async {
-    try {
-      Response response = await ApiRepo().getRequestWithoutHeader(
-          "${Constant.evoloUrl}${Constant.productIdEndPoint}", {});
-      if (response.data != null && response.data["product_ids"] != null) {
-        return response.data["product_ids"];
-      } else {
-        return null;
-      }
-    } catch (e) {
-      return null;
-    }
   }
 
   @override

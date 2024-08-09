@@ -1,11 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
-import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
 
 class UserSession {
@@ -50,7 +49,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-  super.initState();
+    super.initState();
     SplashScreen.staticNavKey = widget.navKey;
     routes();
     animate();
@@ -66,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  ApiRepo repo = ApiRepo();
+  // ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
@@ -120,28 +119,25 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         // ignore: use_build_context_synchronously
         loaderDialog(context);
-        final productId = await LocalDB.getproductIds;
+        final productIds = await LocalDB.getproductIds;
         final baseUrl = await LocalDB.getBaseurl;
+        if (productIds == null) return;
         //  if (widget.appName == "JHG Course Hub") {
-        Response? response = await repo.getRequest(
-            baseUrl == Constant.evoloUrl
-                ? Constant.subscriptionUrlEvolo
-                : Constant.subscriptionUrl,
-            {
-              "product_ids": productId,
-            });
+        final res =
+            await Repo().checkSubscription(productIds, baseUrl: baseUrl);
+
         //  print("response is ${response?.data}");
-        if (response == null) {
+        if (res == null) {
           if (await LocalDB.isLoginTimeExpired) {
             elseFunction();
           } else {
             successFunction();
           }
         } else {
-          subscriptionModel = SubscriptionModel.fromJson(response.data);
+          subscriptionModel = SubscriptionModel.fromJson(res);
           setState(() {});
 
-          final isActive = isSubscriptionActive(response.data,
+          final isActive = isSubscriptionActive(res,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
             successFunction();

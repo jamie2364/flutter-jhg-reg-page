@@ -1,35 +1,32 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
+import 'package:reg_page/src/utils/app_urls.dart';
 
 import 'colors.dart';
 import 'custom_button.dart';
 import 'heading.dart';
 
 class SignUp extends StatefulWidget {
-  const SignUp(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.appVersion,
-      required this.nextPage,
-      required this.loginUrl,
-      this.platform = '',
-      this.productIds = '',
-      required this.subscriptionUrl});
+  const SignUp({
+    super.key,
+    required this.yearlySubscriptionId,
+    required this.monthlySubscriptionId,
+    required this.appName,
+    required this.appVersion,
+    required this.nextPage,
+    this.productIds = '',
+  });
 
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
-  final String loginUrl;
-  final String platform;
+
   final String productIds;
-  final String subscriptionUrl;
   final Widget Function() nextPage;
 
   @override
@@ -55,7 +52,6 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  ApiRepo repo = ApiRepo();
   LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
@@ -68,15 +64,7 @@ class _SignUpState extends State<SignUp> {
       if (!hasInternet) {
         return;
       } else {
-        Response response = await repo.postRequest(
-            Constant.marketingUrl,
-            {
-              "subscribers": [
-                {"email": email, "tag_as_event": "${widget.appName} User"}
-              ]
-            },
-            isHeader: true);
-        print("${response.data}");
+        await Repo().marketingAPi(email, widget.appName);
       }
     } else {
       debugPrint("Already Logged In");
@@ -95,22 +83,25 @@ class _SignUpState extends State<SignUp> {
     } else {
       // ignore: use_build_context_synchronously
       loaderDialog(context);
+
       try {
-        Response response = await repo.postRequest(widget.loginUrl, {
-          "username": userNameController.text,
-          "password": passwordController.text,
-        });
-        loginModel = LoginModel.fromJson(response.data);
-        setState(() {});
-        if (response.statusCode == 200 || response.statusCode == 201) {
+        // final res = await BaseService().post(AppUrls.login, {
+        //   "username": userNameController.text,
+        //   "password": passwordController.text,
+        // }).catchError(handleError);
+        // loginModel = LoginModel.fromJson(res);
+        final response = await Repo()
+            .login(userNameController.text, passwordController.text);
+        if (response != null) {
+          loginModel = response;
+          setState(() {});
+
           // ignore: use_build_context_synchronously
           await LocalDB.storeBearerToken(loginModel.token!);
           // if (widget.appName == "JHG Course Hub") {
-          Response response = await repo.getRequest(widget.subscriptionUrl, {
-            "product_ids": widget.productIds,
-          });
+          final res = await Repo().checkSubscription(widget.productIds);
           //print("response is ${response.data}");
-          bool isActive = await isSubscriptionActive(response.data,
+          bool isActive = await isSubscriptionActive(res,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
             successFunction();
@@ -130,29 +121,6 @@ class _SignUpState extends State<SignUp> {
           // ignore: use_build_context_synchronously
 
           // ignore: use_build_context_synchronously
-        } else {
-          // ignore: use_build_context_synchronously
-          Navigator.pop(context);
-          if (response.statusCode == 403) {
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message: Constant.emailPasswordInCorrect,
-                isError: true);
-          } else if (response.statusCode == 500) {
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message: Constant.serverErrorMessage,
-                isError: true);
-          } else {
-            // ignore: use_build_context_synchronously
-            showToast(
-                context: context,
-                message:
-                    "Error ${response.statusCode} ${response.statusMessage}",
-                isError: true);
-          }
         }
       } catch (e) {
         // ignore: use_build_context_synchronously
@@ -186,12 +154,16 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storePassword(passwordController.text);
     await LocalDB.storeUserId(loginModel.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
-    await LocalDB.saveBaseUrl(widget.platform);
+    await LocalDB.saveBaseUrl(AppUrls.baseUrl);
     await LocalDB.saveProductIds(widget.productIds);
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
     // ignore: use_build_context_synchronously
     SplashScreen.session = UserSession(
-        url: widget.loginUrl.contains('evolo') ? 'evolo' : 'jhg',
+        url: AppUrls.baseUrl.contains('evolo')
+            ? 'evolo'
+            : AppUrls.baseUrl.contains('musictools')
+                ? 'mt'
+                : 'jhg',
         token: loginModel.token ?? '',
         userId: loginModel.userId ?? -1,
         userName: loginModel.userNicename ?? '');
