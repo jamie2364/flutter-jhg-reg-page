@@ -1,11 +1,13 @@
 import 'dart:io';
+
+import 'package:archive/archive_io.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/utils/app_urls.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
-import 'package:archive/archive_io.dart';
 
 class StringsDownloadService {
   static final StringsDownloadService _instance =
@@ -45,9 +47,8 @@ class StringsDownloadService {
     File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
     try {
-      await dio.download(
-          "https://www.jamieharrisonguitar.com/wp-json/jhg-apps/v1/download-audio/?app_name=$appName",
-          file.path, onReceiveProgress: (rec, total) {
+      await dio.download("${AppUrls.downloadAssetsUrl}$appName", file.path,
+          onReceiveProgress: (rec, total) {
         int progress = (((rec / total) * 100).toInt());
         // print("progress===${progress}");
         pd.update(value: progress);
@@ -87,8 +88,7 @@ class StringsDownloadService {
   }
 
   void extractFiles(String appName) async {
-    final bytes =
-        File("${dir!.path}/$folderAndFileName.zip").readAsBytesSync();
+    final bytes = File("${dir!.path}/$folderAndFileName.zip").readAsBytesSync();
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
