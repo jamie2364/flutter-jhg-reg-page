@@ -198,6 +198,13 @@ class _SignUpState extends State<SignUp> {
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: width < 850
+              ? 0
+              : width < 1100 && width >= 850
+                  ? width * .25
+                  : width * .30,
+        ),
         height: height,
         width: width,
         color: AppColor.primaryBlack,
@@ -226,7 +233,7 @@ class _SignUpState extends State<SignUp> {
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: AppColor.primaryWhite,
-                          size: width * 0.060,
+                          size: 25,
                         ),
                       ),
                     ],

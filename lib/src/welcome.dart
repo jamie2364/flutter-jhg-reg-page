@@ -433,7 +433,7 @@ class _WelcomeState extends State<Welcome> {
                           child: Icon(
                             Icons.info_rounded,
                             color: AppColor.primaryWhite,
-                            size: width * 0.065,
+                            size: 30,
                           ),
                         )),
                   ],
