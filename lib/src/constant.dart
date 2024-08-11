@@ -6,6 +6,18 @@ class Constant {
         'Basic cDJmY2M2NjIwZDMxNjg3NjQzY2VmYjBkMmFiNjliMmQ5OnNhNGYxZGZmMTZlMTYyNGRiNDUwM2I5YTQ0NjdjMzRlOA==',
   };
 
+  static List<String> musictoolsApps = [
+    'Drills',
+    'Ear Training',
+    'Rhythm Master',
+    'Fretboard Trainer',
+    'Guitar Coach',
+    'Tuner',
+    'Backing Tracks',
+    'Dictionaries'
+  ];
+  static List<String> evoloApps = ['Practice Routines'];
+  static List<String> jhgApps = ['Course Hub'];
   static const String policyPrivacyUrl =
       'https://www.Jamieharrisonguitar.com/privacy-policy';
   static const String termAndServicesUrl =
@@ -94,4 +106,6 @@ class Constant {
   static const String done = 'Done';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
+  static const registerDesc =
+      'It looks like you do not have an account on evolo.app, or your login credentials are different than where you have your subscription. Please register below or login with your evolo.app credentials using the Login button';
 }

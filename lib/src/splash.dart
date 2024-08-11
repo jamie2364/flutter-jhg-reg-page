@@ -4,21 +4,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
 
-class UserSession {
-  String url;
-  String token;
-  int userId;
-  String userName;
-  UserSession({
-    required this.url,
-    required this.token,
-    required this.userId,
-    required this.userName,
-  });
-}
+var globalNextPage;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -39,9 +29,11 @@ class SplashScreen extends StatefulWidget {
   final List<String> featuresList;
   final GlobalKey<NavigatorState>? navKey;
   final Widget Function() nextPage;
+  static Widget Function()? staticNextPage;
   static UserSession session =
-      UserSession(url: 'jhg', token: '', userId: -1, userName: '');
+      UserSession(url: BaseUrl.jhg, token: '', userId: -1, userName: '');
   static GlobalKey<NavigatorState>? staticNavKey;
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
@@ -51,6 +43,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     SplashScreen.staticNavKey = widget.navKey;
+    globalNextPage = widget.nextPage();
     routes();
     animate();
   }
@@ -95,11 +88,12 @@ class _SplashScreenState extends State<SplashScreen> {
       final url = await LocalDB.getBaseurl;
       final uName = await LocalDB.getUserName;
       SplashScreen.session = UserSession(
-          url: url != null
-              ? url.contains('evolo')
-                  ? 'evolo'
-                  : 'jhg'
-              : 'jhg',
+          url: BaseUrl.fromString(url ?? ''),
+          // url != null
+          //     ? url.contains('evolo')
+          //         ? 'evolo'
+          //         : 'jhg'
+          //     : 'jhg',
           token: token ?? '',
           userId: userId ?? -1,
           userName: uName ?? '');

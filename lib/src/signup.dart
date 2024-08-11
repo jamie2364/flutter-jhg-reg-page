@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/auth/screens/account_check_screen.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
@@ -154,22 +156,34 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storePassword(passwordController.text);
     await LocalDB.storeUserId(loginModel.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
-    await LocalDB.saveBaseUrl(AppUrls.baseUrl);
+    await LocalDB.saveBaseUrl(AppUrls.base.url);
     await LocalDB.saveProductIds(widget.productIds);
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
     // ignore: use_build_context_synchronously
     SplashScreen.session = UserSession(
-        url: AppUrls.baseUrl.contains('evolo')
-            ? 'evolo'
-            : AppUrls.baseUrl.contains('musictools')
-                ? 'mt'
-                : 'jhg',
+        url: AppUrls.base,
+        // AppUrls.baseUrl.contains('evolo')
+        //     ? 'evolo'
+        //     : AppUrls.baseUrl.contains('musictools')
+        //         ? 'mt'
+        //         : 'jhg',
         token: loginModel.token ?? '',
         userId: loginModel.userId ?? -1,
         userName: loginModel.userNicename ?? '');
-    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
-      return widget.nextPage();
-    }), (route) => false);
+    if (Constant.musictoolsApps.contains(widget.appName) &&
+        AppUrls.base.isEqual(AppUrls.musicUrl)) {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) {
+        return widget.nextPage();
+      }), (route) => false);
+    } else if (Constant.musictoolsApps.contains(widget.appName) &&
+        !AppUrls.base.isEqual(AppUrls.musicUrl)) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AccountCheckScreen(),
+          ));
+    }
 
     // CALLING MARKETING API
     await LocalDB.storeSubscriptionPurchase(true);

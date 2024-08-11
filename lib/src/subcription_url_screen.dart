@@ -45,7 +45,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
-    AppUrls.baseUrl = platformsList[0].baseUrl;
+    AppUrls.base = BaseUrl.fromString(platformsList[0].baseUrl);
   }
 
   @override
@@ -113,7 +113,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                               selectedPlatform = model.platform;
                               selectedModel = model;
                             });
-                            AppUrls.baseUrl = model.baseUrl;
+                            AppUrls.base = BaseUrl.fromString(model.baseUrl);
                           });
                     },
                     itemCount: platformsList.length,

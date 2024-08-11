@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 
-loaderDialog(BuildContext context) {
+loaderDialog([BuildContext? context]) {
   return showDialog(
-      context: context,
+      context: context ?? SplashScreen.staticNavKey!.currentState!.context,
       barrierDismissible: false,
       useSafeArea: false,
       builder: (context) {
@@ -25,5 +25,5 @@ loaderDialog(BuildContext context) {
 }
 
 hideLoading([BuildContext? context]) {
-  Navigator.pop(context??SplashScreen.staticNavKey!.currentState!.context);
+  Navigator.pop(context ?? SplashScreen.staticNavKey!.currentState!.context);
 }

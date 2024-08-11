@@ -23,7 +23,7 @@ class BaseService {
   }) async {
     Uri? uri;
     try {
-      final base = baseUrl ?? AppUrls.baseUrl;
+      final base = baseUrl ?? AppUrls.base.url;
       uri = Uri.parse(base + api).replace(queryParameters: queryParams);
       requestLog(uri, 'GET');
       var response = await http
@@ -54,7 +54,7 @@ class BaseService {
     Map<String, dynamic>? queryParams,
     String? baseUrl,
   }) async {
-    var uri = Uri.parse(baseUrl ?? AppUrls.baseUrl + api)
+    var uri = Uri.parse(baseUrl ?? AppUrls.base.url + api)
         .replace(queryParameters: queryParams);
 
     requestLog(uri, 'POST', body: payLoadObj);

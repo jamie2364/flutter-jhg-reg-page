@@ -11,5 +11,6 @@ export 'src/show_toast.dart';
 export 'src/signup.dart';
 export 'src/splash.dart';
 export 'src/strings_download_service.dart';
+export 'src/utils/enums.dart';
 export 'src/utils/logs.dart';
 export 'src/welcome.dart';
