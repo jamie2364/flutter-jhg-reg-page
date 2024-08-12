@@ -40,9 +40,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   void initState() {
     super.initState();
     platformsList = PlatformModel.getList();
-    if (!widget.appName.contains("Practice Routines")) {
-      platformsList.removeAt(1);
-    }
+    // if (!widget.appName.contains("Practice Routines")) {
+    //   platformsList.removeAt(1);
+    // }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
     AppUrls.baseUrl = platformsList[0].baseUrl;
