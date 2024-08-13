@@ -8,7 +8,7 @@ class AppException implements Exception {
 
 class BadRequestException extends AppException {
   BadRequestException({String? message, String? url, this.errorCode})
-      : super(message: message!, prefix: "Bad Request", url: url!);
+      : super(message: message ?? '', prefix: "Bad Request", url: url!);
   String? errorCode;
 }
 
@@ -23,8 +23,9 @@ class ApiNotRespondingException extends AppException {
 }
 
 class UnAutthorizedException extends AppException {
-  UnAutthorizedException({String? message, String? url})
+  UnAutthorizedException({String? message, String? url, this.errorCode})
       : super(message: message!, prefix: "UnAuthorized request", url: url!);
+  String? errorCode;
 }
 
 class UnProcessableException extends AppException {

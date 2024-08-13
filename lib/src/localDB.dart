@@ -265,7 +265,7 @@ class LocalDB {
     await sharedPreferences.setString(appUserIdKey, jsonEncode(user.toMap()));
   }
 
-  static Future<User?> get getAppUserId async {
+  static Future<User?> get getAppUser async {
     try {
       SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();

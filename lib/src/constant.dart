@@ -8,7 +8,7 @@ class Constant {
 
   static List<String> musictoolsApps = [
     'Drills',
-    'Ear Training',
+    'JHG Ear Training',
     'Rhythm Master',
     'Fretboard Trainer',
     'Guitar Coach',

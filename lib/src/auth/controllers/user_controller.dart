@@ -26,20 +26,6 @@ class UserController extends GetxController {
 
   final UserRepo _repo = UserRepo();
 
-  // @override
-  // onInit() {
-  //   super.onInit();
-  //   print('onint');
-  //   LocalDB.getBaseurl.then((value) {
-  //     print('evolo $value');
-  //     if (value!.contains('evolo')) {
-  //       Get.to(GetStartBoarding());
-  //     } else {
-  //       Get.to(LoginScreen());
-  //     }
-  //   });
-  // }
-
   void completeRegister() {
     if (!(starRegFormKey.currentState!.validate())) return;
     Get.to(() => const CompleteRegisterScreen());
@@ -62,8 +48,6 @@ class UserController extends GetxController {
     if (res == null) return;
     if (res.code == 1) {
       print('res in controller ${res.code} ${res.token}');
-      // await SharedPrefs.storeEvoloJwt(res.token ?? '');
-      // await SharedPrefs.storeEvoloUid(res.userId ?? -1);
 
       await LocalDB.storeAppUser(
           newUser.copyWith(token: res.token, userId: res.userId));
@@ -96,30 +80,12 @@ class UserController extends GetxController {
     final res = await _repo.loginUser(newUser.toMapToLogin());
     hideLoading();
     print('code in controler  ${res.code}');
-    // if (res.code.contains('incorrect_password')) {
-    //   AppUtils.showErrorToast('Please Provide correct password');
-    //   Get.to(LoginScreen());
-    //   return;
-    // }
-    // if (res.code.contains('invalid_username')) {
-    //   AppUtils.showErrorToast('Please Provide correct credentials');
-    //   Get.to(RegisterScreen());
-    //   return;
-    // }
+
     if (res.code == 1) {
       final user = res.data as User;
       print('success ${user.userId}   ${user.token}');
-      // await SharedPrefs.storeEvoloJwt(user.token ?? '');
-      // await SharedPrefs.storeEvoloUid(user.userId ?? -1);
       await LocalDB.storeAppUser(user);
-      // LocalDB.getBearerToken.then((value) async {
-      //   if (value == null) {
-      //     LocalDB.storeBearerToken(res.token ?? '');
-      //     LocalDB.storeUserId(res.userId ?? -1);
-      //   }
-      // });
-      // token = user.token ?? '';
-      // userId = user.userId ?? -1;
+
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));
@@ -149,7 +115,7 @@ class UserController extends GetxController {
       }
       // await SharedPrefs.storeEvoloJwt(res.data!.token!);
       // await SharedPrefs.storeEvoloUid(res.data.userId ?? -1);
-      
+
       // token = res.data!.token!;
       // userId = res.data.userId ?? -1;
       // Get.to(OnBoardingScreen());

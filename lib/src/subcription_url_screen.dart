@@ -134,12 +134,13 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     loaderDialog(context);
     try {
       final res = await Repo().getProductIds(widget.appName);
+      debugLog('res in url screen $res');
       if (res != null) {
         productIds = res;
         Navigator.pop(context);
         launchSignupPage();
       } else {
-        showFailureMessage();
+        // showFailureMessage();
       }
     } catch (e) {
       showFailureMessage();
@@ -165,7 +166,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   void showFailureMessage() {
-    Navigator.pop(context);
     showToast(
         context: context,
         message: Constant.productIdsFailedMessage,

@@ -1,12 +1,16 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/auth/screens/account_check_screen.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/repositories/user_repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/utils.dart';
 
 import 'colors.dart';
 import 'custom_button.dart';
@@ -54,7 +58,7 @@ class _SignUpState extends State<SignUp> {
     });
   }
 
-  LoginModel loginModel = LoginModel();
+  late User loggedInUser;
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
   Future marketingApi(String email) async {
@@ -74,63 +78,35 @@ class _SignUpState extends State<SignUp> {
   }
 
   userLogin() async {
-    bool? hasInternet = await checkInternet();
-    if (!hasInternet) {
-      // ignore: use_build_context_synchronously
-      showToast(
-          context: context,
-          message: "Please check your internet",
-          isError: true);
-      return;
-    } else {
-      // ignore: use_build_context_synchronously
-      loaderDialog(context);
+    loaderDialog(context);
 
-      try {
-        // final res = await BaseService().post(AppUrls.login, {
-        //   "username": userNameController.text,
-        //   "password": passwordController.text,
-        // }).catchError(handleError);
-        // loginModel = LoginModel.fromJson(res);
-        final response = await Repo()
-            .login(userNameController.text, passwordController.text);
-        if (response != null) {
-          loginModel = response;
-          setState(() {});
+    try {
+      final newUser = User(
+        userName: userNameController.text,
+        password: passwordController.text,
+      );
+      final loginRes = await UserRepo().loginUser(newUser.toMapToLogin());
+      print('login res $loginRes ${loginRes.code}${loginRes.data}');
+      loggedInUser = loginRes.data as User;
+      SplashScreen.session = UserSession(url: AppUrls.base, user: loggedInUser);
+      setState(() {});
 
-          // ignore: use_build_context_synchronously
-          await LocalDB.storeBearerToken(loginModel.token!);
-          // if (widget.appName == "JHG Course Hub") {
-          final res = await Repo().checkSubscription(widget.productIds);
-          //print("response is ${response.data}");
-          bool isActive = await isSubscriptionActive(res,
-              isCourseHubApp: widget.appName == "JHG Course Hub");
-          if (isActive) {
-            successFunction();
-          } else {
-            elseFunction();
-          }
-
-          //   // CALLING MARKETING API
-          //   await LocalDB.storeSubscriptionPurchase(true);
-          //   // ignore: use_build_context_synchronously
-
-          //   await marketingApi(loginModel.userEmail ?? '');
-          // }
-
-          // ignore: use_build_context_synchronously
-          Navigator.pop(context);
-          // ignore: use_build_context_synchronously
-
-          // ignore: use_build_context_synchronously
-        }
-      } catch (e) {
-        // ignore: use_build_context_synchronously
-        // Navigator.pop(context);
-        // ignore: use_build_context_synchronously
-        showToast(
-            context: context, message: "Something Went Wrong ", isError: true);
+      await LocalDB.storeBearerToken(loggedInUser.token!);
+      // if (widget.appName == "JHG Course Hub") {
+      final subRes = await Repo().checkSubscription(widget.productIds);
+      //print("response is ${response.data}");
+      bool isActive = await isSubscriptionActive(subRes,
+          isCourseHubApp: widget.appName == "JHG Course Hub");
+      print('isSubscriptionActive $isActive');
+      if (isActive) {
+        successFunction();
+      } else {
+        elseFunction();
       }
+      Navigator.pop(context);
+    } catch (e) {
+      showToast(
+          context: context, message: "Something Went Wrong ", isError: true);
     }
   }
 
@@ -151,50 +127,26 @@ class _SignUpState extends State<SignUp> {
   }
 
   successFunction() async {
-    await LocalDB.storeUserEmail(loginModel.userEmail!);
-    await LocalDB.storeUserName(loginModel.userLogin!);
+    await LocalDB.storeUserEmail(loggedInUser.email!);
+    await LocalDB.storeUserName(loggedInUser.userName);
     await LocalDB.storePassword(passwordController.text);
-    await LocalDB.storeUserId(loginModel.userId!);
+    await LocalDB.storeUserId(loggedInUser.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
     await LocalDB.saveBaseUrl(AppUrls.base.url);
     await LocalDB.saveProductIds(widget.productIds);
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
-    // ignore: use_build_context_synchronously
-    SplashScreen.session = UserSession(
-        url: AppUrls.base,
-        // AppUrls.baseUrl.contains('evolo')
-        //     ? 'evolo'
-        //     : AppUrls.baseUrl.contains('musictools')
-        //         ? 'mt'
-        //         : 'jhg',
-        token: loginModel.token ?? '',
-        userId: loginModel.userId ?? -1,
-        userName: loginModel.userNicename ?? '');
-    if (Constant.musictoolsApps.contains(widget.appName) &&
-        AppUrls.base.isEqual(AppUrls.musicUrl)) {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) {
-        return widget.nextPage();
-      }), (route) => false);
-    } else if (Constant.musictoolsApps.contains(widget.appName) &&
-        !AppUrls.base.isEqual(AppUrls.musicUrl)) {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const AccountCheckScreen(),
-          ));
-    }
+
+    debugLog(Constant.musictoolsApps.contains(widget.appName));
+    Utils.handleNextScreenOnSuccess(widget.appName, widget.nextPage());
 
     // CALLING MARKETING API
     await LocalDB.storeSubscriptionPurchase(true);
-    // ignore: use_build_context_synchronously
 
-    await marketingApi(loginModel.userEmail ?? '');
+    marketingApi(loggedInUser.email ?? '');
   }
 
   elseFunction() async {
     await LocalDB.clearLocalDB();
-    // ignore: use_build_context_synchronously
     showToast(
         context: context, message: Constant.serverErrorMessage, isError: true);
   }

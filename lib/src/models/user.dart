@@ -41,7 +41,7 @@ class User {
         fName: json["user_nicename"],
         lName: json["user_display_name"],
         customerId: json["customer_id"],
-        password: json['password'],
+        password: json['password']??'',
         userName: json["user_login"],
         userId: json["user_id"],
       );

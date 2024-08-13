@@ -1,14 +1,11 @@
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/models/user.dart';
 
 class UserSession {
   BaseUrl url;
-  String token;
-  int userId;
-  String userName;
+  User? user;
   UserSession({
     required this.url,
-    required this.token,
-    required this.userId,
-    required this.userName,
+    required this.user,
   });
 }

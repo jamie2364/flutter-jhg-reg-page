@@ -13,6 +13,7 @@ import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:reg_page/src/subcription_url_screen.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/utils.dart';
 
 import 'colors.dart';
 import 'constant.dart';
@@ -183,7 +184,7 @@ class _WelcomeState extends State<Welcome> {
     print("PList :$purchaseDetailsList");
 
     if (purchaseDetailsList.isEmpty) {
-      restorePopupDialog(getContext() ?? context, Constant.restoreNotFound,
+      restorePopupDialog(Utils.getContext ?? context, Constant.restoreNotFound,
           Constant.restoreNotFoundDescription);
     } else {
       // ignore: avoid_function_literals_in_foreach_calls
@@ -202,7 +203,7 @@ class _WelcomeState extends State<Welcome> {
           debugPrint("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
-          Navigator.pop(getContext() ?? context);
+          Navigator.pop(Utils.getContext ?? context);
           debugPrint("error");
           print("ERROR IS ${purchaseDetails.error}");
           // purchaseDetails.error == null
@@ -214,11 +215,11 @@ class _WelcomeState extends State<Welcome> {
           //       );
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
           debugPrint("Purchased");
-          Navigator.pop(getContext() ?? context);
+          Navigator.pop(Utils.getContext ?? context);
           purchaseDetails.error == null
               ? const SizedBox()
               : showToast(
-                  context: getContext() ?? context,
+                  context: Utils.getContext ?? context,
                   message: purchaseDetails.error!.message,
                   isError: false,
                 );
@@ -230,7 +231,7 @@ class _WelcomeState extends State<Welcome> {
             print('exception on $e');
           }
           //
-          Navigator.pushAndRemoveUntil(getContext() ?? context,
+          Navigator.pushAndRemoveUntil(Utils.getContext ?? context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
@@ -238,18 +239,18 @@ class _WelcomeState extends State<Welcome> {
           check = 1;
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
-          Navigator.pop(getContext() ?? context);
+          Navigator.pop(Utils.getContext ?? context);
           print("ERROR IS::: ${purchaseDetails.error}");
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
-          Navigator.pop(getContext() ?? context);
+          Navigator.pop(Utils.getContext ?? context);
           await LocalDB.storeSubscriptionPurchase(true);
-          Navigator.pushAndRemoveUntil(getContext() ?? context,
+          Navigator.pushAndRemoveUntil(Utils.getContext ?? context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
-          restorePopupDialog(getContext() ?? context, Constant.restoreSuccess,
-              Constant.restoreSuccessDescription);
+          restorePopupDialog(Utils.getContext ?? context,
+              Constant.restoreSuccess, Constant.restoreSuccessDescription);
         } else if (purchaseDetails.pendingCompletePurchase) {
           await InAppPurchase.instance.completePurchase(purchaseDetails);
         }
@@ -316,12 +317,8 @@ class _WelcomeState extends State<Welcome> {
     }
   }
 
-  BuildContext? getContext() {
-    return SplashScreen.staticNavKey?.currentState?.context;
-  }
-
   onPurchasedSuccess() async {
-    loaderDialog(getContext() ?? context);
+    loaderDialog(Utils.getContext ?? context);
     await LocalDB.storeSubscriptionPurchase(true);
     await LocalDB.storeInAppSubscriptionPurchase(true);
 
@@ -331,7 +328,7 @@ class _WelcomeState extends State<Welcome> {
     print('product ids onPurchasedSuccess $proIds');
     await LocalDB.saveProductIds(proIds);
     await LocalDB.saveBaseUrl(AppUrls.evoloUrl);
-    Navigator.pop(getContext() ?? context);
+    Navigator.pop(Utils.getContext ?? context);
   }
 
   @override

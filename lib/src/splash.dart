@@ -1,12 +1,15 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/subscription_model.dart';
+import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/utils.dart';
 
 var globalNextPage;
 
@@ -30,8 +33,7 @@ class SplashScreen extends StatefulWidget {
   final GlobalKey<NavigatorState>? navKey;
   final Widget Function() nextPage;
   static Widget Function()? staticNextPage;
-  static UserSession session =
-      UserSession(url: BaseUrl.jhg, token: '', userId: -1, userName: '');
+  static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
   static GlobalKey<NavigatorState>? staticNavKey;
 
   @override
@@ -43,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     SplashScreen.staticNavKey = widget.navKey;
-    globalNextPage = widget.nextPage();
+    globalNextPage = widget.nextPage;
     routes();
     animate();
   }
@@ -78,27 +80,17 @@ class _SplashScreenState extends State<SplashScreen> {
       bool isFreePlan = await LocalDB.getIsFreePlan();
       // print('is Free Plan $isFreePlan');
       if (isFreePlan) {
-        print('This user is on free Plan');
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => widget.nextPage()));
         return;
       }
       String? token = await LocalDB.getBearerToken;
-      int? userId = await LocalDB.getUserId;
+
       final url = await LocalDB.getBaseurl;
-      final uName = await LocalDB.getUserName;
-      SplashScreen.session = UserSession(
-          url: BaseUrl.fromString(url ?? ''),
-          // url != null
-          //     ? url.contains('evolo')
-          //         ? 'evolo'
-          //         : 'jhg'
-          //     : 'jhg',
-          token: token ?? '',
-          userId: userId ?? -1,
-          userName: uName ?? '');
+      final appUser = await LocalDB.getAppUser;
+      AppUrls.base = BaseUrl.fromString(url ?? '');
+      SplashScreen.session = UserSession(url: AppUrls.base, user: null);
       if (token == null) {
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -111,7 +103,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       nextPage: () => widget.nextPage(),
                     )));
       } else {
-        // ignore: use_build_context_synchronously
         loaderDialog(context);
         final productIds = await LocalDB.getproductIds;
         final baseUrl = await LocalDB.getBaseurl;
@@ -125,7 +116,7 @@ class _SplashScreenState extends State<SplashScreen> {
           if (await LocalDB.isLoginTimeExpired) {
             elseFunction();
           } else {
-            successFunction();
+            successFunction(appUser);
           }
         } else {
           subscriptionModel = SubscriptionModel.fromJson(res);
@@ -134,7 +125,7 @@ class _SplashScreenState extends State<SplashScreen> {
           final isActive = isSubscriptionActive(res,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
-            successFunction();
+            successFunction(appUser);
           } else {
             elseFunction();
           }
@@ -146,7 +137,6 @@ class _SplashScreenState extends State<SplashScreen> {
         //       MaterialPageRoute(builder: (context) => widget.nextPage()));
         // }
 
-        // ignore: use_build_context_synchronously
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
@@ -169,16 +159,19 @@ class _SplashScreenState extends State<SplashScreen> {
     return false;
   }
 
-  successFunction() async {
+  successFunction(User? user) async {
     await LocalDB.storeSubscriptionPurchase(true);
-    // ignore: use_build_context_synchronously
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => widget.nextPage()));
+    SplashScreen.session.user = user;
+    if (user != null) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => widget.nextPage()));
+      return;
+    }
+    Utils.handleNextScreenOnSuccess(widget.appName, widget.nextPage());
   }
 
   elseFunction() async {
     await LocalDB.clearLocalDB();
-    // ignore: use_build_context_synchronously
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(

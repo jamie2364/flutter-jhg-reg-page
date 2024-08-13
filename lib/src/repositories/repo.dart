@@ -76,15 +76,14 @@ class Repo extends BaseService with BaseController {
   marketingAPi(String email, String appName) async {
     try {
       final res = await post(
-              AppUrls.marketingUrl,
-              baseUrl: '',
-              {
-                "subscribers": [
-                  {"email": email, "tag_as_event": "$appName User"}
-                ]
-              },
-              headers: Constant.marketingHeaders)
-          .catchError(handleError);
+          AppUrls.marketingUrl,
+          baseUrl: AppUrls.base.url,
+          {
+            "subscribers": [
+              {"email": email, "tag_as_event": "$appName User"}
+            ]
+          },
+          headers: Constant.marketingHeaders);
       return res;
     } catch (e) {
       return null;

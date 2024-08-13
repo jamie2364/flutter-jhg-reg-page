@@ -103,12 +103,20 @@ class BaseService {
             message: response.body, url: response.request?.url.toString());
       case 401:
       case 403:
+        String code;
+        try {
+          code = json.decode(response.body)['code'];
+        } catch (e) {
+          code = 'jwt_auth';
+        }
         throw UnAutthorizedException(
-            message: response.body, url: response.request?.url.toString());
+            errorCode: code,
+            message: response.body,
+            url: response.request?.url.toString());
       case 404:
         throw BadRequestException(
-            errorCode: json.decode(response.body),
-            message: json.decode(response.body),
+            errorCode: json.decode(response.body)['code'],
+            message: json.decode(response.body)[''],
             url: response.request?.url.toString());
 
       case 409:
@@ -128,8 +136,9 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error) async {
     hideLoading();
+    print('error in base $error ${error.message}');
     if (error is BadRequestException) {
-      showErrorToast(error.message);
+      showErrorToast(Constant.productIdsFailedMessage);
     } else if (error is FetchDataException) {
       showErrorToast(error.message);
     } else if (error is ApiNotRespondingException) {
