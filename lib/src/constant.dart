@@ -7,17 +7,17 @@ class Constant {
   };
 
   static List<String> musictoolsApps = [
-    'Drills',
+    'JHG Drills',
     'JHG Ear Training',
-    'Rhythm Master',
-    'Fretboard Trainer',
-    'Guitar Coach',
-    'Tuner',
-    'Backing Tracks',
-    'Dictionaries'
+    'JHG Rhythm Master',
+    'JHG Fretboard Trainer',
+    'JHG Guitar Coach',
+    'JHG Tuner',
+    'JHG Backing Tracks',
+    'JHG Dictionaries'
   ];
-  static List<String> evoloApps = ['Practice Routines'];
-  static List<String> jhgApps = ['Course Hub'];
+  static List<String> evoloApps = ['JHG Practice Routines'];
+  static List<String> jhgApps = ['JHG Course Hub'];
   static const String policyPrivacyUrl =
       'https://www.Jamieharrisonguitar.com/privacy-policy';
   static const String termAndServicesUrl =

@@ -60,7 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   // ApiRepo repo = ApiRepo();
-  LoginModel loginModel = LoginModel();
   SubscriptionModel subscriptionModel = SubscriptionModel();
 
   routes() async {

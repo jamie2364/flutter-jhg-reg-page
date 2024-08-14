@@ -29,7 +29,7 @@ class UserRepo extends BaseService with BaseController {
         AppUrls.login,
         userData,
       ).catchError((error) {
-        print('error in loginUser ${error.errorCode} $error');
+        print('error in loginUser  $error');
         if (error is UnAutthorizedException) {
           if (error.errorCode == null) return handleError(error);
           if (error.errorCode!.contains('incorrect_password')) {

@@ -66,7 +66,9 @@ class BaseService {
             headers: headers,
           )
           .timeout(Duration(seconds: _apiTimeOut));
-      responseLog(api, response, "POST");
+      if (!uri.authority.contains('app.bentonow.com')) {
+        responseLog(api, response, 'POST');
+      }
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(
@@ -128,7 +130,7 @@ class BaseService {
       default:
         throw FetchDataException(
             message: 'Error Occured with code: ${response.statusCode} ',
-            url: response.request!.url.toString());
+            url: response.request?.url.toString());
     }
   }
 }

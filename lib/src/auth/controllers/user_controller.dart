@@ -82,7 +82,7 @@ class UserController extends GetxController {
       final user = res.data as User;
       // print('success ${user.userId}   ${user.token}');
       await LocalDB.storeAppUser(user);
-
+      SplashScreen.session.user = user;
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));
@@ -110,6 +110,9 @@ class UserController extends GetxController {
         tryAgain(true);
         return;
       }
+      final u = res.data as User;
+      await LocalDB.storeAppUser(u);
+      SplashScreen.session.user = u;
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));

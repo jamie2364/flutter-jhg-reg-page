@@ -4,18 +4,6 @@ import 'package:reg_page/src/services/base_service.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
 
 class Repo extends BaseService with BaseController {
-  Future<LoginModel?> login(String userName, String password) async {
-    try {
-      final res = await BaseService().post(AppUrls.login, {
-        'username': userName,
-        'password': password,
-      }).catchError(handleError);
-      if (res == null) return null;
-      return LoginModel.fromJson(res);
-    } catch (e) {
-      return null;
-    }
-  }
 
   Future<String?> getProductIds(String appName, {String? baseUrl}) async {
     try {

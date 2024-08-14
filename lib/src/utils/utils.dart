@@ -39,8 +39,7 @@ class Utils {
               builder: (context) => const AccountCheckScreen(),
             ));
       }
-    }
-    if (Constant.evoloApps.contains(appName)) {
+    } else if (Constant.evoloApps.contains(appName)) {
       if (AppUrls.base.isEqual(AppUrls.evoloUrl)) {
         Navigator.pushAndRemoveUntil(
             Utils.getContext!,
@@ -56,8 +55,7 @@ class Utils {
               builder: (context) => const AccountCheckScreen(),
             ));
       }
-    }
-    if (Constant.jhgApps.contains(appName)) {
+    } else if (Constant.jhgApps.contains(appName)) {
       if (AppUrls.base.isEqual(AppUrls.jhgUrl)) {
         Navigator.pushAndRemoveUntil(
             Utils.getContext!,
@@ -73,6 +71,8 @@ class Utils {
               builder: (context) => const AccountCheckScreen(),
             ));
       }
+    } else {
+      showErrorToast('app name $appName not found');
     }
   }
 }
