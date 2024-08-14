@@ -1,9 +1,11 @@
+import 'package:reg_page/reg_page.dart';
+
 class AppUrls {
   AppUrls._();
-  static String base = '';
-  static String baseUrl = '';
+  // static String base = '';
+  static BaseUrl base = BaseUrl.empty;
 
-  static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
+  static const String jhgUrl = 'https://www.Jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://www.evolo.app/';
   static const String musicUrl = 'https://www.musictools.io/';
 
@@ -18,4 +20,7 @@ class AppUrls {
   static const String checkSub = 'wp-json/myplugin/v1/jwt-check-subscription/';
   static const String login = '${_jwtCheckRoute}token';
   static const _jwtCheckRoute = 'wp-json/jwt-auth/v1/';
+
+  static const apiBase = '/wp-json/custom/v1/users';
+  static String register = "$apiBase/register";
 }

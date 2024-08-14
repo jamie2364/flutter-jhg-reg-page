@@ -2,6 +2,7 @@ name: reg_page
 description: A Flutter package for handling welcome page user authentication and authorization with setting page
 version: 0.0.1
 homepage: https://github.com/Zakariya5567/reg_page.git
+publish_to: none
 
 environment:
   sdk: '>=3.0.5 <4.0.0'
@@ -22,7 +23,14 @@ dependencies:
   permission_handler: ^11.3.1
   app_tracking_transparency: ^2.0.5
   http: ^1.2.2
+  get: ^4.6.6
+  
 
+  flutter_jhg_elements:
+#        path: ../flutter_jhg_elements
+    git:
+      url: https://github.com/jamie2364/flutter_jhg_elements.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

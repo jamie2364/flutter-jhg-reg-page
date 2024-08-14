@@ -23,7 +23,7 @@ class BaseService {
   }) async {
     Uri? uri;
     try {
-      final base = baseUrl ?? AppUrls.baseUrl;
+      final base = baseUrl ?? AppUrls.base.url;
       uri = Uri.parse(base + api).replace(queryParameters: queryParams);
       requestLog(uri, 'GET');
       var response = await http
@@ -54,7 +54,7 @@ class BaseService {
     Map<String, dynamic>? queryParams,
     String? baseUrl,
   }) async {
-    var uri = Uri.parse(baseUrl ?? AppUrls.baseUrl + api)
+    var uri = Uri.parse(baseUrl ?? AppUrls.base.url + api)
         .replace(queryParameters: queryParams);
 
     requestLog(uri, 'POST', body: payLoadObj);
@@ -66,7 +66,9 @@ class BaseService {
             headers: headers,
           )
           .timeout(Duration(seconds: _apiTimeOut));
-      responseLog(api, response, "POST");
+      if (!uri.authority.contains('app.bentonow.com')) {
+        responseLog(api, response, 'POST');
+      }
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(
@@ -103,12 +105,20 @@ class BaseService {
             message: response.body, url: response.request?.url.toString());
       case 401:
       case 403:
+        String code;
+        try {
+          code = json.decode(response.body)['code'];
+        } catch (e) {
+          code = 'jwt_auth';
+        }
         throw UnAutthorizedException(
-            message: response.body, url: response.request?.url.toString());
+            errorCode: code,
+            message: response.body,
+            url: response.request?.url.toString());
       case 404:
         throw BadRequestException(
-            errorCode: json.decode(response.body),
-            message: json.decode(response.body),
+            errorCode: json.decode(response.body)['code'],
+            message: json.decode(response.body)[''],
             url: response.request?.url.toString());
 
       case 409:
@@ -120,7 +130,7 @@ class BaseService {
       default:
         throw FetchDataException(
             message: 'Error Occured with code: ${response.statusCode} ',
-            url: response.request!.url.toString());
+            url: response.request?.url.toString());
     }
   }
 }
@@ -128,8 +138,9 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error) async {
     hideLoading();
+    print('error in base $error ${error.message}');
     if (error is BadRequestException) {
-      showErrorToast(error.message);
+      showErrorToast(Constant.productIdsFailedMessage);
     } else if (error is FetchDataException) {
       showErrorToast(error.message);
     } else if (error is ApiNotRespondingException) {

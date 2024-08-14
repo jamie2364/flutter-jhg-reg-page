@@ -45,7 +45,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     // }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
-    AppUrls.baseUrl = platformsList[0].baseUrl;
+    AppUrls.base = BaseUrl.fromString(platformsList[0].baseUrl);
   }
 
   @override
@@ -120,7 +120,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                               selectedPlatform = model.platform;
                               selectedModel = model;
                             });
-                            AppUrls.baseUrl = model.baseUrl;
+                            AppUrls.base = BaseUrl.fromString(model.baseUrl);
                           });
                     },
                     itemCount: platformsList.length,
@@ -141,12 +141,13 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     loaderDialog(context);
     try {
       final res = await Repo().getProductIds(widget.appName);
+      debugLog('res in url screen $res');
       if (res != null) {
         productIds = res;
         Navigator.pop(context);
         launchSignupPage();
       } else {
-        showFailureMessage();
+        // showFailureMessage();
       }
     } catch (e) {
       showFailureMessage();
@@ -172,7 +173,6 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   void showFailureMessage() {
-    Navigator.pop(context);
     showToast(
         context: context,
         message: Constant.productIdsFailedMessage,

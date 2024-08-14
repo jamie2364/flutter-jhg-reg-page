@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:reg_page/src/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDB {
@@ -145,6 +148,7 @@ class LocalDB {
     // Store subscription purchase in shared preferences
     sharedPreferences.setBool(subscriptionPurchase, value);
   }
+
   // Set subscription purchase
   static Future<void> storeInAppSubscriptionPurchase(bool value) async {
     // initialized shared preferences
@@ -160,7 +164,8 @@ class LocalDB {
     // Get the subscription purchase which we have stored in sharedPreferences before
     bool? purchase = sharedPreferences.getBool(subscriptionPurchase);
     return purchase;
-  }  // Get subscription purchase
+  } // Get subscription purchase
+
   static Future<bool?> get getSubscriptionInAppPurchase async {
     // Initialized shared preferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -246,6 +251,29 @@ class LocalDB {
 
   static Future<bool> getIsFreePlan() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('free_plan')??false;
+    return prefs.getBool('free_plan') ?? false;
+  }
+
+  // AppData ///////////////////////////////////////////////////////////////////
+  static String appUserIdKey = "appUserId";
+  static String appUserNameKey = "appUserName";
+  static String appUserTokenKey = "appUserToken";
+  static String appUserKey = "user";
+  // Set user ID
+  static Future<void> storeAppUser(User user) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setString(appUserIdKey, jsonEncode(user.toMap()));
+  }
+
+  static Future<User?> get getAppUser async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      final json = sharedPreferences.getString(appUserIdKey);
+      if (json == null) return null;
+      return User.fromMap(jsonDecode(json));
+    } catch (e) {
+      return null;
+    }
   }
 }
