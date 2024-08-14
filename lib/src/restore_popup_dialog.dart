@@ -13,6 +13,13 @@ restorePopupDialog(
      final width = MediaQuery.of(context).size.width;
     return Dialog(
       backgroundColor: Colors.transparent,
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: width < 850
+            ? 24
+            : width < 1100 && width >= 850
+            ? width * .25
+            : width * .35,
+      ),
         alignment: Alignment.center,
         child:   Align(
           alignment: Alignment.center,
@@ -29,8 +36,8 @@ restorePopupDialog(
                 child:
                 Padding(
                   padding:  EdgeInsets.symmetric(
-                      horizontal: width*0.065,
-                      vertical: height*0.025
+                      horizontal: width*0.05,
+                      vertical: height*0.05
                       ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,

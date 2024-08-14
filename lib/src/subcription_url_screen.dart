@@ -40,9 +40,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   void initState() {
     super.initState();
     platformsList = PlatformModel.getList();
-    if (!widget.appName.contains("Practice Routines")) {
-      platformsList.removeAt(1);
-    }
+    // if (!widget.appName.contains("Practice Routines")) {
+    //   platformsList.removeAt(1);
+    // }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
     AppUrls.base = BaseUrl.fromString(platformsList[0].baseUrl);
@@ -56,6 +56,13 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
         backgroundColor: AppColor.primaryBlack,
         body: SafeArea(
           child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: width < 850
+                    ? 0
+                    : width < 1100 && width >= 850
+                    ? width * .20
+                    : width * .25,
+              ),
               margin: EdgeInsets.only(
                   bottom: height * 0.1,
                   left: width * 0.090,
@@ -74,7 +81,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                     child: Icon(
                       Icons.arrow_back_ios,
                       color: AppColor.primaryWhite,
-                      size: width * 0.060,
+                      size: 25,
                     ),
                   ),
                   SizedBox(

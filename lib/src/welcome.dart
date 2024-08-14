@@ -335,6 +335,7 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    print(height);
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: loading
@@ -352,7 +353,7 @@ class _WelcomeState extends State<Welcome> {
                     // IMAGE
                     SizedBox(
                       width: width,
-                      height: height * 0.46,
+                      height:height>650? height * 0.46: height>440? height * 0.36: height * 0.30,
                       child: Image.asset(
                         "assets/images/jhg_background.png",
                         package: 'reg_page',
@@ -364,7 +365,7 @@ class _WelcomeState extends State<Welcome> {
                     Positioned(
                       child: Container(
                         width: width,
-                        height: height * 0.46,
+                        height:height>650? height * 0.46: height>440? height * 0.36: height * 0.30,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -388,12 +389,12 @@ class _WelcomeState extends State<Welcome> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Heading(text: Constant.welcome),
+                           Heading(text: Constant.welcome,height: height,),
                           Text(
                             Constant.welcomeDescription,
                             style: TextStyle(
                                 color: AppColor.primaryWhite,
-                                fontSize: 18,
+                                fontSize: height>650?18:height>440?16:14,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: Constant.kFontFamilySS3),
                           ),
@@ -401,7 +402,7 @@ class _WelcomeState extends State<Welcome> {
                             replaceAppName(),
                             style: TextStyle(
                                 color: AppColor.primaryWhite,
-                                fontSize: 30,
+                                fontSize: height>650?30:height>440?25:22,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: Constant.kFontFamilySS3),
                           ),
@@ -463,7 +464,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.03,
+                        height:height>650? height * 0.03: height * 0.02,
                       ),
                       //FREE WITH ADS
                       if (!widget.appName.contains("Course Hub"))
@@ -474,8 +475,8 @@ class _WelcomeState extends State<Welcome> {
                             },
                             child: Container(
                               height: selectedPlan == 0
-                                  ? height * 0.13
-                                  : height * 0.06,
+                                  ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
+                                  :height>440? height * 0.06: height * 0.07,
                               width: width * 0.85,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -585,7 +586,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.02,
+                        height:height>650? height * 0.02: height * 0.01,
                       ),
 
                       // ANNUAL PLAN BUTTON
@@ -598,9 +599,8 @@ class _WelcomeState extends State<Welcome> {
                           },
                           child: Container(
                             height: selectedPlan == 2
-                                ? MediaQuery.of(context).size.height * 0.13
-                                : MediaQuery.of(context).size.height * 0.06,
-                            width: MediaQuery.of(context).size.width * 0.85,
+                                ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
+                                :height>440? height * 0.06: height * 0.07,                            width: width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
@@ -710,7 +710,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.02,
+                        height:height>650? height * 0.02: height * 0.01,
                       ),
 
                       Center(
@@ -720,8 +720,8 @@ class _WelcomeState extends State<Welcome> {
                           },
                           child: Container(
                             height: selectedPlan == 1
-                                ? height * 0.13
-                                : height * 0.06,
+                                ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
+                                :height>440? height * 0.06: height * 0.07,
                             width: width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -827,7 +827,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.03,
+                        height:height>650? height * 0.03: height * 0.02,
                       ),
 
                       // ALREADY SUBSCRIBED AND LOGIN TEXT BUTTON
@@ -863,7 +863,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height: height * 0.03,
+                        height:height>650? height * 0.03: height * 0.02,
                       ),
 
                       // START FREE TRAIL  , CONTINUE BUTTON

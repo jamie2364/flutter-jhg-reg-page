@@ -207,7 +207,7 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: height * 0.030,
                   ),
-                  const Heading(text: Constant.login),
+                   Heading(text: Constant.login,height: height,),
 
                   SizedBox(
                     height: height * 0.23,
