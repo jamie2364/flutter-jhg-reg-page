@@ -6,6 +6,7 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'colors.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -45,8 +46,8 @@ class _InfoScreenState extends State<InfoScreen> {
           horizontal: width < 850
               ? 0
               : width < 1100 && width >= 850
-              ? width * .25
-              : width * .30,
+                  ? width * .25
+                  : width * .30,
         ),
         color: AppColor.primaryBlack,
         child: Padding(
@@ -163,7 +164,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 InfoButtonSection(
                   title: Constant.visitJamieHarrisonGuitar,
                   onPressed: () {
-                    _launchUrl(AppUrls.jamieUrl);
+                    _launchUrl(AppUrls.jhgUrl);
                   },
                 ),
                 SizedBox(
