@@ -4,7 +4,6 @@ import 'package:reg_page/src/services/base_service.dart';
 import 'package:reg_page/src/utils/app_urls.dart';
 
 class Repo extends BaseService with BaseController {
-
   Future<String?> getProductIds(String appName, {String? baseUrl}) async {
     try {
       final res = await get(AppUrls.productIds,
@@ -14,6 +13,7 @@ class Repo extends BaseService with BaseController {
       if (res == null) return null;
       return res['product_ids'];
     } catch (e) {
+      exceptionLog('exception on  get product ids $e');
       return null;
     }
   }
@@ -32,6 +32,7 @@ class Repo extends BaseService with BaseController {
       ).catchError(handleError);
       return res;
     } catch (e) {
+      exceptionLog('exception on  check subscription $e');
       return null;
     }
   }
@@ -48,6 +49,7 @@ class Repo extends BaseService with BaseController {
       ).catchError(handleError);
       return response;
     } catch (e) {
+      exceptionLog('exception on  post bug $e');
       return null;
     }
   }
@@ -74,6 +76,7 @@ class Repo extends BaseService with BaseController {
           headers: Constant.marketingHeaders);
       return res;
     } catch (e) {
+      exceptionLog('exception on  marketing api $e');
       return null;
     }
   }

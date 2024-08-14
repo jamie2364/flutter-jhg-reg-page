@@ -85,7 +85,7 @@ class _SignUpState extends State<SignUp> {
         userName: userNameController.text,
         password: passwordController.text,
       );
-      final loginRes = await UserRepo().loginUser(newUser.toMapToLogin());
+      final loginRes = await UserRepo().loginUser(newUser.toMapToLogin(),checkError: true);
       print('login res $loginRes ${loginRes.code}${loginRes.data}');
       loggedInUser = loginRes.data as User;
       SplashScreen.session = UserSession(url: AppUrls.base, user: loggedInUser);
