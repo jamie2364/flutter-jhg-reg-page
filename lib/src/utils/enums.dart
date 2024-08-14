@@ -3,7 +3,7 @@ import 'package:reg_page/src/utils/app_urls.dart';
 enum BaseUrl {
   empty(''),
   musictools(AppUrls.musicUrl),
-  jhg(AppUrls.jamieUrl),
+  jhg(AppUrls.jhgUrl),
   evolo(AppUrls.evoloUrl);
 
   final String url;

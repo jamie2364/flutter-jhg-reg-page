@@ -2,6 +2,7 @@ name: reg_page
 description: A Flutter package for handling welcome page user authentication and authorization with setting page
 version: 0.0.1
 homepage: https://github.com/Zakariya5567/reg_page.git
+publish_to: none
 
 environment:
   sdk: '>=3.0.5 <4.0.0'

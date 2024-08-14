@@ -5,7 +5,7 @@ class AppUrls {
   // static String base = '';
   static BaseUrl base = BaseUrl.empty;
 
-  static const String jamieUrl = 'https://www.Jamieharrisonguitar.com/';
+  static const String jhgUrl = 'https://www.Jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://www.evolo.app/';
   static const String musicUrl = 'https://www.musictools.io/';
 

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reg_page/reg_page.dart';
@@ -42,13 +44,10 @@ class UserController extends GetxController {
       lName: lNameC.text,
       country: selectedCountry,
     );
-    print('new User ${newUser.toString()}');
     final res = await _repo.registerUser(newUser.toMapToRegister());
     hideLoading();
     if (res == null) return;
     if (res.code == 1) {
-      print('res in controller ${res.code} ${res.token}');
-
       await LocalDB.storeAppUser(
           newUser.copyWith(token: res.token, userId: res.userId));
       LocalDB.getBearerToken.then((value) async {
@@ -57,9 +56,7 @@ class UserController extends GetxController {
           LocalDB.storeUserId(res.userId ?? -1);
         }
       });
-      // token = res.token ?? '';
-      // userId = res.userId ?? -1;
-      // Get.to(() => OnBoardingScreen());
+      SplashScreen.session.user = newUser;
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));
@@ -76,14 +73,14 @@ class UserController extends GetxController {
       userName: userNameC.text,
       password: passC.text,
     );
-    print('loggedin User ${newUser.toString()}');
+    // print('loggedin User ${newUser.toString()}');
     final res = await _repo.loginUser(newUser.toMapToLogin());
     hideLoading();
-    print('code in controler  ${res.code}');
+    // print('code in controler  ${res.code}');
 
     if (res.code == 1) {
       final user = res.data as User;
-      print('success ${user.userId}   ${user.token}');
+      // print('success ${user.userId}   ${user.token}');
       await LocalDB.storeAppUser(user);
 
       Navigator.pushReplacement(
@@ -104,35 +101,25 @@ class UserController extends GetxController {
       userName: userName,
       password: password,
     );
-    print('loggedin User ${newUser.toString()}');
+    // print('loggedin User ${newUser.toString()}');
     final res = await _repo.loginUser(newUser.toMapToLogin());
-    print('code and token controler ${res.code} ${res.data?.token}');
+    // print('code and token controler ${res.code} ${res.data?.token}');
     if (res.code is int) {
       if (res.code == 0) {
         showErrorToast('Something went wrong');
         tryAgain(true);
         return;
       }
-      // await SharedPrefs.storeEvoloJwt(res.data!.token!);
-      // await SharedPrefs.storeEvoloUid(res.data.userId ?? -1);
-
-      // token = res.data!.token!;
-      // userId = res.data.userId ?? -1;
-      // Get.to(OnBoardingScreen());
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));
       return;
     }
     if (res.code.contains('incorrect_password')) {
-      // AppUtils.showErrorToast(
-      //     'Your Evolo password is different from the JHG password please log in evolo');
       Get.to(const LoginScreen());
       return;
     }
     if (res.code.contains('invalid_username')) {
-      // AppUtils.showErrorToast(
-      //     'Your account in not registered on Evolo please Register to Continue');
       Get.to(const StartRegisterScreen());
       return;
     }

@@ -32,7 +32,6 @@ class SplashScreen extends StatefulWidget {
   final List<String> featuresList;
   final GlobalKey<NavigatorState>? navKey;
   final Widget Function() nextPage;
-  static Widget Function()? staticNextPage;
   static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
   static GlobalKey<NavigatorState>? staticNavKey;
 

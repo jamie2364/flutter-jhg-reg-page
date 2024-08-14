@@ -157,7 +157,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   InfoButtonSection(
                     title: Constant.visitJamieHarrisonGuitar,
                     onPressed: () {
-                      _launchUrl(AppUrls.jamieUrl);
+                      _launchUrl(AppUrls.jhgUrl);
                     },
                   ),
                   SizedBox(

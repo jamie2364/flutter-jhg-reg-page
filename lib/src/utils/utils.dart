@@ -40,5 +40,39 @@ class Utils {
             ));
       }
     }
+    if (Constant.evoloApps.contains(appName)) {
+      if (AppUrls.base.isEqual(AppUrls.evoloUrl)) {
+        Navigator.pushAndRemoveUntil(
+            Utils.getContext!,
+            MaterialPageRoute(builder: (context) => globalNextPage()),
+            (route) => false);
+      } else {
+        AppUrls.base = BaseUrl.evolo;
+        SplashScreen.session.url = AppUrls.base;
+        Get.put(UserController());
+        Navigator.push(
+            Utils.getContext!,
+            MaterialPageRoute(
+              builder: (context) => const AccountCheckScreen(),
+            ));
+      }
+    }
+    if (Constant.jhgApps.contains(appName)) {
+      if (AppUrls.base.isEqual(AppUrls.jhgUrl)) {
+        Navigator.pushAndRemoveUntil(
+            Utils.getContext!,
+            MaterialPageRoute(builder: (context) => globalNextPage()),
+            (route) => false);
+      } else {
+        AppUrls.base = BaseUrl.jhg;
+        SplashScreen.session.url = AppUrls.base;
+        Get.put(UserController());
+        Navigator.push(
+            Utils.getContext!,
+            MaterialPageRoute(
+              builder: (context) => const AccountCheckScreen(),
+            ));
+      }
+    }
   }
 }

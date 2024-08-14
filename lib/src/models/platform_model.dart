@@ -14,7 +14,7 @@ class PlatformModel {
     var list = <PlatformModel>[];
     list.add(PlatformModel(
       platform: Constant.jamieUrlText,
-      baseUrl: AppUrls.jamieUrl,
+      baseUrl: AppUrls.jhgUrl,
     ));
     list.add(PlatformModel(
       platform: Constant.evoloUrlText,
