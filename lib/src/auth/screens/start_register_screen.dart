@@ -28,6 +28,13 @@ class StartRegisterScreen extends GetView<UserController> {
         ),
       ),
       body: JHGBody(
+        padding: EdgeInsets.symmetric(
+          horizontal: JHGResponsive.isMobile(context)
+              ? 0
+              : JHGResponsive.isTablet(context)
+              ? MediaQuery.sizeOf(context).width * .25
+              : MediaQuery.sizeOf(context).width * .30,
+        ),
         body: Form(
           key: controller.starRegFormKey,
           child: Column(
