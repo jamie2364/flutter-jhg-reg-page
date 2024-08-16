@@ -66,9 +66,7 @@ class BaseService {
             headers: headers,
           )
           .timeout(Duration(seconds: _apiTimeOut));
-      if (!uri.authority.contains('app.bentonow.com')) {
-        responseLog(api, response, 'POST');
-      }
+      responseLog(api, response, 'POST');
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(

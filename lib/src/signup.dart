@@ -85,13 +85,15 @@ class _SignUpState extends State<SignUp> {
         userName: userNameController.text,
         password: passwordController.text,
       );
-      final loginRes = await UserRepo().loginUser(newUser.toMapToLogin(),checkError: true);
-      print('login res $loginRes ${loginRes.code}${loginRes.data}');
+      final loginRes =
+          await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
+      // print('login res $loginRes ${loginRes.code}${loginRes.data}');
       loggedInUser = loginRes.data as User;
       SplashScreen.session = UserSession(url: AppUrls.base, user: loggedInUser);
       setState(() {});
 
       await LocalDB.storeBearerToken(loggedInUser.token!);
+      await LocalDB.storeAppUser(loggedInUser);
       // if (widget.appName == "JHG Course Hub") {
       final subRes = await Repo().checkSubscription(widget.productIds);
       //print("response is ${response.data}");
@@ -207,7 +209,10 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: height * 0.030,
                   ),
-                   Heading(text: Constant.login,height: height,),
+                  Heading(
+                    text: Constant.login,
+                    height: height,
+                  ),
 
                   SizedBox(
                     height: height * 0.23,

@@ -50,12 +50,8 @@ class UserController extends GetxController {
     if (res.code == 1) {
       await LocalDB.storeAppUser(
           newUser.copyWith(token: res.token, userId: res.userId));
-      LocalDB.getBearerToken.then((value) async {
-        if (value == null) {
-          LocalDB.storeBearerToken(res.token ?? '');
-          LocalDB.storeUserId(res.userId ?? -1);
-        }
-      });
+      // LocalDB.storeBearerToken(res.token ?? '');
+      // LocalDB.storeUserId(res.userId ?? -1);
       SplashScreen.session.user = newUser;
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
@@ -83,6 +79,8 @@ class UserController extends GetxController {
       // print('success ${user.userId}   ${user.token}');
       await LocalDB.storeAppUser(user);
       SplashScreen.session.user = user;
+      // LocalDB.storeBearerToken(user.token ?? '');
+      // LocalDB.storeUserId(user.userId ?? -1);
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));
@@ -113,6 +111,8 @@ class UserController extends GetxController {
       final u = res.data as User;
       await LocalDB.storeAppUser(u);
       SplashScreen.session.user = u;
+      // LocalDB.storeBearerToken(u.token ?? '');
+      // LocalDB.storeUserId(u.userId ?? -1);
       Navigator.pushReplacement(
           SplashScreen.staticNavKey!.currentState!.context,
           MaterialPageRoute(builder: (context) => globalNextPage()));

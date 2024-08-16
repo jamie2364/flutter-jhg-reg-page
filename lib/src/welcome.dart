@@ -88,15 +88,12 @@ class _WelcomeState extends State<Welcome> {
 
   // Initialize subscription
   Future<void> initializedData() async {
-    print(widget.yearlySubscriptionId);
-    print(widget.monthlySubscriptionId);
+    debugLog(widget.yearlySubscriptionId);
+    debugLog(widget.monthlySubscriptionId);
 
     variant.clear();
-    print("VARIANT VVV IS $variant");
-
     variant.add(widget.yearlySubscriptionId);
     variant.add(widget.monthlySubscriptionId);
-    print("VARIANT VVV IS $variant");
 
     yearlyKey = widget.yearlySubscriptionId;
     monthlyKey = widget.monthlySubscriptionId;
@@ -113,7 +110,7 @@ class _WelcomeState extends State<Welcome> {
 
   // Payment stream listener
   Future<void> subscriptionStream() async {
-    print("subscriptionStream Calllled");
+    debugLog("subscriptionStream Calllled");
     // Clear the product list
     products.clear();
 
@@ -121,18 +118,17 @@ class _WelcomeState extends State<Welcome> {
     Stream purchaseUpdated = InAppPurchase.instance.purchaseStream;
 
     bool isAvailable = await InAppPurchase.instance.isAvailable();
-    print("InAppPurchase isAvailable : $isAvailable");
+    debugLog("InAppPurchase isAvailable : $isAvailable");
     // int purchaseList=await purchaseUpdated.length;
     //  print("purchaseList : Before : ${purchaseList}");
     // Listen for stream
     streamSubscription = purchaseUpdated.listen((purchaseList) async {
-      print("in Listen");
       // Calling for purchases
       await listenToPurchase(purchaseList);
     }, onDone: () {
       streamSubscription.cancel();
     }, onError: (error) {
-      debugPrint("Error");
+      exceptionLog("Error $error");
       streamSubscription.cancel();
     });
     initStore(context);
@@ -142,13 +138,11 @@ class _WelcomeState extends State<Welcome> {
     // Getting subscription
     ProductDetailsResponse productDetailsResponse =
         await inAppPurchase.queryProductDetails(variant);
-    print("VARIANT IS $variant");
+    debugLog("VARIANT IS $variant");
     if (productDetailsResponse.error == null) {
       products = productDetailsResponse.productDetails;
-      debugPrint("products $products");
+      debugLog("products $products");
       for (var element in products) {
-        print("products id  IS ${element.id}");
-
         if (element.id == yearlyKey) {
           setState(() {
             yearlyPrice = element.price;
@@ -180,8 +174,7 @@ class _WelcomeState extends State<Welcome> {
   }
 
   listenToPurchase(List<PurchaseDetails> purchaseDetailsList) async {
-    print("list");
-    print("PList :$purchaseDetailsList");
+    debugLog("PList :$purchaseDetailsList");
 
     if (purchaseDetailsList.isEmpty) {
       restorePopupDialog(Utils.getContext ?? context, Constant.restoreNotFound,
@@ -193,19 +186,18 @@ class _WelcomeState extends State<Welcome> {
         // }
         // purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
         if (check == 1) break;
-        print("purchaseDetails.status : ${purchaseDetails.status}");
+        debugLog("purchaseDetails.status : ${purchaseDetails.status}");
         // print("productID IS ${purchaseDetails.productID}");
         // print("purchaseID IS ${purchaseDetails.purchaseID}");
         if (purchaseDetails.status == PurchaseStatus.pending) {
-          print("productID IS ${purchaseDetails.productID}");
-          print("purchaseID IS ${purchaseDetails.purchaseID}");
+          debugLog("productID IS ${purchaseDetails.productID}");
 
-          debugPrint("pending");
+          debugLog("pending");
           //Navigator.pop(context);
         } else if (purchaseDetails.status == PurchaseStatus.error) {
           Navigator.pop(Utils.getContext ?? context);
-          debugPrint("error");
-          print("ERROR IS ${purchaseDetails.error}");
+
+          debugLog("ERROR IS ${purchaseDetails.error}");
           // purchaseDetails.error == null
           //     ? const SizedBox()
           //     : showToast(
@@ -214,7 +206,7 @@ class _WelcomeState extends State<Welcome> {
           //         isError: true,
           //       );
         } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          debugPrint("Purchased");
+          debugLog("Purchased");
           Navigator.pop(Utils.getContext ?? context);
           purchaseDetails.error == null
               ? const SizedBox()
@@ -228,19 +220,19 @@ class _WelcomeState extends State<Welcome> {
           try {
             await onPurchasedSuccess();
           } catch (e) {
-            print('exception on $e');
+            exceptionLog('exception on $e');
           }
           //
           Navigator.pushAndRemoveUntil(Utils.getContext ?? context,
               MaterialPageRoute(builder: (context) {
             return widget.nextPage();
           }), (route) => false);
-          print('pushed to the next page ${widget.nextPage()}');
+          debugLog('pushed to the next page ${widget.nextPage()}');
           check = 1;
         } else if (purchaseDetails.status == PurchaseStatus.canceled) {
           debugPrint("canceled");
           Navigator.pop(Utils.getContext ?? context);
-          print("ERROR IS::: ${purchaseDetails.error}");
+          debugLog("ERROR IS::: ${purchaseDetails.error}");
         } else if (purchaseDetails.status == PurchaseStatus.restored) {
           debugPrint("restored");
           Navigator.pop(Utils.getContext ?? context);
@@ -261,7 +253,7 @@ class _WelcomeState extends State<Welcome> {
 
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog(context);
-    print("SELECTED PLAN IS $plan");
+    debugLog("SELECTED PLAN IS $plan");
 
     int selectedProductIndex = -1;
 
@@ -311,7 +303,7 @@ class _WelcomeState extends State<Welcome> {
       await InAppPurchase.instance.restorePurchases();
       Navigator.pop(context);
     } on PlatformException catch (e) {
-      print(e);
+      exceptionLog(e);
       Navigator.pop(context);
       // Error restoring purchases
     }
@@ -325,7 +317,7 @@ class _WelcomeState extends State<Welcome> {
     final proIds =
         await Repo().getProductIds(widget.appName, baseUrl: AppUrls.evoloUrl);
     if (proIds == null) return;
-    print('product ids onPurchasedSuccess $proIds');
+    debugLog('product ids onPurchasedSuccess $proIds');
     await LocalDB.saveProductIds(proIds);
     await LocalDB.saveBaseUrl(AppUrls.evoloUrl);
     Navigator.pop(Utils.getContext ?? context);
@@ -335,7 +327,7 @@ class _WelcomeState extends State<Welcome> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    print(height);
+
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: loading
@@ -353,7 +345,11 @@ class _WelcomeState extends State<Welcome> {
                     // IMAGE
                     SizedBox(
                       width: width,
-                      height:height>650? height * 0.46: height>440? height * 0.36: height * 0.30,
+                      height: height > 650
+                          ? height * 0.46
+                          : height > 440
+                              ? height * 0.36
+                              : height * 0.30,
                       child: Image.asset(
                         "assets/images/jhg_background.png",
                         package: 'reg_page',
@@ -365,7 +361,11 @@ class _WelcomeState extends State<Welcome> {
                     Positioned(
                       child: Container(
                         width: width,
-                        height:height>650? height * 0.46: height>440? height * 0.36: height * 0.30,
+                        height: height > 650
+                            ? height * 0.46
+                            : height > 440
+                                ? height * 0.36
+                                : height * 0.30,
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
@@ -389,12 +389,19 @@ class _WelcomeState extends State<Welcome> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           Heading(text: Constant.welcome,height: height,),
+                          Heading(
+                            text: Constant.welcome,
+                            height: height,
+                          ),
                           Text(
                             Constant.welcomeDescription,
                             style: TextStyle(
                                 color: AppColor.primaryWhite,
-                                fontSize: height>650?18:height>440?16:14,
+                                fontSize: height > 650
+                                    ? 18
+                                    : height > 440
+                                        ? 16
+                                        : 14,
                                 fontWeight: FontWeight.w400,
                                 fontFamily: Constant.kFontFamilySS3),
                           ),
@@ -402,7 +409,11 @@ class _WelcomeState extends State<Welcome> {
                             replaceAppName(),
                             style: TextStyle(
                                 color: AppColor.primaryWhite,
-                                fontSize: height>650?30:height>440?25:22,
+                                fontSize: height > 650
+                                    ? 30
+                                    : height > 440
+                                        ? 25
+                                        : 22,
                                 fontWeight: FontWeight.w700,
                                 fontFamily: Constant.kFontFamilySS3),
                           ),
@@ -464,7 +475,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height:height>650? height * 0.03: height * 0.02,
+                        height: height > 650 ? height * 0.03 : height * 0.02,
                       ),
                       //FREE WITH ADS
                       if (!widget.appName.contains("Course Hub"))
@@ -475,8 +486,16 @@ class _WelcomeState extends State<Welcome> {
                             },
                             child: Container(
                               height: selectedPlan == 0
-                                  ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
-                                  :height>440? height * 0.06: height * 0.07,
+                                  ? height > 640
+                                      ? height * 0.13
+                                      : height > 470
+                                          ? height * 0.18
+                                          : height > 410
+                                              ? height * 0.20
+                                              : height * 0.25
+                                  : height > 440
+                                      ? height * 0.06
+                                      : height * 0.07,
                               width: width * 0.85,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -586,7 +605,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height:height>650? height * 0.02: height * 0.01,
+                        height: height > 650 ? height * 0.02 : height * 0.01,
                       ),
 
                       // ANNUAL PLAN BUTTON
@@ -599,8 +618,17 @@ class _WelcomeState extends State<Welcome> {
                           },
                           child: Container(
                             height: selectedPlan == 2
-                                ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
-                                :height>440? height * 0.06: height * 0.07,                            width: width * 0.85,
+                                ? height > 640
+                                    ? height * 0.13
+                                    : height > 470
+                                        ? height * 0.18
+                                        : height > 410
+                                            ? height * 0.20
+                                            : height * 0.25
+                                : height > 440
+                                    ? height * 0.06
+                                    : height * 0.07,
+                            width: width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
@@ -710,7 +738,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height:height>650? height * 0.02: height * 0.01,
+                        height: height > 650 ? height * 0.02 : height * 0.01,
                       ),
 
                       Center(
@@ -720,8 +748,16 @@ class _WelcomeState extends State<Welcome> {
                           },
                           child: Container(
                             height: selectedPlan == 1
-                                ?height>640? height * 0.13:height>470? height * 0.18:height>410? height * 0.20:height * 0.25
-                                :height>440? height * 0.06: height * 0.07,
+                                ? height > 640
+                                    ? height * 0.13
+                                    : height > 470
+                                        ? height * 0.18
+                                        : height > 410
+                                            ? height * 0.20
+                                            : height * 0.25
+                                : height > 440
+                                    ? height * 0.06
+                                    : height * 0.07,
                             width: width * 0.85,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(12),
@@ -827,7 +863,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height:height>650? height * 0.03: height * 0.02,
+                        height: height > 650 ? height * 0.03 : height * 0.02,
                       ),
 
                       // ALREADY SUBSCRIBED AND LOGIN TEXT BUTTON
@@ -863,7 +899,7 @@ class _WelcomeState extends State<Welcome> {
 
                       // SPACER
                       SizedBox(
-                        height:height>650? height * 0.03: height * 0.02,
+                        height: height > 650 ? height * 0.03 : height * 0.02,
                       ),
 
                       // START FREE TRAIL  , CONTINUE BUTTON
@@ -893,7 +929,29 @@ class _WelcomeState extends State<Welcome> {
     );
   }
 
-  void launchNextPage() {
+  Future<void> launchNextPage() async {
+    if (Constant.jhgApps.contains(widget.appName)) {
+      AppUrls.base = BaseUrl.jhg;
+      loaderDialog();
+      final productIds = await Repo().getProductIds(widget.appName);
+      if (productIds == null) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return SignUp(
+              yearlySubscriptionId: widget.yearlySubscriptionId,
+              monthlySubscriptionId: widget.monthlySubscriptionId,
+              appName: widget.appName,
+              appVersion: widget.appVersion,
+              nextPage: widget.nextPage,
+              productIds: productIds,
+            );
+          },
+        ),
+      );
+      return;
+    }
     Navigator.push(
       context,
       MaterialPageRoute(

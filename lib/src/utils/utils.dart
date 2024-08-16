@@ -50,7 +50,7 @@ class Utils {
         SplashScreen.session.url = AppUrls.base;
         Get.put(UserController());
         Navigator.push(
-            Utils.getContext!,
+            SplashScreen.staticNavKey!.currentState!.context,
             MaterialPageRoute(
               builder: (context) => const AccountCheckScreen(),
             ));

@@ -40,9 +40,9 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   void initState() {
     super.initState();
     platformsList = PlatformModel.getList();
-    // if (!widget.appName.contains("Practice Routines")) {
-    //   platformsList.removeAt(1);
-    // }
+    if (!Constant.evoloApps.contains(widget.appName)) {
+      platformsList.removeAt(1);
+    }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
     AppUrls.base = BaseUrl.fromString(platformsList[0].baseUrl);
@@ -60,8 +60,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                 horizontal: width < 850
                     ? 0
                     : width < 1100 && width >= 850
-                    ? width * .20
-                    : width * .25,
+                        ? width * .20
+                        : width * .25,
               ),
               margin: EdgeInsets.only(
                   bottom: height * 0.1,

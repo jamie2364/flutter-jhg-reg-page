@@ -21,6 +21,6 @@ class AppUrls {
   static const String login = '${_jwtCheckRoute}token';
   static const _jwtCheckRoute = 'wp-json/jwt-auth/v1/';
 
-  static const apiBase = '/wp-json/custom/v1/users';
-  static String register = "$apiBase/register";
+  static const _apiBase = '/wp-json/custom/v1/users';
+  static String register = "$_apiBase/register";
 }

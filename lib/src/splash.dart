@@ -83,9 +83,10 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       String? token = await LocalDB.getBearerToken;
-
+      print('token $token');
       final url = await LocalDB.getBaseurl;
       final appUser = await LocalDB.getAppUser;
+      print('token appUser $appUser');
       AppUrls.base = BaseUrl.fromString(url ?? '');
       SplashScreen.session = UserSession(url: AppUrls.base, user: null);
       if (token == null) {
