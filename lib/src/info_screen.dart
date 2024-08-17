@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'colors.dart';
@@ -164,7 +164,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 InfoButtonSection(
                   title: Constant.visitJamieHarrisonGuitar,
                   onPressed: () {
-                    _launchUrl(AppUrls.jhgUrl);
+                    _launchUrl(Urls.jhgUrl);
                   },
                 ),
                 SizedBox(

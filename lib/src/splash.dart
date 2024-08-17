@@ -7,8 +7,8 @@ import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/subscription_model.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/models/subscription_model.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 var globalNextPage;
@@ -87,8 +87,8 @@ class _SplashScreenState extends State<SplashScreen> {
       final url = await LocalDB.getBaseurl;
       final appUser = await LocalDB.getAppUser;
       print('token appUser $appUser');
-      AppUrls.base = BaseUrl.fromString(url ?? '');
-      SplashScreen.session = UserSession(url: AppUrls.base, user: null);
+      Urls.base = BaseUrl.fromString(url ?? '');
+      SplashScreen.session = UserSession(url: Urls.base, user: null);
       if (token == null) {
         Navigator.pushReplacement(
             context,

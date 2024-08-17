@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 
 class BaseService {
   final int _apiTimeOut = 25;
@@ -23,7 +23,7 @@ class BaseService {
   }) async {
     Uri? uri;
     try {
-      final base = baseUrl ?? AppUrls.base.url;
+      final base = baseUrl ?? Urls.base.url;
       uri = Uri.parse(base + api).replace(queryParameters: queryParams);
       requestLog(uri, 'GET');
       var response = await http
@@ -54,7 +54,7 @@ class BaseService {
     Map<String, dynamic>? queryParams,
     String? baseUrl,
   }) async {
-    var uri = Uri.parse(baseUrl ?? AppUrls.base.url + api)
+    var uri = Uri.parse(baseUrl ?? Urls.base.url + api)
         .replace(queryParameters: queryParams);
 
     requestLog(uri, 'POST', body: payLoadObj);

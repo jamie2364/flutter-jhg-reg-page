@@ -5,7 +5,7 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/widgets/patform_selection_widget.dart';
 
 class SubscriptionUrlScreen extends StatefulWidget {
@@ -45,7 +45,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
     }
     selectedPlatform = platformsList[0].platform;
     selectedModel = platformsList[0];
-    AppUrls.base = BaseUrl.fromString(platformsList[0].baseUrl);
+    Urls.base = BaseUrl.fromString(platformsList[0].baseUrl);
   }
 
   @override
@@ -120,7 +120,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                               selectedPlatform = model.platform;
                               selectedModel = model;
                             });
-                            AppUrls.base = BaseUrl.fromString(model.baseUrl);
+                            Urls.base = BaseUrl.fromString(model.baseUrl);
                           });
                     },
                     itemCount: platformsList.length,

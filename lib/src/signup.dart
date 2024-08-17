@@ -8,8 +8,8 @@ import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/repositories/user_repo.dart';
-import 'package:reg_page/src/subscription_model.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/models/subscription_model.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 import 'colors.dart';
@@ -87,19 +87,33 @@ class _SignUpState extends State<SignUp> {
       );
       final loginRes =
           await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
+      if (loginRes.code == 0) return;
       // print('login res $loginRes ${loginRes.code}${loginRes.data}');
       loggedInUser = loginRes.data as User;
-      SplashScreen.session = UserSession(url: AppUrls.base, user: loggedInUser);
+      SplashScreen.session = UserSession(url: Urls.base, user: loggedInUser);
       setState(() {});
-
+      if (Constant.jhgApps.contains(widget.appName)) {
+        if (Urls.base.isEqual(Urls.jhgUrl)) {
+          await LocalDB.storeAppUser(loggedInUser);
+        }
+      }
+      if (Constant.evoloApps.contains(widget.appName)) {
+        if (Urls.base.isEqual(Urls.evoloUrl)) {
+          await LocalDB.storeAppUser(loggedInUser);
+        }
+      }
+      if (Constant.musictoolsApps.contains(widget.appName)) {
+        if (Urls.base.isEqual(Urls.musicUrl)) {
+          await LocalDB.storeAppUser(loggedInUser);
+        }
+      }
       await LocalDB.storeBearerToken(loggedInUser.token!);
-      await LocalDB.storeAppUser(loggedInUser);
       // if (widget.appName == "JHG Course Hub") {
       final subRes = await Repo().checkSubscription(widget.productIds);
       //print("response is ${response.data}");
       bool isActive = await isSubscriptionActive(subRes,
           isCourseHubApp: widget.appName == "JHG Course Hub");
-      print('isSubscriptionActive $isActive');
+      debugLog('isSubscriptionActive $isActive');
       if (isActive) {
         successFunction();
       } else {
@@ -134,7 +148,7 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.storePassword(passwordController.text);
     await LocalDB.storeUserId(loggedInUser.userId!);
     await LocalDB.storeSubscriptionPurchase(false);
-    await LocalDB.saveBaseUrl(AppUrls.base.url);
+    await LocalDB.saveBaseUrl(Urls.base.url);
     await LocalDB.saveProductIds(widget.productIds);
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
 
@@ -350,12 +364,12 @@ class _SignUpState extends State<SignUp> {
                               isError: true);
                           return;
                         }
-                        String? token = await LocalDB.getBearerToken;
-                        if (token == null) {
-                          await userLogin();
-                        } else {
-                          //  await checkSubscription();
-                        }
+                        // String? token = await LocalDB.getBearerToken;
+                        // if (token == null) {
+                        await userLogin();
+                        // } else {
+                        //   //  await checkSubscription();
+                        // }
                       })
                 ],
               ),

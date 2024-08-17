@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class StringsDownloadService {
@@ -47,7 +47,7 @@ class StringsDownloadService {
     File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
     try {
-      await dio.download("${AppUrls.downloadAssetsUrl}$appName", file.path,
+      await dio.download("${Urls.downloadAssetsUrl}$appName", file.path,
           onReceiveProgress: (rec, total) {
         int progress = (((rec / total) * 100).toInt());
         // print("progress===${progress}");

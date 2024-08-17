@@ -12,7 +12,7 @@ import 'package:reg_page/src/info_screen.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
 import 'package:reg_page/src/subcription_url_screen.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 import 'colors.dart';
@@ -315,11 +315,11 @@ class _WelcomeState extends State<Welcome> {
     await LocalDB.storeInAppSubscriptionPurchase(true);
 
     final proIds =
-        await Repo().getProductIds(widget.appName, baseUrl: AppUrls.evoloUrl);
+        await Repo().getProductIds(widget.appName, baseUrl: Urls.evoloUrl);
     if (proIds == null) return;
     debugLog('product ids onPurchasedSuccess $proIds');
     await LocalDB.saveProductIds(proIds);
-    await LocalDB.saveBaseUrl(AppUrls.evoloUrl);
+    await LocalDB.saveBaseUrl(Urls.evoloUrl);
     Navigator.pop(Utils.getContext ?? context);
   }
 
@@ -931,7 +931,7 @@ class _WelcomeState extends State<Welcome> {
 
   Future<void> launchNextPage() async {
     if (Constant.jhgApps.contains(widget.appName)) {
-      AppUrls.base = BaseUrl.jhg;
+      Urls.base = BaseUrl.jhg;
       loaderDialog();
       final productIds = await Repo().getProductIds(widget.appName);
       if (productIds == null) return;

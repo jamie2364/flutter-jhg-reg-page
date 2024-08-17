@@ -2,7 +2,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/services/base_service.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 
 class UserRepo extends BaseService with BaseController {
   //User
@@ -10,7 +10,7 @@ class UserRepo extends BaseService with BaseController {
   Future<Result?> registerUser(Map<String, dynamic> userData) async {
     try {
       final res = await post(
-        AppUrls.register,
+        Urls.register,
         userData,
       ).catchError((error) => handleError(error));
       // print('res in repo ==> $res');
@@ -27,7 +27,7 @@ class UserRepo extends BaseService with BaseController {
     Result result = Result(code: 0, message: '');
     try {
       final res = await post(
-        AppUrls.login,
+        Urls.login,
         userData,
       ).catchError((error) {
         if (checkError) return handleError(error);

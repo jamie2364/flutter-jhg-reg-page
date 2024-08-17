@@ -1,12 +1,12 @@
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/services/base_service.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 
 class Repo extends BaseService with BaseController {
   Future<String?> getProductIds(String appName, {String? baseUrl}) async {
     try {
-      final res = await get(AppUrls.productIds,
+      final res = await get(Urls.productIds,
               queryParams: {'app_name': _formatAppName(appName)},
               baseUrl: baseUrl)
           .catchError(handleError);
@@ -23,7 +23,7 @@ class Repo extends BaseService with BaseController {
     try {
       final token = await LocalDB.getBearerToken;
       final res = await get(
-        AppUrls.checkSub,
+        Urls.checkSub,
         baseUrl: baseUrl,
         queryParams: {
           "product_ids": productIds,
@@ -42,7 +42,7 @@ class Repo extends BaseService with BaseController {
       final token = await LocalDB.getBearerToken;
 
       final response = await post(
-        AppUrls.reportBugUrl,
+        Urls.reportBugUrl,
         baseUrl: '',
         requestData,
         headers: {'Authorization': 'Bearer $token'},
@@ -66,8 +66,8 @@ class Repo extends BaseService with BaseController {
   marketingAPi(String email, String appName) async {
     try {
       final res = await post(
-          AppUrls.marketingUrl,
-          baseUrl: AppUrls.base.url,
+          Urls.marketingUrl,
+          baseUrl: Urls.base.url,
           {
             "subscribers": [
               {"email": email, "tag_as_event": "$appName User"}

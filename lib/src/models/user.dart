@@ -40,8 +40,8 @@ class User {
         email: json["user_email"],
         fName: json["user_nicename"],
         lName: json["user_display_name"],
-        customerId: json["customer_id"],
-        password: json['password']??'',
+        customerId: json["customer_id"].toString(),
+        password: json['password'] ?? '',
         userName: json["user_login"],
         userId: json["user_id"],
       );

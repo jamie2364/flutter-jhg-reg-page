@@ -1,8 +1,7 @@
 import 'package:reg_page/reg_page.dart';
 
-class AppUrls {
-  AppUrls._();
-  // static String base = '';
+class Urls {
+  Urls._();
   static BaseUrl base = BaseUrl.empty;
 
   static const String jhgUrl = 'https://www.Jamieharrisonguitar.com/';
@@ -10,9 +9,9 @@ class AppUrls {
   static const String musicUrl = 'https://www.musictools.io/';
 
   static const String marketingUrl =
-      "https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f";
+      'https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f';
   static const String reportBugUrl =
-      "https://www.jamieharrisonguitar.com/wp-json/custom/v1/report";
+      'https://www.jamieharrisonguitar.com/wp-json/custom/v1/report';
 
   static const String downloadAssetsUrl =
       'https://www.jamieharrisonguitar.com/wp-json/jhg-apps/v1/download-audio/?app_name=';
@@ -22,5 +21,5 @@ class AppUrls {
   static const _jwtCheckRoute = 'wp-json/jwt-auth/v1/';
 
   static const _apiBase = '/wp-json/custom/v1/users';
-  static String register = "$_apiBase/register";
+  static String register = '$_apiBase/register';
 }

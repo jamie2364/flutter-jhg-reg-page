@@ -5,7 +5,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
 import 'package:reg_page/src/auth/screens/account_check_screen.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/app_urls.dart';
+import 'package:reg_page/src/utils/urls.dart';
 
 class Utils {
   static EdgeInsets customPadding(context) {
@@ -24,14 +24,14 @@ class Utils {
 
   static void handleNextScreenOnSuccess(String appName, var nextPage) {
     if (Constant.musictoolsApps.contains(appName)) {
-      if (AppUrls.base.isEqual(AppUrls.musicUrl)) {
+      if (Urls.base.isEqual(Urls.musicUrl)) {
         Navigator.pushAndRemoveUntil(
             Utils.getContext!,
             MaterialPageRoute(builder: (context) => globalNextPage()),
             (route) => false);
-      } else if (!AppUrls.base.isEqual(AppUrls.musicUrl)) {
-        AppUrls.base = BaseUrl.musictools;
-        SplashScreen.session.url = AppUrls.base;
+      } else if (!Urls.base.isEqual(Urls.musicUrl)) {
+        Urls.base = BaseUrl.musictools;
+        SplashScreen.session.url = Urls.base;
         Get.put(UserController());
         Navigator.push(
             Utils.getContext!,
@@ -40,14 +40,14 @@ class Utils {
             ));
       }
     } else if (Constant.evoloApps.contains(appName)) {
-      if (AppUrls.base.isEqual(AppUrls.evoloUrl)) {
+      if (Urls.base.isEqual(Urls.evoloUrl)) {
         Navigator.pushAndRemoveUntil(
             Utils.getContext!,
             MaterialPageRoute(builder: (context) => globalNextPage()),
             (route) => false);
       } else {
-        AppUrls.base = BaseUrl.evolo;
-        SplashScreen.session.url = AppUrls.base;
+        Urls.base = BaseUrl.evolo;
+        SplashScreen.session.url = Urls.base;
         Get.put(UserController());
         Navigator.push(
             SplashScreen.staticNavKey!.currentState!.context,
@@ -56,14 +56,14 @@ class Utils {
             ));
       }
     } else if (Constant.jhgApps.contains(appName)) {
-      if (AppUrls.base.isEqual(AppUrls.jhgUrl)) {
+      if (Urls.base.isEqual(Urls.jhgUrl)) {
         Navigator.pushAndRemoveUntil(
             Utils.getContext!,
             MaterialPageRoute(builder: (context) => globalNextPage()),
             (route) => false);
       } else {
-        AppUrls.base = BaseUrl.jhg;
-        SplashScreen.session.url = AppUrls.base;
+        Urls.base = BaseUrl.jhg;
+        SplashScreen.session.url = Urls.base;
         Get.put(UserController());
         Navigator.push(
             Utils.getContext!,
