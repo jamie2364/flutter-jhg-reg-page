@@ -166,7 +166,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context, MaterialPageRoute(builder: (context) => widget.nextPage()));
       return;
     }
-    Utils.handleNextScreenOnSuccess(widget.appName, widget.nextPage());
+    Utils.handleNextScreenOnSuccess(widget.appName);
   }
 
   elseFunction() async {

@@ -53,9 +53,10 @@ class UserController extends GetxController {
       // LocalDB.storeBearerToken(res.token ?? '');
       // LocalDB.storeUserId(res.userId ?? -1);
       SplashScreen.session.user = newUser;
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
           SplashScreen.staticNavKey!.currentState!.context,
-          MaterialPageRoute(builder: (context) => globalNextPage()));
+          MaterialPageRoute(builder: (context) => globalNextPage()),
+          (route) => false);
       // AppUtils.showSuccessToast(res.message ?? '');
     } else {
       showErrorToast(res.message ?? '');
@@ -81,9 +82,10 @@ class UserController extends GetxController {
       SplashScreen.session.user = user;
       // LocalDB.storeBearerToken(user.token ?? '');
       // LocalDB.storeUserId(user.userId ?? -1);
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
           SplashScreen.staticNavKey!.currentState!.context,
-          MaterialPageRoute(builder: (context) => globalNextPage()));
+          MaterialPageRoute(builder: (context) => globalNextPage()),
+          (route) => false);
     } else {
       showErrorToast(res.message ?? "");
     }
@@ -113,9 +115,10 @@ class UserController extends GetxController {
       SplashScreen.session.user = u;
       // LocalDB.storeBearerToken(u.token ?? '');
       // LocalDB.storeUserId(u.userId ?? -1);
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
           SplashScreen.staticNavKey!.currentState!.context,
-          MaterialPageRoute(builder: (context) => globalNextPage()));
+          MaterialPageRoute(builder: (context) => globalNextPage()),
+          (route) => false);
       return;
     }
     if (res.code.contains('incorrect_password')) {

@@ -22,7 +22,7 @@ class Utils {
     return SplashScreen.staticNavKey?.currentState?.context;
   }
 
-  static void handleNextScreenOnSuccess(String appName, var nextPage) {
+  static void handleNextScreenOnSuccess(String appName) {
     if (Constant.musictoolsApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.musicUrl)) {
         Navigator.pushAndRemoveUntil(
@@ -65,13 +65,21 @@ class Utils {
         Urls.base = BaseUrl.jhg;
         SplashScreen.session.url = Urls.base;
         Get.put(UserController());
-        Navigator.push(
+        Navigator.pushReplacement(
             Utils.getContext!,
             MaterialPageRoute(
               builder: (context) => const AccountCheckScreen(),
             ));
       }
     } else {
+      //! currently hardcoced for looper
+      if (appName == 'JHG Looper') {
+        Navigator.pushAndRemoveUntil(
+            Utils.getContext!,
+            MaterialPageRoute(builder: (context) => globalNextPage()),
+            (route) => false);
+        return;
+      }
       showErrorToast('app name $appName not found');
     }
   }

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/repositories/user_repo.dart';
-import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
@@ -107,6 +107,10 @@ class _SignUpState extends State<SignUp> {
           await LocalDB.storeAppUser(loggedInUser);
         }
       }
+      //! currently hardcoced for looper
+      if (widget.appName == 'JHG Looper') {
+        await LocalDB.storeAppUser(loggedInUser);
+      }
       await LocalDB.storeBearerToken(loggedInUser.token!);
       // if (widget.appName == "JHG Course Hub") {
       final subRes = await Repo().checkSubscription(widget.productIds);
@@ -153,7 +157,7 @@ class _SignUpState extends State<SignUp> {
     await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
 
     debugLog(Constant.musictoolsApps.contains(widget.appName));
-    Utils.handleNextScreenOnSuccess(widget.appName, widget.nextPage());
+    Utils.handleNextScreenOnSuccess(widget.appName);
 
     // CALLING MARKETING API
     await LocalDB.storeSubscriptionPurchase(true);
