@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:get/get.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
+import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 class AccountCheckScreen extends StatefulWidget {
@@ -43,7 +44,7 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
                         style: JHGTextStyles.smlabelStyle,
                       ),
                       Text(
-                        'We are checking your account on evolo',
+                        'We are checking your account on ${Urls.base.isEqual(Urls.evoloUrl) ? 'evolo' : 'musictools'}',
                         style: JHGTextStyles.btnLabelStyle.copyWith(
                             color: JHGColors.greyText,
                             fontWeight: FontWeight.normal),
