@@ -136,7 +136,6 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error) async {
     hideLoading();
-    print('error in base $error ${error.message}');
     if (error is BadRequestException) {
       showErrorToast(Constant.productIdsFailedMessage);
     } else if (error is FetchDataException) {
