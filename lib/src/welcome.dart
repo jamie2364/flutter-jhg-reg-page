@@ -935,6 +935,7 @@ class _WelcomeState extends State<Welcome> {
       loaderDialog();
       final productIds = await Repo().getProductIds(widget.appName);
       if (productIds == null) return;
+      hideLoading();
       Navigator.push(
         context,
         MaterialPageRoute(
