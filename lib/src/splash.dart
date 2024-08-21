@@ -1,13 +1,14 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, use_build_context_synchronously
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
+import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
@@ -83,10 +84,12 @@ class _SplashScreenState extends State<SplashScreen> {
         return;
       }
       String? token = await LocalDB.getBearerToken;
-      print('token $token');
       final url = await LocalDB.getBaseurl;
       final appUser = await LocalDB.getAppUser;
-      print('token appUser $appUser');
+      if (kDebugMode) {
+        print('token $token');
+        print('token appUser $appUser');
+      }
       Urls.base = BaseUrl.fromString(url ?? '');
       SplashScreen.session = UserSession(url: Urls.base, user: null);
       if (token == null) {
