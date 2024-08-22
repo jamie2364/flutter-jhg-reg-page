@@ -369,7 +369,4 @@ Curl example to marketing api:
 - If the username and password are not matched then the user will be moved to the *register screen*. After success login then the user will be redirected in the app.
 ### <a name="_7g9gt31d64m7"></a>Following is the graphical representation of flow:
 
-
-### Following is the graphical representation of flow
-
 ![Flow](https://evolo.app/wp-content/uploads/reg_page_flow/flow.png)
