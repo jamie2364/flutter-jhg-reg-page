@@ -8,7 +8,7 @@ export 'src/localDB.dart';
 export 'src/report_a_bug.dart';
 export 'src/services/app_exceptions.dart';
 export 'src/show_toast.dart';
-export 'src/splash.dart';
+export 'src/splash/ui/splash_screen.dart';
 export 'src/strings_download_service.dart';
 export 'src/utils/enums.dart';
 export 'src/utils/logs.dart';
