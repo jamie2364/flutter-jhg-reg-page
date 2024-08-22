@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/auth/screens/login_screen.dart';
 import 'package:reg_page/src/info_screen.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
@@ -940,7 +941,7 @@ class _WelcomeState extends State<Welcome> {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return SignUp(
+            return LoginScreen(
               yearlySubscriptionId: widget.yearlySubscriptionId,
               monthlySubscriptionId: widget.monthlySubscriptionId,
               appName: widget.appName,

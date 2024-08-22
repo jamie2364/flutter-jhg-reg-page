@@ -159,7 +159,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
       context,
       MaterialPageRoute(
         builder: (context) {
-          return SignUp(
+          return LoginScreen(
             yearlySubscriptionId: widget.yearlySubscriptionId,
             monthlySubscriptionId: widget.monthlySubscriptionId,
             appName: widget.appName,

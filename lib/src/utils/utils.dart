@@ -28,7 +28,6 @@ class Utils {
       } else if (!Urls.base.isEqual(Urls.musicUrl)) {
         Urls.base = BaseUrl.musictools;
         SplashScreen.session.url = Urls.base;
-        // Get.put(UserController());
         Nav.to(const AccountCheckScreen());
       }
     } else if (Constant.evoloApps.contains(appName)) {
@@ -37,7 +36,6 @@ class Utils {
       } else {
         Urls.base = BaseUrl.evolo;
         SplashScreen.session.url = Urls.base;
-        // Get.put(UserController());
         Nav.to(const AccountCheckScreen());
       }
     } else if (Constant.jhgApps.contains(appName)) {
@@ -46,7 +44,6 @@ class Utils {
       } else {
         Urls.base = BaseUrl.jhg;
         SplashScreen.session.url = Urls.base;
-        // Get.put(UserController());
         Nav.to(const AccountCheckScreen());
       }
     } else {
