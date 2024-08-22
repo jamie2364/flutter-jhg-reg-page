@@ -134,7 +134,7 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/auth/screens/complete_register_screen.dart';
-import 'package:reg_page/src/auth/screens/country.dart';
+import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/auth/screens/start_register_screen.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/repositories/user_repo.dart';

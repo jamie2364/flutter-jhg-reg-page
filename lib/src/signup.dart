@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
@@ -59,19 +58,13 @@ class _SignUpState extends State<SignUp> {
   }
 
   late User loggedInUser;
-  SubscriptionModel subscriptionModel = SubscriptionModel();
+  // SubscriptionModel subscriptionModel = SubscriptionModel();
 
   Future marketingApi(String email) async {
     bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
-
     if (isAlreadyLoggedIn == null) {
       await LocalDB.storeFirstTimeLogin(true);
-      bool? hasInternet = await checkInternet();
-      if (!hasInternet) {
-        return;
-      } else {
-        await Repo().marketingAPi(email, widget.appName);
-      }
+      await Repo().marketingAPi(email, widget.appName);
     } else {
       debugPrint("Already Logged In");
     }
@@ -92,20 +85,17 @@ class _SignUpState extends State<SignUp> {
       loggedInUser = loginRes.data as User;
       SplashScreen.session = UserSession(url: Urls.base, user: loggedInUser);
       setState(() {});
-      if (Constant.jhgApps.contains(widget.appName)) {
-        if (Urls.base.isEqual(Urls.jhgUrl)) {
-          await LocalDB.storeAppUser(loggedInUser);
-        }
+      if (Constant.jhgApps.contains(widget.appName) &&
+          Urls.base.isEqual(Urls.jhgUrl)) {
+        await LocalDB.storeAppUser(loggedInUser);
       }
-      if (Constant.evoloApps.contains(widget.appName)) {
-        if (Urls.base.isEqual(Urls.evoloUrl)) {
-          await LocalDB.storeAppUser(loggedInUser);
-        }
+      if (Constant.evoloApps.contains(widget.appName) &&
+          Urls.base.isEqual(Urls.evoloUrl)) {
+        await LocalDB.storeAppUser(loggedInUser);
       }
-      if (Constant.musictoolsApps.contains(widget.appName)) {
-        if (Urls.base.isEqual(Urls.musicUrl)) {
-          await LocalDB.storeAppUser(loggedInUser);
-        }
+      if (Constant.musictoolsApps.contains(widget.appName) &&
+          Urls.base.isEqual(Urls.musicUrl)) {
+        await LocalDB.storeAppUser(loggedInUser);
       }
       //! currently hardcoced for looper
       if (widget.appName == 'JHG Looper') {
@@ -115,7 +105,7 @@ class _SignUpState extends State<SignUp> {
       // if (widget.appName == "JHG Course Hub") {
       final subRes = await Repo().checkSubscription(widget.productIds);
       //print("response is ${response.data}");
-      bool isActive = await isSubscriptionActive(subRes,
+      bool isActive = Utils.isSubscriptionActive(subRes,
           isCourseHubApp: widget.appName == "JHG Course Hub");
       debugLog('isSubscriptionActive $isActive');
       if (isActive) {
@@ -128,22 +118,6 @@ class _SignUpState extends State<SignUp> {
       showToast(
           context: context, message: "Something Went Wrong ", isError: true);
     }
-  }
-
-  Future<bool> isSubscriptionActive(Map<String, dynamic>? json,
-      {bool isCourseHubApp = false}) async {
-    if (json == null) return false;
-    for (var entry in json.entries) {
-      if ((isCourseHubApp) &&
-          (entry.key == 'course_hub') &&
-          (entry.value == "active")) {
-        return true;
-      } else if (entry.value == "active") {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   successFunction() async {

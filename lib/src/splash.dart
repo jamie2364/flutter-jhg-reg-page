@@ -5,10 +5,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
-import 'package:reg_page/src/models/subscription_model.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
@@ -23,7 +23,7 @@ class SplashScreen extends StatefulWidget {
     required this.appVersion,
     required this.featuresList,
     required this.nextPage,
-    this.navKey,
+    required this.navKey,
   });
 
   final String yearlySubscriptionId;
@@ -31,7 +31,7 @@ class SplashScreen extends StatefulWidget {
   final String appName;
   final String appVersion;
   final List<String> featuresList;
-  final GlobalKey<NavigatorState>? navKey;
+  final GlobalKey<NavigatorState> navKey;
   final Widget Function() nextPage;
   static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
   static GlobalKey<NavigatorState>? staticNavKey;
@@ -45,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     SplashScreen.staticNavKey = widget.navKey;
+    Nav.key = widget.navKey;
     globalNextPage = widget.nextPage;
     routes();
     animate();
@@ -59,9 +60,6 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     });
   }
-
-  // ApiRepo repo = ApiRepo();
-  SubscriptionModel subscriptionModel = SubscriptionModel();
 
   routes() async {
     animate();
@@ -79,8 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
       bool isFreePlan = await LocalDB.getIsFreePlan();
       // print('is Free Plan $isFreePlan');
       if (isFreePlan) {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => widget.nextPage()));
+        Nav.offAll(widget.nextPage());
         return;
       }
       String? token = await LocalDB.getBearerToken;
@@ -93,17 +90,14 @@ class _SplashScreenState extends State<SplashScreen> {
       Urls.base = BaseUrl.fromString(url ?? '');
       SplashScreen.session = UserSession(url: Urls.base, user: null);
       if (token == null) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => Welcome(
-                      yearlySubscriptionId: widget.yearlySubscriptionId,
-                      monthlySubscriptionId: widget.monthlySubscriptionId,
-                      appName: widget.appName,
-                      appVersion: widget.appVersion,
-                      featuresList: widget.featuresList,
-                      nextPage: () => widget.nextPage(),
-                    )));
+        Nav.offAll(Welcome(
+          yearlySubscriptionId: widget.yearlySubscriptionId,
+          monthlySubscriptionId: widget.monthlySubscriptionId,
+          appName: widget.appName,
+          appVersion: widget.appVersion,
+          featuresList: widget.featuresList,
+          nextPage: () => widget.nextPage(),
+        ));
       } else {
         loaderDialog(context);
         final productIds = await LocalDB.getproductIds;
@@ -121,10 +115,10 @@ class _SplashScreenState extends State<SplashScreen> {
             successFunction(appUser);
           }
         } else {
-          subscriptionModel = SubscriptionModel.fromJson(res);
+          // subscriptionModel = SubscriptionModel.fromJson(res);
           setState(() {});
 
-          final isActive = isSubscriptionActive(res,
+          final isActive = Utils.isSubscriptionActive(res,
               isCourseHubApp: widget.appName == "JHG Course Hub");
           if (isActive) {
             successFunction(appUser);
@@ -132,41 +126,15 @@ class _SplashScreenState extends State<SplashScreen> {
             elseFunction();
           }
         }
-
-        // } else {
-        //   // ignore: use_build_context_synchronously
-        //   Navigator.pushReplacement(context,
-        //       MaterialPageRoute(builder: (context) => widget.nextPage()));
-        // }
-
-        // Navigator.pushReplacement(context,
-        //     MaterialPageRoute(builder: (context) => widget.nextPage()));
       }
     });
-  }
-
-  bool isSubscriptionActive(Map<String, dynamic>? json,
-      {bool isCourseHubApp = false}) {
-    if (json == null) return false;
-    for (var entry in json.entries) {
-      if ((isCourseHubApp) &&
-          (entry.key == 'course_hub') &&
-          (entry.value == "active")) {
-        return true;
-      } else if (entry.value == "active") {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   successFunction(User? user) async {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
     if (user != null) {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => widget.nextPage()));
+      Nav.offAll(widget.nextPage());
       return;
     }
     Utils.handleNextScreenOnSuccess(widget.appName);
@@ -174,17 +142,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   elseFunction() async {
     await LocalDB.clearLocalDB();
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Welcome(
-                  yearlySubscriptionId: widget.yearlySubscriptionId,
-                  monthlySubscriptionId: widget.monthlySubscriptionId,
-                  appName: widget.appName,
-                  appVersion: widget.appVersion,
-                  featuresList: widget.featuresList,
-                  nextPage: () => widget.nextPage(),
-                )));
+    Nav.offAll(Welcome(
+      yearlySubscriptionId: widget.yearlySubscriptionId,
+      monthlySubscriptionId: widget.monthlySubscriptionId,
+      appName: widget.appName,
+      appVersion: widget.appVersion,
+      featuresList: widget.featuresList,
+      nextPage: () => widget.nextPage(),
+    ));
   }
 
   @override

@@ -200,8 +200,8 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
-import 'package:reg_page/src/auth/screens/country.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/models/country.dart';
 
 class StartRegisterScreen extends StatefulWidget {
   const StartRegisterScreen({super.key});
