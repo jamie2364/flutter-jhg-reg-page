@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/welcome/screens/welcome_screen.dart';
 
 import 'colors.dart';
 import 'constant.dart';
@@ -30,6 +31,7 @@ class BugReportPage extends StatefulWidget {
   final Widget Function()? nextPage;
 
   @override
+  // ignore: library_private_types_in_public_api
   _BugReportPageState createState() => _BugReportPageState();
 }
 

@@ -8,6 +8,7 @@ import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
+import 'package:reg_page/src/welcome/screens/welcome_screen.dart';
 
 class SplashController {
   final String yearlySubscriptionId;
