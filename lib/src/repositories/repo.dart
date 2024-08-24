@@ -9,7 +9,7 @@ class Repo extends BaseService with BaseController {
       final res = await get(Urls.productIds,
               queryParams: {'app_name': _formatAppName(appName)},
               baseUrl: baseUrl)
-          .catchError(handleError);
+          .catchError((error) => handleError(error));
       if (res == null) return null;
       return res['product_ids'];
     } catch (e) {
@@ -29,7 +29,7 @@ class Repo extends BaseService with BaseController {
           "product_ids": productIds,
         },
         headers: {'Authorization': 'Bearer $token'},
-      ).catchError(handleError);
+      ).catchError((error) => handleError(error));
       return res;
     } catch (e) {
       exceptionLog('exception on  check subscription $e');
@@ -46,7 +46,7 @@ class Repo extends BaseService with BaseController {
         baseUrl: '',
         requestData,
         headers: {'Authorization': 'Bearer $token'},
-      ).catchError(handleError);
+      ).catchError((error) => handleError(error));
       return response;
     } catch (e) {
       exceptionLog('exception on  post bug $e');

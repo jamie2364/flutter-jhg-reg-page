@@ -62,6 +62,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
@@ -80,7 +81,7 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
   @override
   void initState() {
     super.initState();
-    controller = UserController();
+    controller = getIt<UserController>();
     _checkUserAccount();
   }
 
@@ -101,6 +102,8 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
                 child: JHGPrimaryBtn(
                   label: 'Try Again',
                   onPressed: () {
+                    tryAgain = false;
+                    setState(() {});
                     _checkUserAccount();
                   },
                 ),
