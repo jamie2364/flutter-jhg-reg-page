@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
@@ -8,7 +9,6 @@ import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
-import 'package:reg_page/src/welcome/screens/welcome_screen.dart';
 
 class SplashController {
   final String yearlySubscriptionId;
@@ -19,7 +19,7 @@ class SplashController {
   final Widget Function() nextPage;
   final GlobalKey<NavigatorState> navKey;
   final VoidCallback onUpdateUI; // Callback to trigger setState in the UI
-
+  late String productIds;
   SplashController({
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,

@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/auth/screens/login_screen.dart';
 import 'package:reg_page/src/info_screen.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/restore_popup_dialog.dart';
+import 'package:reg_page/src/splash/controllers/splash_controller.dart';
 import 'package:reg_page/src/subcription_url_screen.dart';
+import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
@@ -936,38 +937,18 @@ class _WelcomeState extends State<Welcome> {
       loaderDialog();
       final productIds = await Repo().getProductIds(widget.appName);
       if (productIds == null) return;
+      getIt<SplashController>().productIds = productIds;
       hideLoading();
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return LoginScreen(
-              yearlySubscriptionId: widget.yearlySubscriptionId,
-              monthlySubscriptionId: widget.monthlySubscriptionId,
-              appName: widget.appName,
-              appVersion: widget.appVersion,
-              nextPage: widget.nextPage,
-              productIds: productIds,
-            );
-          },
-        ),
-      );
+      Nav.to(const LoginScreen());
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return SubscriptionUrlScreen(
-            yearlySubscriptionId: widget.yearlySubscriptionId,
-            monthlySubscriptionId: widget.monthlySubscriptionId,
-            appName: widget.appName,
-            appVersion: widget.appVersion,
-            nextPage: widget.nextPage,
-          );
-        },
-      ),
-    );
+    Nav.to(SubscriptionUrlScreen(
+      yearlySubscriptionId: widget.yearlySubscriptionId,
+      monthlySubscriptionId: widget.monthlySubscriptionId,
+      appName: widget.appName,
+      appVersion: widget.appVersion,
+      nextPage: widget.nextPage,
+    ));
   }
 
   initTrackingTransparency() async {

@@ -23,14 +23,14 @@ class UserRepo extends BaseService with BaseController {
   }
 
   Future<Result> loginUser(Map<String, dynamic> userData,
-      {bool checkError = false}) async {
+      {bool checkError = false, bool hideLoader = false}) async {
     Result result = Result(code: 0, message: '');
     try {
       final res = await post(
         Urls.login,
         userData,
       ).catchError((error) {
-        if (checkError) return handleError(error);
+        if (checkError) return handleError(error, hide: hideLoader);
         if (error is UnAutthorizedException) {
           if (error.errorCode == null) return handleError(error);
           if (error.errorCode!.contains('incorrect_password')) {

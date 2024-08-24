@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Nav {
   Nav._();
-  static  GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+  static GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
 
   static to(Widget page) => Navigator.push(
       key.currentState!.context,

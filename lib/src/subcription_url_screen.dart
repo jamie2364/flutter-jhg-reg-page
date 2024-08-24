@@ -5,6 +5,8 @@ import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/custom_button.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/splash/controllers/splash_controller.dart';
+import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/urls.dart';
 import 'package:reg_page/src/widgets/patform_selection_widget.dart';
 
@@ -144,7 +146,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
       debugLog('res in url screen $res');
       if (res != null) {
         productIds = res;
-        Navigator.pop(context);
+        Nav.back();
         launchSignupPage();
       } else {
         // showFailureMessage();
@@ -155,21 +157,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   }
 
   void launchSignupPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return LoginScreen(
-            yearlySubscriptionId: widget.yearlySubscriptionId,
-            monthlySubscriptionId: widget.monthlySubscriptionId,
-            appName: widget.appName,
-            appVersion: widget.appVersion,
-            nextPage: widget.nextPage,
-            productIds: productIds,
-          );
-        },
-      ),
-    );
+    getIt<SplashController>().productIds = productIds;
+    Nav.to(const LoginScreen());
   }
 
   void showFailureMessage() {

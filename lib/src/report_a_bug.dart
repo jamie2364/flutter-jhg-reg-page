@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/welcome/screens/welcome_screen.dart';
 
 import 'colors.dart';
 import 'constant.dart';
