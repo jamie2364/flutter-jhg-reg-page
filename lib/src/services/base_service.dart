@@ -134,8 +134,8 @@ class BaseService {
 }
 
 mixin BaseController {
-  Future<void> handleError(error, {bool hide = false}) async {
-    if (hide) hideLoading();
+  Future<void> handleError(error, {bool hideLoader = true}) async {
+    if (hideLoader) hideLoading();
     if (error is BadRequestException) {
       showErrorToast(Constant.productIdsFailedMessage);
     } else if (error is FetchDataException) {

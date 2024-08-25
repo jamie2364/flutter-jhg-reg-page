@@ -30,7 +30,7 @@ class UserRepo extends BaseService with BaseController {
         Urls.login,
         userData,
       ).catchError((error) {
-        if (checkError) return handleError(error, hide: hideLoader);
+        if (checkError) return handleError(error, hideLoader: hideLoader);
         if (error is UnAutthorizedException) {
           if (error.errorCode == null) return handleError(error);
           if (error.errorCode!.contains('incorrect_password')) {
@@ -41,7 +41,7 @@ class UserRepo extends BaseService with BaseController {
             return null;
           }
         }
-        return handleError(error);
+        return handleError(error, hideLoader: hideLoader);
       });
       if (res == null) return result;
 

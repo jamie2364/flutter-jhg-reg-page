@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/utils/nav.dart';
 
 showToast(
     {required BuildContext context,
@@ -39,6 +39,4 @@ showToast(
 }
 
 showErrorToast(String message) => showToast(
-    context: SplashScreen.staticNavKey!.currentState!.context,
-    message: message,
-    isError: true);
+    context: Nav.key.currentState!.context, message: message, isError: true);

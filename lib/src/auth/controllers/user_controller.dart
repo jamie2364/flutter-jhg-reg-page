@@ -69,7 +69,7 @@ class UserController {
     }
   }
 
-  Future<void> loginUser(BuildContext context) async {
+  Future<void> loginUserForApp() async {
     if (!loginFormKey.currentState!.validate()) return;
     loaderDialog();
     final newUser = User(
@@ -78,17 +78,11 @@ class UserController {
     );
     final res = await _repo.loginUser(newUser.toMapToLogin());
     hideLoading();
-
     if (res.code == 1) {
       final user = res.data as User;
       await LocalDB.storeAppUser(user);
       SplashScreen.session.user = user;
-      Navigator.pushAndRemoveUntil(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => globalNextPage()),
-        (route) => false,
-      );
+      Nav.offAll(globalNextPage());
     } else {
       showErrorToast(res.message ?? "");
     }
@@ -107,7 +101,7 @@ class UserController {
     print('res in controller $res');
     if (res.code is int) {
       if (res.code == 0) {
-        showErrorToast('Something went wrong');
+        // showErrorToast('Something went wrong');
         tryAgain = true;
         return;
       }
@@ -121,12 +115,9 @@ class UserController {
       );
     } else if (res.code.contains('incorrect_password')) {
       // Handle incorrect password case
+      Nav.off(const LoginScreen());
     } else if (res.code.contains('invalid_username')) {
-      Navigator.push(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(builder: (context) => const StartRegisterScreen()),
-      );
+      Nav.off(const StartRegisterScreen());
     }
   }
 
@@ -141,15 +132,15 @@ class UserController {
   }
 
   userLogin() async {
-    if (!loginFormKey.currentState!.validate()) {
-      return;
-    }
+    if (!loginFormKey.currentState!.validate()) return;
     loaderDialog();
     try {
       final newUser = User(userName: userNameC.text, password: passC.text);
       final loginRes =
           await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
       // print('login res $loginRes ${loginRes.code}${loginRes.data}');
+
+      await Future.delayed(const Duration(seconds: 2));
       if (loginRes.code == 0) return;
       SplashController splashController = getIt<SplashController>();
       final appName = splashController.appName;
@@ -175,33 +166,40 @@ class UserController {
       // if (appName == "JHG Course Hub") {
       final subRes =
           await Repo().checkSubscription(splashController.productIds);
-      //print("response is ${response.data}");
       bool isActive = Utils.isSubscriptionActive(subRes,
           isCourseHubApp: appName == "JHG Course Hub");
-      debugLog('isSubscriptionActive $isActive');
+      // debugLog('isSubscriptionActive $isActive');
       if (isActive) {
-        await LocalDB.storeUserEmail(loggedInUser.email!);
-        await LocalDB.storeUserName(loggedInUser.userName);
-
-        await LocalDB.storeUserId(loggedInUser.userId!);
-        await LocalDB.storeSubscriptionPurchase(false);
-        await LocalDB.saveBaseUrl(Urls.base.url);
-        await LocalDB.saveProductIds(splashController.productIds);
-        await LocalDB.saveLoginTime(DateTime.now().toIso8601String());
-
+        LocalDB.storeUserEmail(loggedInUser.email!);
+        LocalDB.storeUserName(loggedInUser.userName);
+        LocalDB.storePassword(passC.text);
+        LocalDB.storeUserId(loggedInUser.userId!);
+        LocalDB.storeSubscriptionPurchase(false);
+        LocalDB.saveBaseUrl(Urls.base.url);
+        LocalDB.saveProductIds(splashController.productIds);
+        LocalDB.saveLoginTime(DateTime.now().toIso8601String());
         debugLog(Constant.musictoolsApps.contains(appName));
+        hideLoading();
         Utils.handleNextScreenOnSuccess(appName);
-
         await LocalDB.storeSubscriptionPurchase(true);
-
         marketingApi(loggedInUser.email ?? '');
       } else {
         await LocalDB.clearLocalDB();
+        hideLoading();
         showErrorToast(Constant.serverErrorMessage);
       }
-      Nav.back();
     } catch (e) {
       showErrorToast("Something Went Wrong ");
     }
+  }
+
+  Future<void> clearFields() async {
+    await Future.delayed(Durations.short1);
+    fNameC.clear();
+    lNameC.clear();
+    userNameC.clear();
+    emailC.clear();
+    passC.clear();
+    confirmPassC.clear();
   }
 }

@@ -5,8 +5,9 @@ import 'package:reg_page/src/auth/controllers/user_controller.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/splash/controllers/splash_controller.dart';
+import 'package:reg_page/src/utils/nav.dart';
 
-late Widget Function() globalNextPage;
+var globalNextPage;
 final GetIt getIt = GetIt.instance;
 
 class SplashScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class SplashScreen extends StatefulWidget {
   final Widget Function() nextPage;
 
   static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
-  static GlobalKey<NavigatorState>? staticNavKey;
+  // static GlobalKey<NavigatorState>? staticNavKey;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -55,8 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
       onUpdateUI: onUpdateUI,
     );
     viewModel!.initializeSplash();
-    getIt.registerSingleton<SplashController>(viewModel!);
-    getIt.registerSingleton<UserController>(UserController());
+    if (!getIt.isRegistered<SplashController>()) {
+      getIt.registerSingleton<SplashController>(viewModel!);
+      getIt.registerSingleton<UserController>(UserController());
+    }
     animate();
   }
 
@@ -77,6 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Nav.key = widget.navKey;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height * 1,

@@ -8,21 +8,19 @@ import 'package:reg_page/src/auth/controllers/user_controller.dart';
 import 'package:reg_page/src/colors.dart';
 import 'package:reg_page/src/constant.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({
     super.key,
+    this.isAppLogin = false,
   });
-
-  @override
-  State<LoginScreen> createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+  final bool isAppLogin;
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final controller = getIt<UserController>();
+    
+    controller.clearFields();
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(
@@ -51,9 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 //   text: Constant.login,
                 //   height: height,
                 // ),
-                SizedBox(
-                  height: height * 0.32,
-                ),
+                SizedBox(height: height * 0.32),
                 Form(
                   key: controller.loginFormKey,
                   child: Column(
@@ -77,7 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 JHGPrimaryBtn(
                   label: Constant.login,
-                  onPressed: () => controller.userLogin(),
+                  onPressed: () => isAppLogin
+                      ? controller.loginUserForApp()
+                      : controller.userLogin(),
                 )
               ],
             ),

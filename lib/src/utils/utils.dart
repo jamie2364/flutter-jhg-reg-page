@@ -17,9 +17,7 @@ class Utils {
     );
   }
 
-  static BuildContext? get getContext {
-    return SplashScreen.staticNavKey?.currentState?.context;
-  }
+  static BuildContext? get getContext => Nav.key.currentState?.context;
 
   static void handleNextScreenOnSuccess(String appName) {
     if (Constant.musictoolsApps.contains(appName)) {
@@ -28,7 +26,7 @@ class Utils {
       } else if (!Urls.base.isEqual(Urls.musicUrl)) {
         Urls.base = BaseUrl.musictools;
         SplashScreen.session.url = Urls.base;
-        Nav.to(const AccountCheckScreen());
+        Nav.off(const AccountCheckScreen());
       }
     } else if (Constant.evoloApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.evoloUrl)) {
@@ -36,20 +34,20 @@ class Utils {
       } else {
         Urls.base = BaseUrl.evolo;
         SplashScreen.session.url = Urls.base;
-        Nav.to(const AccountCheckScreen());
+        Nav.off(const AccountCheckScreen());
       }
     } else if (Constant.jhgApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.jhgUrl)) {
-        Nav.to(globalNextPage());
+        Nav.offAll(globalNextPage());
       } else {
         Urls.base = BaseUrl.jhg;
         SplashScreen.session.url = Urls.base;
-        Nav.to(const AccountCheckScreen());
+        Nav.off(const AccountCheckScreen());
       }
     } else {
       //! currently hardcoced for looper
       if (appName == 'JHG Looper') {
-        Nav.to(globalNextPage());
+        Nav.offAll(globalNextPage());
         return;
       }
       showErrorToast('app name $appName not found');

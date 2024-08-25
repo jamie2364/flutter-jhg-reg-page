@@ -105,6 +105,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
 
 class CompleteRegisterScreen extends StatefulWidget {
@@ -121,14 +122,14 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = UserController();
+    _controller = getIt<UserController>();
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final isMobile = MediaQuery.of(context).size.width < 600;
-
+    _controller.clearFields();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Padding(
@@ -148,7 +149,7 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
       body: JHGBody(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile
-              ? 0
+              ? kBodyHrPadding
               : MediaQuery.of(context).size.width * (isMobile ? 0.25 : 0.30),
         ),
         bodyAppBar: const JHGAppBar(),

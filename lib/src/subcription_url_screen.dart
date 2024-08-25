@@ -146,7 +146,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
       debugLog('res in url screen $res');
       if (res != null) {
         productIds = res;
-        Nav.back();
+        hideLoading();
         launchSignupPage();
       } else {
         // showFailureMessage();

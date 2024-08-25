@@ -1,9 +1,11 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/auth/controllers/user_controller.dart';
 import 'package:reg_page/src/constant.dart';
 import 'package:reg_page/src/models/country.dart';
+import 'package:reg_page/src/utils/nav.dart';
 
 class StartRegisterScreen extends StatefulWidget {
   const StartRegisterScreen({super.key});
@@ -13,19 +15,19 @@ class StartRegisterScreen extends StatefulWidget {
 }
 
 class _StartRegisterScreenState extends State<StartRegisterScreen> {
-  late UserController _controller;
+  late UserController controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = UserController();
+    controller = getIt<UserController>();
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final isMobile = MediaQuery.of(context).size.width < 600;
-
+    controller.clearFields();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Padding(
@@ -38,18 +40,18 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
         child: JHGPrimaryBtn(
           label: 'Next',
           onPressed: () {
-            _controller.completeRegister(context);
+            controller.completeRegister(context);
           },
         ),
       ),
       body: JHGBody(
         padding: EdgeInsets.symmetric(
           horizontal: isMobile
-              ? 0
+              ? kBodyHrPadding
               : MediaQuery.of(context).size.width * (isMobile ? 0.25 : 0.30),
         ),
         body: Form(
-          key: _controller.starRegFormKey,
+          key: controller.starRegFormKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -65,19 +67,19 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
               SizedBox(height: height * .05),
               JHGTextFormField(
                 label: 'First Name',
-                controller: _controller.fNameC,
+                controller: controller.fNameC,
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               JHGTextFormField(
                 label: 'Last Name',
-                controller: _controller.lNameC,
+                controller: controller.lNameC,
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               SearchDropDown(
                 items: Contact.countries.map((e) => e.name).toList(),
                 hint: 'Select Country',
                 onChanged: (country) {
-                  _controller.selectedCountry = country;
+                  controller.selectedCountry = country;
                 },
                 closedHeaderPadding:
                     const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
@@ -93,7 +95,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, '/login');
+                      Nav.to(const LoginScreen(isAppLogin: true));
                     },
                     child: Text(
                       'Login',

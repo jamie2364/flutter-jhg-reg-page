@@ -32,7 +32,7 @@ class SplashController {
   });
 
   Future<void> initializeSplash() async {
-    SplashScreen.staticNavKey = navKey;
+    // SplashScreen.staticNavKey = navKey;
     Nav.key = navKey;
     globalNextPage = nextPage;
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -52,7 +52,7 @@ class SplashController {
     }
     bool isFreePlan = await LocalDB.getIsFreePlan();
     if (isFreePlan) {
-      Nav.offAll(nextPage());
+      Nav.off(nextPage());
       return;
     }
     String? token = await LocalDB.getBearerToken;
@@ -97,7 +97,7 @@ class SplashController {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
     if (user != null) {
-      Nav.offAll(nextPage());
+      Nav.off(nextPage());
       return;
     }
     Utils.handleNextScreenOnSuccess(appName);
@@ -109,7 +109,7 @@ class SplashController {
   }
 
   void navigateToWelcome() {
-    Nav.offAll(Welcome(
+    Nav.off(Welcome(
       yearlySubscriptionId: yearlySubscriptionId,
       monthlySubscriptionId: monthlySubscriptionId,
       appName: appName,
