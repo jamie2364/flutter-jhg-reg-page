@@ -38,6 +38,7 @@ class SplashController {
     Future.delayed(const Duration(milliseconds: 500), () {
       onUpdateUI(); // Trigger the UI update
     });
+    await Future.delayed(const Duration(seconds: 3));
     await routes();
   }
 

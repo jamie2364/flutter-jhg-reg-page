@@ -1,11 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/user_controller.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/controllers/splash_controller.dart';
-import 'package:reg_page/src/utils/nav.dart';
+import 'package:reg_page/src/models/user_session.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
 
 var globalNextPage;
 final GetIt getIt = GetIt.instance;
@@ -31,7 +31,6 @@ class SplashScreen extends StatefulWidget {
   final Widget Function() nextPage;
 
   static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
-  // static GlobalKey<NavigatorState>? staticNavKey;
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -39,7 +38,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   SplashController? viewModel;
-  double logoSize = 1;
+  double logoSize = 1.0;
 
   @override
   void initState() {
@@ -56,11 +55,6 @@ class _SplashScreenState extends State<SplashScreen> {
       onUpdateUI: onUpdateUI,
     );
     viewModel!.initializeSplash();
-    if (!getIt.isRegistered<SplashController>()) {
-      getIt.registerSingleton<SplashController>(viewModel!);
-      getIt.registerSingleton<UserController>(UserController());
-    }
-    animate();
   }
 
   animate() async {
@@ -71,20 +65,18 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  // Callback function that calls setState
   void onUpdateUI() {
     setState(() {
-      logoSize = 1.1; // Update the logo size
+      logoSize = 1.1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    Nav.key = widget.navKey;
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height * 1,
-        width: MediaQuery.of(context).size.width * 1,
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         color: AppColor.primaryBlack,
         child: Center(
           child: AnimatedScale(
