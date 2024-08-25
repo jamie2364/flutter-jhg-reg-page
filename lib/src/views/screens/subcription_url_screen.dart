@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
-import 'package:reg_page/src/custom_button.dart';
+import 'package:reg_page/src/controllers/splash_controller.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/controllers/splash_controller.dart';
 import 'package:reg_page/src/utils/nav.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/views/widgets/patform_selection_widget.dart';
 
@@ -127,10 +127,8 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
                     },
                     itemCount: platformsList.length,
                   )),
-                  CustomButton(
-                      buttonName: Constant.continueText,
-                      buttonColor: AppColor.primaryRed,
-                      textColor: AppColor.primaryWhite,
+                  JHGPrimaryBtn(
+                      label: Constant.continueText,
                       onPressed: () async {
                         getProductIds();
                       })
