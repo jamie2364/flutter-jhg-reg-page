@@ -6,22 +6,22 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/info_screen.dart';
+import 'package:reg_page/src/controllers/splash_controller.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/restore_popup_dialog.dart';
-import 'package:reg_page/src/splash/controllers/splash_controller.dart';
-import 'package:reg_page/src/subcription_url_screen.dart';
+import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/nav.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
+import 'package:reg_page/src/views/screens/info_screen.dart';
+import 'package:reg_page/src/views/screens/subcription_url_screen.dart';
 
-import 'colors.dart';
-import 'constant.dart';
-import 'custom_button.dart';
-import 'heading.dart';
-import 'subscription_info_popup.dart';
+import 'utils/dialogs/subscription_info_popup.dart';
+import 'utils/res/colors.dart';
+import 'utils/res/constant.dart';
+import 'views/widgets/heading.dart';
 
 class Welcome extends StatefulWidget {
   const Welcome({
@@ -905,12 +905,10 @@ class _WelcomeState extends State<Welcome> {
                       ),
 
                       // START FREE TRAIL  , CONTINUE BUTTON
-                      CustomButton(
-                        buttonName: selectedPlan == 1
+                      JHGPrimaryBtn(
+                        label: selectedPlan == 1
                             ? Constant.tryFree
                             : Constant.continueText,
-                        buttonColor: AppColor.primaryRed,
-                        textColor: AppColor.primaryWhite,
                         onPressed: () async {
                           if (selectedPlan == 0) {
                             LocalDB.setIsFreePlan(true);

@@ -1,5 +1,5 @@
-import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/urls.dart';
 
 class PlatformModel {
   String platform;

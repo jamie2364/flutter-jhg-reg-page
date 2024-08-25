@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/urls.dart';
 
 class BaseService {
   final int _apiTimeOut = 25;
