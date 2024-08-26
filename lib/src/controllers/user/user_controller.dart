@@ -8,7 +8,7 @@ import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/repositories/user_repo.dart';
-import 'package:reg_page/src/controllers/splash_controller.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';

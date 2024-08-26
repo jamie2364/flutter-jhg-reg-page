@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
@@ -116,7 +115,7 @@ class SplashController {
       appName: appName,
       appVersion: appVersion,
       featuresList: featuresList,
-      nextPage: () => nextPage(),
+      nextPage: nextPage,
     ));
   }
 }

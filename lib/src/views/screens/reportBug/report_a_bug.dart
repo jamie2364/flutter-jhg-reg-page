@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:reg_page/src/utils/res/constant.dart';
 
-import '../../utils/res/colors.dart';
-import '../../utils/res/constant.dart';
 
 class BugReportPage extends StatefulWidget {
   const BugReportPage({

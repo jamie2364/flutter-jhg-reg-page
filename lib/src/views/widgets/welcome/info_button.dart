@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/views/screens/info_screen.dart';
+import 'package:reg_page/src/views/screens/info/info_screen.dart';
 
 class InfoButton extends StatelessWidget {
   final double width;

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/splash_controller.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 

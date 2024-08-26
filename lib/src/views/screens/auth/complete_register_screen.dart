@@ -106,7 +106,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/user_controller.dart';
+import 'package:reg_page/src/controllers/user/user_controller.dart';
 
 class CompleteRegisterScreen extends StatefulWidget {
   const CompleteRegisterScreen({super.key});

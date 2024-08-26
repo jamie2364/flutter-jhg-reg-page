@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/splash_controller.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/nav.dart';
@@ -23,7 +23,7 @@ class SubscriptionUrlScreen extends StatefulWidget {
   final String monthlySubscriptionId;
   final String appName;
   final String appVersion;
-  final Widget Function() nextPage;
+  final Widget nextPage;
 
   @override
   State<StatefulWidget> createState() => _SubcriptionState();

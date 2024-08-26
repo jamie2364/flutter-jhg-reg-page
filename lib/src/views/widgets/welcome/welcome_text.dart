@@ -4,9 +4,10 @@ import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class WelcomeText extends StatelessWidget {
+  final String appName;
   final double height;
 
-  const WelcomeText({super.key, required this.height});
+  const WelcomeText({super.key, required this.appName, required this.height});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class WelcomeText extends StatelessWidget {
           ),
         ),
         Text(
-          'replaceAppName()',
+          appName,
           style: TextStyle(
             color: AppColor.primaryWhite,
             fontSize: height > 650

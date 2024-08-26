@@ -2,7 +2,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/user_controller.dart';
+import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
