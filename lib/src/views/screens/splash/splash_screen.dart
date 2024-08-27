@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
+import 'package:reg_page/src/controllers/user/user_controller.dart';
+import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 
-var globalNextPage;
+
 final GetIt getIt = GetIt.instance;
 
 class SplashScreen extends StatefulWidget {
@@ -54,6 +56,11 @@ class _SplashScreenState extends State<SplashScreen> {
       navKey: widget.navKey,
       onUpdateUI: onUpdateUI,
     );
+    if (!getIt.isRegistered<SplashController>()) {
+      getIt.registerSingleton<SplashController>(viewModel!);
+      getIt.registerSingleton<UserController>(UserController());
+      getIt.registerSingleton<WelcomeController>(WelcomeController());
+    }
     viewModel!.initializeSplash();
   }
 

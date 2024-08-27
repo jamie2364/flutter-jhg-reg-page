@@ -16,12 +16,11 @@ import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 
 class WelcomeController {
-  final BuildContext context;
-  final String appName;
-  final String yearlySubscriptionId;
-  final String monthlySubscriptionId;
-  final String appVersion;
-  final Widget nextPage;
+  late String appName;
+  late String yearlySubscriptionId;
+  late String monthlySubscriptionId;
+  late SplashController spController;
+
   String? monthlyPrice;
   String? yearlyPrice;
   bool loading = true;
@@ -35,14 +34,12 @@ class WelcomeController {
   late StreamSubscription<dynamic> streamSubscription;
   List<ProductDetails> products = [];
 
-  WelcomeController({
-    required this.context,
-    required this.appName,
-    required this.yearlySubscriptionId,
-    required this.monthlySubscriptionId,
-    required this.appVersion,
-    required this.nextPage,
-  });
+  WelcomeController() {
+    spController = getIt<SplashController>();
+    appName = spController.appName;
+    yearlySubscriptionId = spController.yearlySubscriptionId;
+    monthlySubscriptionId = spController.monthlySubscriptionId;
+  }
 
   replaceAppName() {
     // Define the text to remove (uppercase)
@@ -112,7 +109,6 @@ class WelcomeController {
     } else {
       loading = false;
       showToast(
-        context: context,
         message: productDetailsResponse.error!.message,
         isError: true,
       );
@@ -130,10 +126,8 @@ class WelcomeController {
       for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
         if (purchaseDetails.status == PurchaseStatus.purchased) {
           await _onPurchasedSuccess();
-          Navigator.pushAndRemoveUntil(context,
-              MaterialPageRoute(builder: (context) {
-            return nextPage;
-          }), (route) => false);
+
+          Nav.off(spController.nextPage());
         } else if (purchaseDetails.pendingCompletePurchase) {
           await InAppPurchase.instance.completePurchase(purchaseDetails);
         }
@@ -143,7 +137,7 @@ class WelcomeController {
 
   // Handle purchased success
   Future<void> _onPurchasedSuccess() async {
-    loaderDialog(context);
+    loaderDialog();
     await LocalDB.storeSubscriptionPurchase(true);
     await LocalDB.storeInAppSubscriptionPurchase(true);
 
@@ -152,18 +146,18 @@ class WelcomeController {
       await LocalDB.saveProductIds(proIds);
       await LocalDB.saveBaseUrl(Urls.evoloUrl);
     }
-    Navigator.pop(context);
+    Nav.back();
   }
 
   // Restore purchases
   Future<void> restorePurchase() async {
     try {
-      loaderDialog(context);
+      loaderDialog();
       await inAppPurchase.restorePurchases();
-      Navigator.pop(context);
+      hideLoading();
     } on PlatformException catch (e) {
       exceptionLog(e);
-      Navigator.pop(context);
+      hideLoading();
     }
   }
 
@@ -174,7 +168,7 @@ class WelcomeController {
 
   // Purchase subscription
   Future<void> purchaseSubscription(int plan) async {
-    loaderDialog(context);
+    loaderDialog();
     debugLog("SELECTED PLAN IS $plan");
 
     int selectedProductIndex = _getProductIndex(plan);
@@ -187,8 +181,8 @@ class WelcomeController {
         await inAppPurchase.buyNonConsumable(purchaseParam: param);
       }
     } on PlatformException catch (e) {
-      Navigator.pop(context);
-      showToast(context: context, message: e.message!, isError: true);
+      hideLoading();
+      showToast(message: e.message!, isError: true);
     }
   }
 
@@ -205,7 +199,7 @@ class WelcomeController {
   }
 
   void _restorePopupDialog(String title, String description) {
-    restorePopupDialog(context, title, description);
+    restorePopupDialog(Nav.key.currentState!.context, title, description);
   }
 
   // Launch next page logic
@@ -220,13 +214,7 @@ class WelcomeController {
       Nav.to(const LoginScreen());
       return;
     }
-    Nav.to(SubscriptionUrlScreen(
-      yearlySubscriptionId: yearlySubscriptionId,
-      monthlySubscriptionId: monthlySubscriptionId,
-      appName: appName,
-      appVersion: appVersion,
-      nextPage: nextPage,
-    ));
+    Nav.to(const SubscriptionUrlScreen());
   }
 
   // Tracking transparency initialization

@@ -11,19 +11,9 @@ import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/views/widgets/patform_selection_widget.dart';
 
 class SubscriptionUrlScreen extends StatefulWidget {
-  const SubscriptionUrlScreen(
-      {super.key,
-      required this.yearlySubscriptionId,
-      required this.monthlySubscriptionId,
-      required this.appName,
-      required this.appVersion,
-      required this.nextPage});
-
-  final String yearlySubscriptionId;
-  final String monthlySubscriptionId;
-  final String appName;
-  final String appVersion;
-  final Widget nextPage;
+  const SubscriptionUrlScreen({
+    super.key,
+  });
 
   @override
   State<StatefulWidget> createState() => _SubcriptionState();
@@ -42,7 +32,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   void initState() {
     super.initState();
     platformsList = PlatformModel.getList();
-    if (!Constant.evoloApps.contains(widget.appName)) {
+    if (!Constant.evoloApps.contains(getIt<SplashController>().appName)) {
       platformsList.removeAt(1);
     }
     selectedPlatform = platformsList[0].platform;
@@ -140,7 +130,7 @@ class _SubcriptionState extends State<SubscriptionUrlScreen> {
   Future<void> getProductIds() async {
     loaderDialog(context);
     try {
-      final res = await Repo().getProductIds(widget.appName);
+      final res = await Repo().getProductIds(getIt<SplashController>().appName);
       debugLog('res in url screen $res');
       if (res != null) {
         productIds = res;

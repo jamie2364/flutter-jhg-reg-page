@@ -1,14 +1,15 @@
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/views/screens/auth/account_check_screen.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class Utils {
   static EdgeInsets customPadding(context) {
@@ -22,28 +23,28 @@ class Utils {
   }
 
   static BuildContext? get getContext => Nav.key.currentState?.context;
-  
+
   File getAsset(String path) =>
       File("${StringsDownloadService().dir?.path}/$path");
 
-
-Future<bool> checkInternet() async {
-  try {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi) {
-      return await InternetConnectionChecker().hasConnection;
+  Future<bool> checkInternet() async {
+    try {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        return await InternetConnectionChecker().hasConnection;
+      }
+    } catch (e) {
+      return true;
     }
-  } catch (e) {
-    return true;
+    return false;
   }
-  return false;
-}
 
   static void handleNextScreenOnSuccess(String appName) {
+    final page = getIt<SplashController>().nextPage;
     if (Constant.musictoolsApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.musicUrl)) {
-        Nav.offAll(globalNextPage());
+        Nav.offAll(page());
       } else if (!Urls.base.isEqual(Urls.musicUrl)) {
         Urls.base = BaseUrl.musictools;
         SplashScreen.session.url = Urls.base;
@@ -51,7 +52,7 @@ Future<bool> checkInternet() async {
       }
     } else if (Constant.evoloApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.evoloUrl)) {
-        Nav.offAll(globalNextPage());
+        Nav.offAll(page());
       } else {
         Urls.base = BaseUrl.evolo;
         SplashScreen.session.url = Urls.base;
@@ -59,7 +60,7 @@ Future<bool> checkInternet() async {
       }
     } else if (Constant.jhgApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.jhgUrl)) {
-        Nav.offAll(globalNextPage());
+        Nav.offAll(page());
       } else {
         Urls.base = BaseUrl.jhg;
         SplashScreen.session.url = Urls.base;
@@ -68,7 +69,7 @@ Future<bool> checkInternet() async {
     } else {
       //! currently hardcoced for looper
       if (appName == 'JHG Looper') {
-        Nav.offAll(globalNextPage());
+        Nav.offAll(page());
         return;
       }
       showErrorToast('app name $appName not found');

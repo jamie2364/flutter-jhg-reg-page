@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/views/screens/auth/complete_register_screen.dart';
-import 'package:reg_page/src/views/screens/auth/start_register_screen.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/repositories/user_repo.dart';
-import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/nav.dart';
+import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
+import 'package:reg_page/src/views/screens/auth/complete_register_screen.dart';
+import 'package:reg_page/src/views/screens/auth/start_register_screen.dart';
 
 class UserController {
   final GlobalKey<FormState> starRegFormKey = GlobalKey<FormState>();
@@ -61,7 +61,8 @@ class UserController {
       Navigator.pushAndRemoveUntil(
         // ignore: use_build_context_synchronously
         context,
-        MaterialPageRoute(builder: (context) => globalNextPage()),
+        MaterialPageRoute(
+            builder: (context) => getIt<SplashController>().nextPage()),
         (route) => false,
       );
     } else {
@@ -82,7 +83,7 @@ class UserController {
       final user = res.data as User;
       await LocalDB.storeAppUser(user);
       SplashScreen.session.user = user;
-      Nav.offAll(globalNextPage());
+      Nav.offAll(getIt<SplashController>().nextPage());
     } else {
       showErrorToast(res.message ?? "");
     }
@@ -108,11 +109,8 @@ class UserController {
       final u = res.data as User;
       await LocalDB.storeAppUser(u);
       SplashScreen.session.user = u;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => globalNextPage()),
-        (route) => false,
-      );
+
+      Nav.offAll(getIt<SplashController>().nextPage());
     } else if (res.code.contains('incorrect_password')) {
       // Handle incorrect password case
       Nav.off(const LoginScreen());

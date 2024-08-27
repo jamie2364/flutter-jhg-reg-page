@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
-import 'package:reg_page/src/utils/nav.dart';
 
 showToast(
-    {required BuildContext context,
-    required String message,
-    required bool isError}) {
+    {BuildContext? context, required String message, required bool isError}) {
+  context = context ?? Nav.key.currentState!.context;
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     margin: EdgeInsets.symmetric(
       horizontal: MediaQuery.of(context).size.width < 850

@@ -5,7 +5,6 @@ import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
 
-
 class BugReportPage extends StatefulWidget {
   const BugReportPage({
     super.key,
@@ -243,17 +242,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                   //ignore: use_build_context_synchronously
                                   Navigator.pushAndRemoveUntil(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return Welcome(
-                                      yearlySubscriptionId:
-                                          widget.yearlySubscriptionId!,
-                                      monthlySubscriptionId:
-                                          widget.monthlySubscriptionId!,
-                                      appVersion: widget.appVersion!,
-                                      appName: widget.appName,
-                                      featuresList:
-                                          widget.featuresList ?? List.empty(),
-                                      nextPage: () => widget.nextPage!(),
-                                    );
+                                    return const Welcome();
                                   }), (route) => false);
                                 },
                                 child: Container(

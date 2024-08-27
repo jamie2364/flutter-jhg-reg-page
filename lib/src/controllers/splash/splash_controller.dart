@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
@@ -33,7 +34,6 @@ class SplashController {
   Future<void> initializeSplash() async {
     // SplashScreen.staticNavKey = navKey;
     Nav.key = navKey;
-    globalNextPage = nextPage;
     Future.delayed(const Duration(milliseconds: 500), () {
       onUpdateUI(); // Trigger the UI update
     });
@@ -68,7 +68,7 @@ class SplashController {
     SplashScreen.session = UserSession(url: Urls.base, user: null);
 
     if (token == null) {
-      navigateToWelcome();
+      Nav.off(const Welcome());
     } else {
       final productIds = await LocalDB.getproductIds;
       final baseUrl = await LocalDB.getBaseurl;
@@ -105,17 +105,6 @@ class SplashController {
 
   Future<void> elseFunction() async {
     await LocalDB.clearLocalDB();
-    navigateToWelcome();
-  }
-
-  void navigateToWelcome() {
-    Nav.off(Welcome(
-      yearlySubscriptionId: yearlySubscriptionId,
-      monthlySubscriptionId: monthlySubscriptionId,
-      appName: appName,
-      appVersion: appVersion,
-      featuresList: featuresList,
-      nextPage: nextPage,
-    ));
+    Nav.off(const Welcome());
   }
 }
