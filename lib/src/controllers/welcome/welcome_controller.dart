@@ -11,7 +11,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
-import 'package:reg_page/src/utils/dialogs/subcription_url_screen.dart';
+import 'package:reg_page/src/utils/dialogs/subscription_url_screen.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';

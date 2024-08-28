@@ -8,7 +8,6 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/controllers/welcome/in_app_purchase_controller.dart';
-import 'package:reg_page/src/controllers/welcome/purchase_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
@@ -35,7 +34,6 @@ class _WelcomeState extends State<WelcomeScreen> {
   List<ProductDetails> products = [];
 
   late InAppPurchaseHandler purchaseHandler;
-  late TrackingTransparencyHandler trackingTransparencyHandler;
   late WelcomeController controller;
 
   @override
@@ -111,7 +109,6 @@ class _WelcomeState extends State<WelcomeScreen> {
                       ),
                       SizedBox(
                           height: height > 650 ? height * 0.03 : height * 0.02),
-                      
                       PlanOptionsWidget(
                         plans: plans,
                         selectedPlan: selectedPlan,
