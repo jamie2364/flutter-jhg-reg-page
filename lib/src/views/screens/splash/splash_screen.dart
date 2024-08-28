@@ -9,7 +9,6 @@ import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 
-
 final GetIt getIt = GetIt.instance;
 
 class SplashScreen extends StatefulWidget {
@@ -39,14 +38,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  SplashController? viewModel;
   double logoSize = 1.0;
 
   @override
   void initState() {
     super.initState();
     animate();
-    viewModel = SplashController(
+    SplashController controller = SplashController(
       yearlySubscriptionId: widget.yearlySubscriptionId,
       monthlySubscriptionId: widget.monthlySubscriptionId,
       appName: widget.appName,
@@ -57,11 +55,11 @@ class _SplashScreenState extends State<SplashScreen> {
       onUpdateUI: onUpdateUI,
     );
     if (!getIt.isRegistered<SplashController>()) {
-      getIt.registerSingleton<SplashController>(viewModel!);
+      getIt.registerSingleton<SplashController>(controller);
       getIt.registerSingleton<UserController>(UserController());
       getIt.registerSingleton<WelcomeController>(WelcomeController());
     }
-    viewModel!.initializeSplash();
+    controller.initializeSplash();
   }
 
   animate() async {

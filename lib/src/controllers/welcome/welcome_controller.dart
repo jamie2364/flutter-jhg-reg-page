@@ -14,7 +14,6 @@ import 'package:reg_page/src/utils/dialogs/subcription_url_screen.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
-import 'package:reg_page/src/views/screens/subscription/subcription_url_screen.dart';
 
 class WelcomeController {
   late String appName;

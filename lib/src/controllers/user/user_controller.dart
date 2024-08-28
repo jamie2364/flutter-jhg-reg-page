@@ -99,7 +99,7 @@ class UserController {
     );
     final res =
         await _repo.loginUser(newUser.toMapToLogin(), checkError: false);
-    print('res in controller $res');
+    debugLog('res in controller $res');
     if (res.code is int) {
       if (res.code == 0) {
         // showErrorToast('Something went wrong');

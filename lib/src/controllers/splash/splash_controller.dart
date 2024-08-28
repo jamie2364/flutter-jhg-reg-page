@@ -68,7 +68,7 @@ class SplashController {
     SplashScreen.session = UserSession(url: Urls.base, user: null);
 
     if (token == null) {
-      Nav.off(const Welcome());
+      Nav.off(const WelcomeScreen());
     } else {
       final productIds = await LocalDB.getproductIds;
       final baseUrl = await LocalDB.getBaseurl;
@@ -105,6 +105,6 @@ class SplashController {
 
   Future<void> elseFunction() async {
     await LocalDB.clearLocalDB();
-    Nav.off(const Welcome());
+    Nav.off(const WelcomeScreen());
   }
 }

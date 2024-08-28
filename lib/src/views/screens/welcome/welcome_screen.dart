@@ -18,15 +18,15 @@ import 'package:reg_page/src/views/widgets/welcome/info_button.dart';
 import 'package:reg_page/src/views/widgets/welcome/plane_option.dart';
 import 'package:reg_page/src/views/widgets/welcome/welcome_text.dart';
 
-class Welcome extends StatefulWidget {
-  const Welcome({
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({
     Key? key,
   }) : super(key: key);
   @override
-  _WelcomeState createState() => _WelcomeState();
+  State<WelcomeScreen> createState() => _WelcomeState();
 }
 
-class _WelcomeState extends State<Welcome> {
+class _WelcomeState extends State<WelcomeScreen> {
   bool loading = true;
   String? monthlyPrice;
   String? yearlyPrice;
@@ -35,32 +35,32 @@ class _WelcomeState extends State<Welcome> {
 
   late InAppPurchaseHandler purchaseHandler;
   late TrackingTransparencyHandler trackingTransparencyHandler;
-  late WelcomeController _subscriptionService;
+  late WelcomeController controller;
 
   @override
   void initState() {
     super.initState();
-    _subscriptionService = WelcomeController();
+    controller = getIt<WelcomeController>();
     _initializeData();
   }
 
   Future<void> _initializeData() async {
-    await _subscriptionService.initializeData();
+    await controller.initializeData();
     setState(() {
-      loading = _subscriptionService.loading;
+      loading = controller.loading;
     });
-    monthlyPrice = _subscriptionService.monthlyPrice;
-    yearlyPrice = _subscriptionService.yearlyPrice;
+    monthlyPrice = controller.monthlyPrice;
+    yearlyPrice = controller.yearlyPrice;
   }
 
   void onPlanSelect(int plan) {
-    _subscriptionService.onPlanSelect(plan);
+    controller.onPlanSelect(plan);
     selectedPlan = plan;
     setState(() {});
   }
 
   Future<void> launchNextPage() async {
-    await _subscriptionService.launchNextPage();
+    await controller.launchNextPage();
   }
 
   @override
@@ -86,15 +86,14 @@ class _WelcomeState extends State<Welcome> {
                       left: width * 0.05,
                       bottom: 20,
                       child: WelcomeText(
-                          appName: _subscriptionService.replaceAppName(),
-                          height: height),
+                          appName: controller.replaceAppName(), height: height),
                     ),
                     InfoButton(
                       width: width,
                       height: height,
                       appName: spController.appName,
                       appVersion: spController.appVersion,
-                      restorePurchase: _subscriptionService.restorePurchase,
+                      restorePurchase: controller.restorePurchase,
                     ),
                   ],
                 ),
@@ -169,8 +168,7 @@ class _WelcomeState extends State<Welcome> {
                             }), (route) => false);
                             return;
                           }
-                          await _subscriptionService
-                              .purchaseSubscription(selectedPlan);
+                          await controller.purchaseSubscription(selectedPlan);
                         },
                       ),
                     ],
