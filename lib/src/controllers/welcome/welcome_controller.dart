@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -163,7 +164,6 @@ class WelcomeController {
 
   void onPlanSelect(int plan) {
     selectedPlan = plan;
-    LocalDB.setIsFreePlan(plan == 0 ? true : false);
   }
 
   // Purchase subscription
@@ -228,6 +228,6 @@ class WelcomeController {
     }
 
     final uuid = await AppTrackingTransparency.getAdvertisingIdentifier();
-    print("UUID: $uuid");
+    if (kDebugMode) print("UUID: $uuid");
   }
 }

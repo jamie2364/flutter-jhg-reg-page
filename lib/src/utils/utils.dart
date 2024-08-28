@@ -22,6 +22,10 @@ class Utils {
     );
   }
 
+  static double height(BuildContext context) =>
+      MediaQuery.of(context).size.height;
+  static double width(BuildContext context) =>
+      MediaQuery.of(context).size.width;
   static BuildContext? get getContext => Nav.key.currentState?.context;
 
   File getAsset(String path) =>

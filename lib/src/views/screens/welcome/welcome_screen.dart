@@ -10,12 +10,13 @@ import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/controllers/welcome/in_app_purchase_controller.dart';
 import 'package:reg_page/src/controllers/welcome/purchase_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
+import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
 import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
 import 'package:reg_page/src/views/widgets/welcome/header_image.dart';
 import 'package:reg_page/src/views/widgets/welcome/info_button.dart';
-import 'package:reg_page/src/views/widgets/welcome/plane_option.dart';
+import 'package:reg_page/src/views/widgets/welcome/plan_options_widget.dart';
 import 'package:reg_page/src/views/widgets/welcome/welcome_text.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -30,7 +31,7 @@ class _WelcomeState extends State<WelcomeScreen> {
   bool loading = true;
   String? monthlyPrice;
   String? yearlyPrice;
-  int selectedPlan = 2;
+  int selectedPlan = 1;
   List<ProductDetails> products = [];
 
   late InAppPurchaseHandler purchaseHandler;
@@ -56,11 +57,6 @@ class _WelcomeState extends State<WelcomeScreen> {
   void onPlanSelect(int plan) {
     controller.onPlanSelect(plan);
     selectedPlan = plan;
-    setState(() {});
-  }
-
-  Future<void> launchNextPage() async {
-    await controller.launchNextPage();
   }
 
   @override
@@ -68,6 +64,8 @@ class _WelcomeState extends State<WelcomeScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final spController = getIt<SplashController>();
+    final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
+    if (spController.appName.contains("Course Hub")) plans.removeAt(0);
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: loading
@@ -113,45 +111,17 @@ class _WelcomeState extends State<WelcomeScreen> {
                       ),
                       SizedBox(
                           height: height > 650 ? height * 0.03 : height * 0.02),
-                      if (!spController.appName.contains("Course Hub"))
-                        PlanOption(
-                          label: Constant.freeWithAds,
-                          description: Constant.freeWithAdsSubtitle,
-                          selectedPlan: selectedPlan,
-                          planIndex: 0,
-                          onPlanSelect: onPlanSelect,
-                          yearlyPrice: yearlyPrice ?? '',
-                          featuresList: spController.featuresList,
-                        ),
-                      SizedBox(
-                          height: height > 650 ? height * 0.02 : height * 0.01),
-                      PlanOption(
-                        label: Constant.monthlyPlan,
-                        description:
-                            "$monthlyPrice ${Constant.perMonth}, renews automatically",
+                      
+                      PlanOptionsWidget(
+                        plans: plans,
                         selectedPlan: selectedPlan,
-                        planIndex: 2,
                         onPlanSelect: onPlanSelect,
-                        yearlyPrice: yearlyPrice ?? '',
-                        featuresList: spController.featuresList,
-                      ),
-                      SizedBox(
-                          height: height > 650 ? height * 0.02 : height * 0.01),
-                      PlanOption(
-                        label: Constant.annualPlan,
-                        description:
-                            "${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}",
-                        selectedPlan: selectedPlan,
-                        planIndex: 1,
-                        onPlanSelect: onPlanSelect,
-                        yearlyPrice: yearlyPrice ?? '',
-                        featuresList: spController.featuresList,
                       ),
                       SizedBox(
                           height: height > 650 ? height * 0.03 : height * 0.02),
                       AlreadySubscribed(onLogin: () {
                         LocalDB.setIsFreePlan(false);
-                        launchNextPage();
+                        controller.launchNextPage();
                       }),
                       SizedBox(
                           height: height > 650 ? height * 0.03 : height * 0.02),

@@ -1,8 +1,71 @@
-
 import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
+import 'package:reg_page/src/models/plan_options.dart';
+import 'package:reg_page/src/utils/dialogs/subscription_info_popup.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
-import 'package:reg_page/src/utils/dialogs/subscription_info_popup.dart';
+import 'package:reg_page/src/utils/utils.dart';
+
+class PlanOptionsWidget extends StatefulWidget {
+  final Function(int) onPlanSelect;
+  final List<Plan> plans;
+  final int selectedPlan;
+
+  const PlanOptionsWidget({
+    Key? key,
+    required this.onPlanSelect,
+    required this.selectedPlan,
+    required this.plans,
+  }) : super(key: key);
+
+  @override
+  State<PlanOptionsWidget> createState() => _PlanOptionsWidgetState();
+}
+
+class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
+  late int selectedPlan;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedPlan = widget.selectedPlan;
+  }
+
+  void onPlanSelect(int planIndex) {
+    setState(() {
+      selectedPlan = planIndex;
+    });
+    widget.onPlanSelect(planIndex);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final height = Utils.height(context);
+    return Column(
+      children: List.generate(
+        widget.plans.length,
+        (index) {
+          final e = widget.plans[index];
+          return PlanOption(
+            label: e.label,
+            description: e.description,
+            selectedPlan: selectedPlan,
+            planIndex: e.index,
+            onPlanSelect: onPlanSelect,
+            yearlyPrice: e.price,
+            featuresList: getIt<SplashController>().featuresList,
+            bottomSpace: index != 2
+                ? height > 650
+                    ? height * 0.02
+                    : height * 0.01
+                : 0,
+          );
+        },
+      ),
+    );
+  }
+}
 
 class PlanOption extends StatelessWidget {
   final String label;
@@ -12,9 +75,11 @@ class PlanOption extends StatelessWidget {
   final Function(int) onPlanSelect;
   final String yearlyPrice;
   final List<String> featuresList;
-
-  const PlanOption({super.key, 
+  final double bottomSpace;
+  const PlanOption({
+    super.key,
     required this.label,
+    this.bottomSpace = 0,
     required this.description,
     required this.selectedPlan,
     required this.planIndex,
@@ -43,6 +108,7 @@ class PlanOption extends StatelessWidget {
                 ? height * 0.06
                 : height * 0.07,
         width: width * 0.85,
+        margin: EdgeInsets.only(bottom: bottomSpace),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(

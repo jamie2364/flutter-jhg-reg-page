@@ -1,15 +1,25 @@
-class PlanOptionModel {
+import 'package:reg_page/src/utils/res/constant.dart';
+
+class Plan {
+  final int index;
   final String label;
   final String description;
-  final int planIndex;
-  final String yearlyPrice;
-  final List<String> featuresList;
+  final String price;
+  Plan(this.index, this.label, this.description, this.price);
 
-  PlanOptionModel({
-    required this.label,
-    required this.description,
-    required this.planIndex,
-    required this.yearlyPrice,
-    required this.featuresList,
-  });
+  static List<Plan> getPlans(String monthlyPrice, String yearlyPrice) {
+    return [
+      Plan(0, Constant.freeWithAds, Constant.freeWithAdsSubtitle, '0'),
+      Plan(
+          1,
+          Constant.monthlyPlan,
+          '$monthlyPrice ${Constant.perMonth}, renews automatically',
+          monthlyPrice),
+      Plan(
+          2,
+          Constant.annualPlan,
+          '${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}',
+          yearlyPrice),
+    ];
+  }
 }
