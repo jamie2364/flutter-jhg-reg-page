@@ -7,6 +7,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/views/widgets/heading.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({
@@ -19,7 +20,7 @@ class LoginScreen extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final controller = getIt<UserController>();
-    
+
     controller.clearFields();
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
@@ -42,14 +43,11 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const JHGAppBar(
-                  title: Text(Constant.login),
-                ),
-                // Heading(
-                //   text: Constant.login,
-                //   height: height,
-                // ),
-                SizedBox(height: height * 0.32),
+                SizedBox(height: height * 0.030),
+                const JHGAppBar(),
+                SizedBox(height: height * 0.1),
+                Heading(text: Constant.login, height: height),
+                SizedBox(height: height * 0.18),
                 Form(
                   key: controller.loginFormKey,
                   child: Column(
@@ -68,9 +66,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: height * 0.05,
-                ),
+                SizedBox(height: height * 0.05),
                 JHGPrimaryBtn(
                   label: Constant.login,
                   onPressed: () => isAppLogin

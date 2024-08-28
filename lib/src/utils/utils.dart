@@ -12,6 +12,8 @@ import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/views/screens/auth/account_check_screen.dart';
 
 class Utils {
+  Utils._();
+
   static EdgeInsets customPadding(context) {
     return EdgeInsets.symmetric(
       horizontal: JHGResponsive.isMobile(context)
@@ -21,6 +23,10 @@ class Utils {
               : MediaQuery.sizeOf(context).width * .30,
     );
   }
+
+  static isValidEmail(String email) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email);
 
   static double height(BuildContext context) =>
       MediaQuery.of(context).size.height;

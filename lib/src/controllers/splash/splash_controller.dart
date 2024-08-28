@@ -19,7 +19,7 @@ class SplashController {
   final Widget Function() nextPage;
   final GlobalKey<NavigatorState> navKey;
   final VoidCallback onUpdateUI; // Callback to trigger setState in the UI
-  late String productIds;
+  String productIds = '';
   SplashController({
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,
@@ -72,7 +72,11 @@ class SplashController {
     } else {
       final productIds = await LocalDB.getproductIds;
       final baseUrl = await LocalDB.getBaseurl;
-      if (productIds == null) return;
+      if (productIds == null) {
+        LocalDB.clearLocalDB();
+        Nav.off(const WelcomeScreen());
+        return;
+      }
 
       final res = await Repo().checkSubscription(productIds, baseUrl: baseUrl);
       if (res == null) {

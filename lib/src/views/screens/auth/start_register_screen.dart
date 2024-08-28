@@ -7,6 +7,7 @@ import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/views/widgets/heading.dart';
 
 class StartRegisterScreen extends StatefulWidget {
   const StartRegisterScreen({super.key});
@@ -57,10 +58,11 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Step 1 - Your Details',
-                style: JHGTextStyles.lrlabelStyle.copyWith(fontSize: 29),
-              ),
+              Heading(text: 'Step 1 - Your Details', height: height),
+              // Text(
+
+              //   style: JHGTextStyles.lrlabelStyle.copyWith(fontSize: 29),
+              // ),
               SizedBox(height: height * .03),
               Text(
                 Constant.registerDesc,

@@ -138,7 +138,8 @@ class UserController {
           await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
       // print('login res $loginRes ${loginRes.code}${loginRes.data}');
 
-      await Future.delayed(const Duration(seconds: 2));
+      // await Future.delayed(const Duration(seconds: 2));
+      // print('after delay');
       if (loginRes.code == 0) return;
       SplashController splashController = getIt<SplashController>();
       final appName = splashController.appName;
@@ -161,12 +162,11 @@ class UserController {
         await LocalDB.storeAppUser(loggedInUser);
       }
       await LocalDB.storeBearerToken(loggedInUser.token!);
-      // if (appName == "JHG Course Hub") {
       final subRes =
           await Repo().checkSubscription(splashController.productIds);
       bool isActive = Utils.isSubscriptionActive(subRes,
           isCourseHubApp: appName == "JHG Course Hub");
-      // debugLog('isSubscriptionActive $isActive');
+      debugLog('isSubscriptionActive $isActive');
       if (isActive) {
         LocalDB.storeUserEmail(loggedInUser.email!);
         LocalDB.storeUserName(loggedInUser.userName);
