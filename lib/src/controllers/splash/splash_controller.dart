@@ -68,27 +68,13 @@ class SplashController {
     SplashScreen.session = UserSession(url: Urls.base, user: null);
 
     if (token == null) {
-      Nav.off(WelcomeScreen(
-        yearlySubscriptionId: yearlySubscriptionId,
-        monthlySubscriptionId: monthlySubscriptionId,
-        appName: appName,
-        appVersion: appVersion,
-        featuresList: featuresList,
-        nextPage: () => nextPage(),
-      ));
+      Nav.off(const WelcomeScreen());
     } else {
       final productIds = await LocalDB.getproductIds;
       final baseUrl = await LocalDB.getBaseurl;
       if (productIds == null) {
         LocalDB.clearLocalDB();
-        Nav.off(WelcomeScreen(
-        yearlySubscriptionId: yearlySubscriptionId,
-        monthlySubscriptionId: monthlySubscriptionId,
-        appName: appName,
-        appVersion: appVersion,
-        featuresList: featuresList,
-        nextPage: () => nextPage(),
-      ));
+        Nav.off(const WelcomeScreen());
         return;
       }
 
@@ -123,13 +109,6 @@ class SplashController {
 
   Future<void> elseFunction() async {
     await LocalDB.clearLocalDB();
-    Nav.off(WelcomeScreen(
-        yearlySubscriptionId: yearlySubscriptionId,
-        monthlySubscriptionId: monthlySubscriptionId,
-        appName: appName,
-        appVersion: appVersion,
-        featuresList: featuresList,
-        nextPage: () => nextPage(),
-      ));
+    Nav.off(const WelcomeScreen());
   }
 }

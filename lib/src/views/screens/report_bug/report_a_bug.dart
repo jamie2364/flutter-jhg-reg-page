@@ -242,16 +242,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                   //ignore: use_build_context_synchronously
                                   Navigator.pushAndRemoveUntil(context,
                                       MaterialPageRoute(builder: (context) {
-                                    return WelcomeScreen(
-                                      yearlySubscriptionId:
-                                          widget.yearlySubscriptionId!,
-                                      monthlySubscriptionId:
-                                          widget.monthlySubscriptionId!,
-                                      appName: widget.appName,
-                                      appVersion: widget.appVersion!,
-                                      featuresList: widget.featuresList!,
-                                      nextPage: () => widget.nextPage!(),
-                                    );
+                                    return const WelcomeScreen();
                                   }), (route) => false);
                                 },
                                 child: Container(

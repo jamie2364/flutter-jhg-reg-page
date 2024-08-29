@@ -21,20 +21,7 @@ import 'package:reg_page/src/views/widgets/welcome/welcome_text.dart';
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({
     Key? key,
-    required this.yearlySubscriptionId,
-    required this.monthlySubscriptionId,
-    required this.appName,
-    required this.appVersion,
-    required this.featuresList,
-    required this.nextPage,
   }) : super(key: key);
-
-  final String yearlySubscriptionId;
-  final String monthlySubscriptionId;
-  final String appName;
-  final String appVersion;
-  final List<String> featuresList;
-  final Widget Function() nextPage;
   @override
   State<WelcomeScreen> createState() => _WelcomeState();
 }
