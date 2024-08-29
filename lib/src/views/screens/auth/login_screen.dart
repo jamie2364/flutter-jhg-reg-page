@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final controller = getIt<UserController>();
 
-    controller.clearFields();
+   // controller.clearFields();
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(
