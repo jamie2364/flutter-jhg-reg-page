@@ -1,4 +1,4 @@
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 class Plan {
   final int index;
@@ -9,16 +9,16 @@ class Plan {
 
   static List<Plan> getPlans(String monthlyPrice, String yearlyPrice) {
     return [
-      Plan(0, Constant.freeWithAds, Constant.freeWithAdsSubtitle, '0'),
+      Plan(0, Constants.freeWithAds, Constants.freeWithAdsSubtitle, '0'),
       Plan(
           1,
-          Constant.monthlyPlan,
-          '$monthlyPrice ${Constant.perMonth}, renews automatically',
+          Constants.monthlyPlan,
+          '$monthlyPrice ${Constants.perMonth}, renews automatically',
           monthlyPrice),
       Plan(
           2,
-          Constant.annualPlan,
-          '${Constant.oneWeekFree}$yearlyPrice ${Constant.perYear}',
+          Constants.annualPlan,
+          '${Constants.oneWeekFree}$yearlyPrice ${Constants.perYear}',
           yearlyPrice),
     ];
   }

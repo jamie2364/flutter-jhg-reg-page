@@ -1,4 +1,4 @@
-class Constant {
+class Constants {
   static const marketingHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',

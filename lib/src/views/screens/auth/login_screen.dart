@@ -6,7 +6,7 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -46,7 +46,7 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: height * 0.030),
                 const JHGAppBar(),
                 SizedBox(height: height * 0.1),
-                Heading(text: Constant.login, height: height),
+                Heading(text: Constants.login, height: height),
                 SizedBox(height: height * 0.18),
                 Form(
                   key: controller.loginFormKey,
@@ -55,20 +55,20 @@ class LoginScreen extends StatelessWidget {
                       JHGTextFormField(
                         controller: controller.userNameC,
                         inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                        label: Constant.userNameHint,
+                        label: Constants.userNameHint,
                       ),
                       SizedBox(height: height * 0.02),
                       JHGTextFormField(
                         controller: controller.passC,
                         isPasswordField: true,
-                        label: Constant.passwordHint,
+                        label: Constants.passwordHint,
                       ),
                     ],
                   ),
                 ),
                 SizedBox(height: height * 0.05),
                 JHGPrimaryBtn(
-                  label: Constant.login,
+                  label: Constants.login,
                   onPressed: () => isAppLogin
                       ? controller.loginUserForApp()
                       : controller.userLogin(),

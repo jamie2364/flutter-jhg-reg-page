@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 
 class PlatformSelectionWidget extends StatelessWidget {
@@ -52,7 +52,7 @@ class PlatformSelectionWidget extends StatelessWidget {
                         color: AppColor.greySecondary,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
-                        fontFamily: Constant.kFontFamilySS3),
+                        fontFamily: Constants.kFontFamilySS3),
                   ),
                   Container(
                     height: height * 0.027,

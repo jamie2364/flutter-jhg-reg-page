@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 import '../../utils/res/colors.dart';
 
@@ -22,7 +22,7 @@ class Heading extends StatelessWidget {
                   ? 30
                   : 28,
           fontWeight: FontWeight.w800,
-          fontFamily: Constant.kFontFamilySS3),
+          fontFamily: Constants.kFontFamilySS3),
     );
   }
 }

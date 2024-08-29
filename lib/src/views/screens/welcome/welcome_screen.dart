@@ -11,7 +11,7 @@ import 'package:reg_page/src/controllers/welcome/in_app_purchase_controller.dart
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
 import 'package:reg_page/src/views/widgets/welcome/header_image.dart';
 import 'package:reg_page/src/views/widgets/welcome/info_button.dart';
@@ -99,12 +99,12 @@ class _WelcomeState extends State<WelcomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        Constant.pleaseChoosePlan,
+                        Constants.pleaseChoosePlan,
                         style: TextStyle(
                           color: AppColor.secondaryWhite,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          fontFamily: Constant.kFontFamilySS3,
+                          fontFamily: Constants.kFontFamilySS3,
                         ),
                       ),
                       SizedBox(
@@ -124,8 +124,8 @@ class _WelcomeState extends State<WelcomeScreen> {
                           height: height > 650 ? height * 0.03 : height * 0.02),
                       JHGPrimaryBtn(
                         label: selectedPlan == 1
-                            ? Constant.tryFree
-                            : Constant.continueText,
+                            ? Constants.tryFree
+                            : Constants.continueText,
                         onPressed: () async {
                           if (selectedPlan == 0) {
                             LocalDB.setIsFreePlan(true);

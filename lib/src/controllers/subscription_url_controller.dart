@@ -3,7 +3,7 @@ import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/nav.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 
 class SubscriptionUrlController {
@@ -13,7 +13,7 @@ class SubscriptionUrlController {
 
   void initController() {
     platformsList = PlatformModel.getList();
-    if (!Constant.evoloApps.contains(getIt<SplashController>().appName)) {
+    if (!Constants.evoloApps.contains(getIt<SplashController>().appName)) {
       platformsList.removeAt(1);
     }
     onPlatformSelected(platformsList[0]);
@@ -34,10 +34,10 @@ class SubscriptionUrlController {
         LocalDB.saveProductIds(res);
         Nav.to(const LoginScreen());
       } else {
-        showErrorToast(Constant.productIdsFailedMessage);
+        showErrorToast(Constants.productIdsFailedMessage);
       }
     } catch (e) {
-      showErrorToast(Constant.productIdsFailedMessage);
+      showErrorToast(Constants.productIdsFailedMessage);
     }
   }
 }

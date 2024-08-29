@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 showToast(
     {BuildContext? context, required String message, required bool isError}) {
@@ -21,7 +21,7 @@ showToast(
       style: TextStyle(
           color: AppColor.primaryWhite,
           fontSize: 16,
-          fontFamily: Constant.kFontFamilySS3),
+          fontFamily: Constants.kFontFamilySS3),
     ),
     backgroundColor: isError ? AppColor.primaryRed : AppColor.primaryGreen,
     padding: EdgeInsets.symmetric(

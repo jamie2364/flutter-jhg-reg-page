@@ -1,5 +1,5 @@
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/services/base_service.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 
@@ -73,7 +73,7 @@ class Repo extends BaseService with BaseController {
               {"email": email, "tag_as_event": "$appName User"}
             ]
           },
-          headers: Constant.marketingHeaders);
+          headers: Constants.marketingHeaders);
       return res;
     } catch (e) {
       exceptionLog('exception on  marketing api $e');

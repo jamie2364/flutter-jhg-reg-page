@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 class BugReportPage extends StatefulWidget {
   const BugReportPage({
@@ -115,7 +115,7 @@ class _BugReportPageState extends State<BugReportPage> {
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
                       color: AppColor.primaryRed,
-                      fontFamily: Constant.kFontFamilySS3),
+                      fontFamily: Constants.kFontFamilySS3),
                   textAlign: TextAlign.left,
                 ),
                 SizedBox(
@@ -133,7 +133,7 @@ class _BugReportPageState extends State<BugReportPage> {
                         style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white,
-                            fontFamily: Constant.kFontFamilySS3),
+                            fontFamily: Constants.kFontFamilySS3),
                         textAlign: TextAlign.left,
                       ),
                       SizedBox(
@@ -188,7 +188,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               style: const TextStyle(
                                   fontSize: 14.0,
                                   color: Colors.white,
-                                  fontFamily: Constant.kFontFamilySS3),
+                                  fontFamily: Constants.kFontFamilySS3),
                               textAlign: TextAlign.left,
                             ),
                           ),
@@ -229,7 +229,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18.0,
-                                  fontFamily: Constant.kFontFamilySS3),
+                                  fontFamily: Constants.kFontFamilySS3),
                             ),
                           ),
                         ),
@@ -258,7 +258,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                         color: AppColor.primaryWhite,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
-                                        fontFamily: Constant.kFontFamilySS3),
+                                        fontFamily: Constants.kFontFamilySS3),
                                   ),
                                 ),
                               ),

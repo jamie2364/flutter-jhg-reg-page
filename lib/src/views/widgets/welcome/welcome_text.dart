@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class WelcomeText extends StatelessWidget {
@@ -15,11 +15,11 @@ class WelcomeText extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Heading(
-          text: Constant.welcome,
+          text: Constants.welcome,
           height: height,
         ),
         Text(
-          Constant.welcomeDescription,
+          Constants.welcomeDescription,
           style: TextStyle(
             color: AppColor.primaryWhite,
             fontSize: height > 650
@@ -28,7 +28,7 @@ class WelcomeText extends StatelessWidget {
                     ? 16
                     : 14,
             fontWeight: FontWeight.w400,
-            fontFamily: Constant.kFontFamilySS3,
+            fontFamily: Constants.kFontFamilySS3,
           ),
         ),
         Text(
@@ -41,7 +41,7 @@ class WelcomeText extends StatelessWidget {
                     ? 25
                     : 22,
             fontWeight: FontWeight.w700,
-            fontFamily: Constant.kFontFamilySS3,
+            fontFamily: Constants.kFontFamilySS3,
           ),
         ),
       ],

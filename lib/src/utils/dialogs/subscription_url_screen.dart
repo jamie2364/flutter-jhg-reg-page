@@ -3,7 +3,7 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/subscription_url_controller.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/utils.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 import 'package:reg_page/src/views/widgets/patform_selection_widget.dart';
@@ -49,21 +49,21 @@ class _SubscriptionState extends State<SubscriptionUrlScreen> {
               ),
               SizedBox(height: height * 0.1),
               const Heading(
-                  text: Constant.chooseYourSubscriptionText, height: 320),
+                  text: Constants.chooseYourSubscriptionText, height: 320),
               SizedBox(height: height * 0.06),
               Text(
-                Constant.subscriptionUrlSubText,
+                Constants.subscriptionUrlSubText,
                 style: TextStyle(
                   color: AppColor.greySecondary,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
-                  fontFamily: Constant.kFontFamilySS3,
+                  fontFamily: Constants.kFontFamilySS3,
                 ),
               ),
               SizedBox(height: height * 0.04),
               const Expanded(child: SelectUrlsWidget()),
               JHGPrimaryBtn(
-                label: Constant.continueText,
+                label: Constants.continueText,
                 onPressed: () => controller.getProductIds(),
               ),
             ],

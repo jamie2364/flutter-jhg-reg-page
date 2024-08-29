@@ -6,7 +6,7 @@ import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/utils/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class StartRegisterScreen extends StatefulWidget {
@@ -65,7 +65,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
               // ),
               SizedBox(height: height * .03),
               Text(
-                Constant.registerDesc,
+                Constants.registerDesc,
                 style: JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
               ),
               SizedBox(height: height * .05),

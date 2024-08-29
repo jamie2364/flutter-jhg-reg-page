@@ -4,7 +4,7 @@ import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/dialogs/subscription_info_popup.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 class PlanOptionsWidget extends StatefulWidget {
@@ -135,7 +135,7 @@ class PlanOption extends StatelessWidget {
                       color: AppColor.primaryWhite,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      fontFamily: Constant.kFontFamilySS3,
+                      fontFamily: Constants.kFontFamilySS3,
                     ),
                   ),
                   Container(
@@ -173,7 +173,7 @@ class PlanOption extends StatelessWidget {
                         color: AppColor.secondaryWhite,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
-                        fontFamily: Constant.kFontFamilySS3,
+                        fontFamily: Constants.kFontFamilySS3,
                       ),
                     ),
                     Divider(color: AppColor.secondaryWhite),
@@ -188,12 +188,12 @@ class PlanOption extends StatelessWidget {
                         );
                       },
                       child: Text(
-                        Constant.weeklySave,
+                        Constants.weeklySave,
                         style: TextStyle(
                           color: AppColor.primaryRed,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
-                          fontFamily: Constant.kFontFamilySS3,
+                          fontFamily: Constants.kFontFamilySS3,
                         ),
                       ),
                     ),

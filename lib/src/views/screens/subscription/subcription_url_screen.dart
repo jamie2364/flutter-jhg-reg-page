@@ -42,7 +42,7 @@
 //   void initState() {
 //     super.initState();
 //     platformsList = PlatformModel.getList();
-//     if (!Constant.evoloApps.contains(widget.appName)) {
+//     if (!Constants.evoloApps.contains(widget.appName)) {
 //       platformsList.removeAt(1);
 //     }
 //     selectedPlatform = platformsList[0].platform;
@@ -90,23 +90,23 @@
 //                     height: height * 0.1,
 //                   ),
 //                   Text(
-//                     Constant.chooseYourSubscriptionText,
+//                     Constants.chooseYourSubscriptionText,
 //                     style: TextStyle(
 //                         color: AppColor.primaryWhite,
 //                         fontSize: 20,
 //                         fontWeight: FontWeight.w700,
-//                         fontFamily: Constant.kFontFamilySS3),
+//                         fontFamily: Constants.kFontFamilySS3),
 //                   ),
 //                   SizedBox(
 //                     height: height * 0.06,
 //                   ),
 //                   Text(
-//                     Constant.subscriptionUrlSubText,
+//                     Constants.subscriptionUrlSubText,
 //                     style: TextStyle(
 //                         color: AppColor.greySecondary,
 //                         fontSize: 14,
 //                         fontWeight: FontWeight.w400,
-//                         fontFamily: Constant.kFontFamilySS3),
+//                         fontFamily: Constants.kFontFamilySS3),
 //                   ),
 //                   SizedBox(
 //                     height: height * 0.04,
@@ -128,7 +128,7 @@
 //                     itemCount: platformsList.length,
 //                   )),
 //                   JHGPrimaryBtn(
-//                       label: Constant.continueText,
+//                       label: Constants.continueText,
 //                       onPressed: () async {
 //                         getProductIds();
 //                       })
@@ -162,7 +162,7 @@
 //   void showFailureMessage() {
 //     showToast(
 //         context: context,
-//         message: Constant.productIdsFailedMessage,
+//         message: Constants.productIdsFailedMessage,
 //         isError: true);
 //   }
 // }

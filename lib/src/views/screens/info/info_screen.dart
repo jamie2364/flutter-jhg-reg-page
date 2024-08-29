@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -116,38 +116,38 @@ class _InfoScreenState extends State<InfoScreen> {
                   height: height * 0.030,
                 ),
                 AppInfoSection(
-                  title: Constant.appName,
+                  title: Constants.appName,
                   subtitle: widget.appName,
                 ),
                 SizedBox(
                   height: height * 0.010,
                 ),
                 AppInfoSection(
-                  title: Constant.version,
+                  title: Constants.version,
                   subtitle: widget.appVersion,
                 ),
                 SizedBox(
                   height: height * 0.030,
                 ),
                 InfoButtonSection(
-                  title: Constant.viewPrivacyPolicy,
+                  title: Constants.viewPrivacyPolicy,
                   onPressed: () {
-                    _launchUrl(Constant.policyPrivacyUrl);
+                    _launchUrl(Constants.policyPrivacyUrl);
                   },
                 ),
                 InfoButtonSection(
-                  title: Constant.viewTermsOfUse,
+                  title: Constants.viewTermsOfUse,
                   onPressed: () {
-                    _launchUrl(Constant.termAndServicesUrl);
+                    _launchUrl(Constants.termAndServicesUrl);
                   },
                 ),
                 InfoButtonSection(
-                  title: Constant.restorePurchases,
+                  title: Constants.restorePurchases,
                   onPressed: () {
                     restorePopupDialog(
                       context,
-                      Constant.restoreNotFound,
-                      Constant.restoreNotFoundDescription,
+                      Constants.restoreNotFound,
+                      Constants.restoreNotFoundDescription,
                     );
                   },
                 ),
@@ -155,14 +155,14 @@ class _InfoScreenState extends State<InfoScreen> {
                     ? const SizedBox()
                     : Platform.isAndroid
                         ? InfoButtonSection(
-                            title: Constant.cancelSubscription,
+                            title: Constants.cancelSubscription,
                             onPressed: () {
-                              _launchUrl(Constant.cancelSubscriptionUrl);
+                              _launchUrl(Constants.cancelSubscriptionUrl);
                             },
                           )
                         : const SizedBox(),
                 InfoButtonSection(
-                  title: Constant.visitJamieHarrisonGuitar,
+                  title: Constants.visitJamieHarrisonGuitar,
                   onPressed: () {
                     _launchUrl(Urls.jhgUrl);
                   },
@@ -172,14 +172,14 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 Center(
                   child: Text(
-                    Constant.appQuotes,
+                    Constants.appQuotes,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
                         color: AppColor.secondaryWhite,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        fontFamily: Constant.kFontFamilySS3),
+                        fontFamily: Constants.kFontFamilySS3),
                   ),
                 ),
                 SizedBox(
@@ -187,13 +187,13 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 Center(
                   child: Text(
-                    Constant.williamShakespeare,
+                    Constants.williamShakespeare,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: AppColor.secondaryWhite,
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
-                        fontFamily: Constant.kFontFamilySS3),
+                        fontFamily: Constants.kFontFamilySS3),
                   ),
                 ),
                 SizedBox(
@@ -215,13 +215,13 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 Center(
                   child: Text(
-                    Constant.copyRight,
+                    Constants.copyRight,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: AppColor.secondaryWhite,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
-                      fontFamily: Constant.kFontFamilySS3,
+                      fontFamily: Constants.kFontFamilySS3,
                     ),
                   ),
                 ),
@@ -259,7 +259,7 @@ class AppInfoSection extends StatelessWidget {
                 color: AppColor.secondaryWhite,
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                fontFamily: Constant.kFontFamilySS3),
+                fontFamily: Constants.kFontFamilySS3),
           ),
           Text(
             subtitle,
@@ -267,7 +267,7 @@ class AppInfoSection extends StatelessWidget {
                 color: AppColor.secondaryWhite,
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
-                fontFamily: Constant.kFontFamilySS3),
+                fontFamily: Constants.kFontFamilySS3),
           ),
         ],
       ),
@@ -311,7 +311,7 @@ class InfoButtonSection extends StatelessWidget {
                     color: AppColor.secondaryWhite,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    fontFamily: Constant.kFontFamilySS3),
+                    fontFamily: Constants.kFontFamilySS3),
               ),
               Icon(
                 Icons.arrow_forward_ios,

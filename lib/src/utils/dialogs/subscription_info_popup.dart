@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
-import 'package:reg_page/src/utils/res/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 import '../res/colors.dart';
 
@@ -53,7 +53,7 @@ void showWeeklySaveInfoDialog(
                             // Adjust the font size as needed
                             fontWeight: FontWeight
                                 .w700, // Adjust the font weight as needed
-                            fontFamily: Constant.kFontFamilySS3),
+                            fontFamily: Constants.kFontFamilySS3),
                       ),
                       SizedBox(
                         height: height * 0.04,
@@ -65,7 +65,7 @@ void showWeeklySaveInfoDialog(
                             color: AppColor.secondaryWhite,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
-                            fontFamily: Constant.kFontFamilySS3),
+                            fontFamily: Constants.kFontFamilySS3),
                       ),
                       SizedBox(
                         height: height * 0.03,
@@ -81,7 +81,7 @@ void showWeeklySaveInfoDialog(
               ),
             ),
             JHGPrimaryBtn(
-                label: Constant.done,
+                label: Constants.done,
                 onPressed: () async {
                   Navigator.pop(context);
                 })
@@ -141,7 +141,7 @@ void showMonthlySaveInfoDialog(
                               // Adjust the font size as needed
                               fontWeight: FontWeight
                                   .w700, // Adjust the font weight as needed
-                              fontFamily: Constant.kFontFamilySS3),
+                              fontFamily: Constants.kFontFamilySS3),
                         ),
                         SizedBox(
                           height: height * 0.04,
@@ -152,7 +152,7 @@ void showMonthlySaveInfoDialog(
                               color: AppColor.secondaryWhite,
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
-                              fontFamily: Constant.kFontFamilySS3),
+                              fontFamily: Constants.kFontFamilySS3),
                         ),
                         SizedBox(
                           height: height * 0.03,
@@ -168,7 +168,7 @@ void showMonthlySaveInfoDialog(
                 ),
               ),
               JHGPrimaryBtn(
-                  label: Constant.done,
+                  label: Constants.done,
                   onPressed: () async {
                     Navigator.pop(context);
                   })
@@ -200,7 +200,7 @@ Widget itemFeature(String feature) {
                 color: AppColor.secondaryWhite,
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                fontFamily: Constant.kFontFamilySS3),
+                fontFamily: Constants.kFontFamilySS3),
           ))
         ],
       ));
