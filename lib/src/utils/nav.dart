@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
 
 class Nav {
   Nav._();
@@ -27,7 +28,7 @@ class Nav {
     } else {
       // Handle the case where the context is null or there's no valid navigation stack
       off(page);
-      print("Navigation context is invalid or no routes in the stack.");
+      debugLog("Navigation context is invalid or no routes in the stack.");
     }
   }
 

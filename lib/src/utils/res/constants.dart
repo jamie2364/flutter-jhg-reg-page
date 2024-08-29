@@ -106,6 +106,10 @@ class Constants {
   static const String productIdsFailedMessage =
       'Sorry, Something went wrong, please try again.';
   static const String done = 'Done';
+  static const String freePlan = 'free_plan';
+  static const String jhgLooper = 'JHG Looper';
+  static const String active = 'active';
+  static const String courseHub = 'course_hub';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
   static const registerDesc =

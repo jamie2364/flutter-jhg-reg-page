@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
@@ -78,7 +77,7 @@ class Utils {
       }
     } else {
       //! currently hardcoced for looper
-      if (appName == 'JHG Looper') {
+      if (appName == Constants.jhgLooper) {
         Nav.offAll(page());
         return;
       }
@@ -91,10 +90,10 @@ class Utils {
     if (json == null) return false;
     for (var entry in json.entries) {
       if ((isCourseHubApp) &&
-          (entry.key == 'course_hub') &&
-          (entry.value == "active")) {
+          (entry.key == Constants.courseHub) &&
+          (entry.value == Constants.active)) {
         return true;
-      } else if (entry.value == "active") {
+      } else if (entry.value == Constants.active) {
         return true;
       }
     }

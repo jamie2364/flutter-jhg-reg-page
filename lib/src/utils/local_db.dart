@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:reg_page/src/models/user.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalDB {
@@ -177,12 +178,12 @@ class LocalDB {
 
   static Future<void> setIsFreePlan(bool isFreePlan) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('free_plan', isFreePlan);
+    await prefs.setBool(Constants.freePlan, isFreePlan);
   }
 
   static Future<bool> getIsFreePlan() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool('free_plan') ?? false;
+    return prefs.getBool(Constants.freePlan) ?? false;
   }
 
   static String appUserIdKey = "appUserId";
