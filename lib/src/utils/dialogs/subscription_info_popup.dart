@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
-import '../res/colors.dart';
 
 void showWeeklySaveInfoDialog(
     BuildContext context, String? price, List<String> featuresList,

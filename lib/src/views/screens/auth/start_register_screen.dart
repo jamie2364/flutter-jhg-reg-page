@@ -41,7 +41,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
           right: kBodyHrPadding,
         ),
         child: JHGPrimaryBtn(
-          label: 'Next',
+          label: Constants.next,
           onPressed: () {
             controller.completeRegister(context);
           },
@@ -58,7 +58,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Heading(text: 'Step 1 - Your Details', height: height),
+              Heading(text: Constants.step1YourDetails, height: height),
               // Text(
 
               //   style: JHGTextStyles.lrlabelStyle.copyWith(fontSize: 29),
@@ -70,18 +70,18 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
               ),
               SizedBox(height: height * .05),
               JHGTextFormField(
-                label: 'First Name',
+                label: Constants.firstName,
                 controller: controller.fNameC,
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               JHGTextFormField(
-                label: 'Last Name',
+                label: Constants.lastName,
                 controller: controller.lNameC,
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               SearchDropDown(
                 items: Contact.countries.map((e) => e.name).toList(),
-                hint: 'Select Country',
+                hint: Constants.selectCountry,
                 onChanged: (country) {
                   controller.selectedCountry = country;
                 },
@@ -93,7 +93,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Already have an account? ',
+                    '${Constants.alreadyAccount} ',
                     style: JHGTextStyles.btnLabelStyle
                         .copyWith(fontWeight: FontWeight.normal),
                   ),
@@ -102,7 +102,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
                       Nav.to(const LoginScreen(isAppLogin: true));
                     },
                     child: Text(
-                      'Login',
+                      Constants.logIn,
                       style: JHGTextStyles.btnLabelStyle
                           .copyWith(color: JHGColors.primary),
                     ),
@@ -157,7 +157,7 @@ class SearchDropDown<T> extends StatelessWidget {
         CustomDropdown<T>.search(
           closedHeaderPadding: closedHeaderPadding,
           validator: (val) =>
-              val == '' || val == null ? 'This field is required' : null,
+              val == '' || val == null ? Constants.thisFieldIsRequired : null,
           hintText: hint,
           decoration: CustomDropdownDecoration(
             closedFillColor: closedColor ?? JHGColors.darkGray,

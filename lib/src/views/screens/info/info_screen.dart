@@ -1,13 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../../../utils/res/colors.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({
@@ -205,7 +203,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         width: width * 0.6,
                         child: Image.asset(
                           "assets/images/jhg_sign.png",
-                          package: 'reg_page',
+                          package: Constants.regPackage,
                           fit: BoxFit.fill,
                         ),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/utils.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
@@ -36,7 +37,7 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
           right: kBodyHrPadding,
         ),
         child: JHGPrimaryBtn(
-          label: 'Next',
+          label: Constants.next,
           onPressed: () {
             _controller.registerUser(context);
           },
@@ -56,20 +57,20 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
             children: [
               SizedBox(height: height * .02),
               Heading(
-                text: 'Step 2 - Create your account',
+                text: Constants.createAnAccount,
                 height: height,
               ),
               SizedBox(height: height * .04),
               JHGTextFormField(
-                label: 'User Name',
+                label: Constants.userName,
                 controller: _controller.userNameC,
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               JHGTextFormField(
-                label: 'Email',
+                label: Constants.email,
                 validator: (String? val) {
                   if (val == null || !Utils.isValidEmail(val)) {
-                    return 'Please enter a valid email';
+                    return Constants.enterAEmail;
                   }
                   return null;
                 },
@@ -78,24 +79,24 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               JHGTextFormField(
-                label: 'Password',
+                label: Constants.password,
                 isPasswordField: true,
                 controller: _controller.passC,
                 validator: (String? val) {
                   if (val == null || val.length < 6) {
-                    return 'Minimum password length must be 6';
+                    return Constants.minimumPassword;
                   }
                   return null;
                 },
                 spacing: const EdgeInsets.only(bottom: 20),
               ),
               JHGTextFormField(
-                label: 'Confirm Password',
+                label: Constants.confirmPassword,
                 isPasswordField: true,
                 controller: _controller.confirmPassC,
                 validator: (value) {
                   if (value != _controller.passC.text) {
-                    return 'Passwords do not match';
+                    return Constants.passwordDontMatch;
                   }
                   return null;
                 },

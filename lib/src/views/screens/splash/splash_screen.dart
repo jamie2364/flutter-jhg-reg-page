@@ -1,14 +1,14 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
-import 'package:reg_page/src/controllers/subscription_url_controller.dart';
+import 'package:reg_page/src/controllers/welcome/subscription_url_controller.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 final GetIt getIt = GetIt.instance;
 
@@ -93,7 +93,7 @@ class _SplashScreenState extends State<SplashScreen> {
             curve: Curves.linearToEaseOut,
             child: Image.asset(
               "assets/images/jhg_logo.png",
-              package: 'reg_page',
+              package: Constants.regPackage,
               height: MediaQuery.of(context).size.height * 0.30,
               width: MediaQuery.of(context).size.height * 0.30,
               fit: BoxFit.cover,

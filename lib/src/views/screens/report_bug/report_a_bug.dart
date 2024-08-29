@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
@@ -50,7 +52,7 @@ class _BugReportPageState extends State<BugReportPage> {
       };
 
       final response = await Repo().postBug(requestData);
-      print('Response : $response');
+      debugLog('Response : $response');
 
       if (response != null) {
         Navigator.pop(context);
@@ -61,19 +63,19 @@ class _BugReportPageState extends State<BugReportPage> {
         });
         showToast(
             context: context,
-            message: "Your message has been succesfully delivered",
+            message: Constants.yourMessageHas,
             isError: false);
         // Successful API call
         // You can handle the response here if needed
       } else {
         Navigator.pop(context);
         // Handle error cases
-        print('Error: $response');
+        debugLog('Error: $response');
       }
     } catch (e) {
       Navigator.pop(context);
       // Debug log for errors
-      print('Error: $e');
+      debugLog('Error: $e');
     }
   }
 
@@ -110,7 +112,7 @@ class _BugReportPageState extends State<BugReportPage> {
                   height: height * 0.060,
                 ),
                 Text(
-                  'Report an Issue', // Changed headline
+                  Constants.reportAnIssue, // Changed headline
                   style: TextStyle(
                       fontSize: 32.0,
                       fontWeight: FontWeight.bold,
@@ -129,7 +131,7 @@ class _BugReportPageState extends State<BugReportPage> {
                         height: height * 0.025,
                       ),
                       const Text(
-                        'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.',
+                        Constants.spottedABugOr,
                         style: TextStyle(
                             fontSize: 16.0,
                             color: Colors.white,
@@ -146,7 +148,7 @@ class _BugReportPageState extends State<BugReportPage> {
                           minLines: 3,
                           maxLines: null,
                           decoration: InputDecoration(
-                            hintText: 'Describe your issue',
+                            hintText: Constants.describeYourIssue,
                             fillColor: Colors.white,
                             filled: true,
                             border: OutlineInputBorder(
@@ -183,7 +185,7 @@ class _BugReportPageState extends State<BugReportPage> {
                           const SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              'I understand this page is only related to technical issues of ${widget.appName}',
+                              '${Constants.iUnderstandThisPage} ${widget.appName}',
                               //Need to extract YourAppName from the current app name
                               style: const TextStyle(
                                   fontSize: 14.0,
@@ -225,7 +227,7 @@ class _BugReportPageState extends State<BugReportPage> {
                               borderRadius: BorderRadius.circular(8.0)),
                           child: const Center(
                             child: Text(
-                              'Submit',
+                              Constants.submit,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18.0,
@@ -239,7 +241,6 @@ class _BugReportPageState extends State<BugReportPage> {
                               child: InkWell(
                                 onTap: () async {
                                   await LocalDB.clearLocalDB();
-                                  //ignore: use_build_context_synchronously
                                   Navigator.pushAndRemoveUntil(context,
                                       MaterialPageRoute(builder: (context) {
                                     return const WelcomeScreen();
@@ -253,7 +254,7 @@ class _BugReportPageState extends State<BugReportPage> {
                                       color: AppColor.primaryRed,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Text(
-                                    "Logout",
+                                    Constants.logOut,
                                     style: TextStyle(
                                         color: AppColor.primaryWhite,
                                         fontSize: 16,

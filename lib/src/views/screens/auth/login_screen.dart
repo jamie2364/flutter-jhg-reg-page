@@ -73,6 +73,7 @@ class LoginScreen extends StatelessWidget {
                       isAppLogin
                           ? await controller.loginUserForApp()
                           : await controller.userLogin();
+                      controller.clearFields();
                     })
               ],
             ),

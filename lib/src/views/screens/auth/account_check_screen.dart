@@ -64,6 +64,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/res/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
@@ -100,7 +101,7 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
         body: tryAgain
             ? Center(
                 child: JHGPrimaryBtn(
-                  label: 'Try Again',
+                  label: Constants.tryAgain,
                   onPressed: () {
                     tryAgain = false;
                     setState(() {});
@@ -113,11 +114,11 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    'Please wait',
+                    Constants.pleaseWait,
                     style: JHGTextStyles.smlabelStyle,
                   ),
                   Text(
-                    'We are checking your account on ${Urls.base.isEqual(Urls.evoloUrl) ? 'evolo' : 'musictools'}',
+                    '${Constants.weAreChecking} ${Urls.base.isEqual(Urls.evoloUrl) ? Constants.evolo : Constants.musictools}',
                     style: JHGTextStyles.btnLabelStyle.copyWith(
                       color: JHGColors.greyText,
                       fontWeight: FontWeight.normal,

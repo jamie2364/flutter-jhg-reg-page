@@ -110,6 +110,37 @@ class Constants {
   static const String jhgLooper = 'JHG Looper';
   static const String active = 'active';
   static const String courseHub = 'course_hub';
+  static const String tryAgain = 'Try Again';
+  static const String pleaseWait = 'Please wait';
+  static const String weAreChecking = 'We are checking your account on';
+  static const String evolo = 'evolo';
+  static const String musictools = 'musictools';
+  static const String next = 'Next';
+  static const String createAnAccount = 'Step 2 - Create your account';
+  static const String userName = 'User Name';
+  static const String email = 'Email';
+  static const String enterAEmail = 'Please enter a valid email';
+  static const String password = 'Password';
+  static const String minimumPassword = 'Minimum password length must be 6';
+  static const String confirmPassword = 'Confirm Password';
+  static const String passwordDontMatch = 'Passwords do not match';
+  static const String step1YourDetails = 'Step 1 - Your Details';
+  static const String firstName = 'First Name';
+  static const String lastName = 'Last Name';
+  static const String selectCountry = 'Select Country';
+  static const String alreadyAccount = 'Already have an account?';
+  static const String thisFieldIsRequired = 'This field is required';
+  static const String regPackage = 'reg_page';
+  static const String yourMessageHas =
+      'Your message has been succesfully delivered';
+  static const String reportAnIssue = 'Report an Issue';
+  static const String spottedABugOr =
+      'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.';
+  static const String describeYourIssue = 'Describe your issue';
+  static const String iUnderstandThisPage =
+      'I understand this page is only related to technical issues of';
+  static const String submit = 'Submit';
+  static const String logout = 'Logout';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
   static const registerDesc =
