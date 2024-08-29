@@ -141,6 +141,7 @@ class Constants {
       'I understand this page is only related to technical issues of';
   static const String submit = 'Submit';
   static const String logout = 'Logout';
+  static const String courseHUB = 'Course Hub';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
   static const registerDesc =

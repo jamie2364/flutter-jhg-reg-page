@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/nav.dart';
+import 'package:reg_page/src/utils/navigate/nav.dart';
 
 loaderDialog([BuildContext? context]) {
   return showDialog(

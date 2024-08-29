@@ -1,7 +1,7 @@
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/services/base_service.dart';
-import 'package:reg_page/src/utils/res/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 class Repo extends BaseService with BaseController {
   Future<String?> getProductIds(String appName, {String? baseUrl}) async {

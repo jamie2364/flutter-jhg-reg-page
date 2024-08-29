@@ -6,8 +6,8 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/utils/nav.dart';
-import 'package:reg_page/src/utils/res/urls.dart';
+import 'package:reg_page/src/utils/navigate/nav.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 class SplashController {

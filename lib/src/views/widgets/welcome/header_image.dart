@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 class HeaderImage extends StatelessWidget {
   final double height;
@@ -20,7 +21,7 @@ class HeaderImage extends StatelessWidget {
                   : height * 0.30,
           child: Image.asset(
             "assets/images/jhg_background.png",
-            package: 'reg_page',
+            package: Constants.regPackage,
             fit: BoxFit.cover,
           ),
         ),

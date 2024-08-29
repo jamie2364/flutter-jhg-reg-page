@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class StringsDownloadService {

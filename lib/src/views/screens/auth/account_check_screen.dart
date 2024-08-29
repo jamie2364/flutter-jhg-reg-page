@@ -65,7 +65,7 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
-import 'package:reg_page/src/utils/res/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/utils/utils.dart';
 
 class AccountCheckScreen extends StatefulWidget {

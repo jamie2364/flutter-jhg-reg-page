@@ -1,4 +1,4 @@
-import 'package:reg_page/src/utils/res/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 enum BaseUrl {
   empty(''),

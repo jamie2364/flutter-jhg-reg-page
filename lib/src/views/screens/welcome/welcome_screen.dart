@@ -63,7 +63,7 @@ class _WelcomeState extends State<WelcomeScreen> {
     final width = MediaQuery.of(context).size.width;
     final spController = getIt<SplashController>();
     final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
-    if (spController.appName.contains("Course Hub")) plans.removeAt(0);
+    if (spController.appName.contains(Constants.courseHUB)) plans.removeAt(0);
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: loading

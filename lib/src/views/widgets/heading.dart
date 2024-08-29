@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
-
-import '../../utils/res/colors.dart';
 
 class Heading extends StatelessWidget {
   const Heading(
