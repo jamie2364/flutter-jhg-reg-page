@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     final controller = getIt<UserController>();
 
-   // controller.clearFields();
+    // controller.clearFields();
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(
@@ -68,11 +68,12 @@ class LoginScreen extends StatelessWidget {
                 ),
                 SizedBox(height: height * 0.05),
                 JHGPrimaryBtn(
-                  label: Constants.login,
-                  onPressed: () => isAppLogin
-                      ? controller.loginUserForApp()
-                      : controller.userLogin(),
-                )
+                    label: Constants.login,
+                    onPressed: () async {
+                      isAppLogin
+                          ? await controller.loginUserForApp()
+                          : await controller.userLogin();
+                    })
               ],
             ),
           ),
