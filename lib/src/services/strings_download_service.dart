@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/utils/navigate/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
@@ -62,29 +63,17 @@ class StringsDownloadService {
       });
     } on Exception catch (ex) {
       pd.close();
-      print("downloadString exception==$ex");
+      exceptionLog("downloadString exception==$ex");
     }
   }
 
-  Future<void> isStringsDownloaded(BuildContext context, String appName) async {
+  Future<void> isStringsDownloaded(String appName) async {
     File file = File("${dir!.path}/$folderAndFileName.zip");
 
     if (!(await file.exists())) {
-      _downloadStrings(context, appName);
+      // ignore: use_build_context_synchronously
+      _downloadStrings(Nav.key.currentState!.context, appName);
     }
-    // else {
-    //   final files =
-    //       await Directory("${dir!.path}/assets/")
-    //           .listSync()
-    //           .toList();
-    //   if (files.isNotEmpty) {
-    //     Iterable<File> stringsPaths = files.whereType<File>();
-    //
-    //     for(var file in stringsPaths){
-    //       print("object===${file.path}");
-    //     }
-    //   }
-    // }
   }
 
   void extractFiles(String appName) async {
@@ -92,7 +81,6 @@ class StringsDownloadService {
     // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
-// Extract the contents of the Zip archive to disk.
     for (final file in archive) {
       final filename = file.name;
       final updatedFileName = filename.replaceFirst("$appName/", '');

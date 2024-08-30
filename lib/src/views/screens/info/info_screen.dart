@@ -1,22 +1,22 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
+import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
+import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
-import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({
     Key? key,
-    required this.appName,
-    required this.appVersion,
     required this.callback,
   }) : super(key: key);
 
-  final String appName;
-  final String appVersion;
   final VoidCallback callback;
 
   @override
@@ -62,50 +62,18 @@ class _InfoScreenState extends State<InfoScreen> {
                 SizedBox(
                   height: height * 0.030,
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: AppColor.primaryWhite,
-                        size: 25,
-                      ),
-                    ),
-                    // Swap the positions of the Report a Bug icon and text
+                    JHGBackButton(),
                     // GestureDetector(
                     //   onTap: () {
-                    //     Navigator.push(
-                    //       context,
-                    //       MaterialPageRoute(
-                    //         builder: (context) => BugReportPage(),
-                    //       ),
-                    //     );
+                    //     Navigator.pop(context);
                     //   },
-                    //   child: Row(
-                    //     children: [
-                    //       SizedBox(width: 10),
-                    //       Padding(
-                    //         padding: EdgeInsets.only(
-                    //             right: 4.0), // Add padding to the right
-                    //         child: Icon(
-                    //           Icons.error_outline_rounded,
-                    //           color: AppColor.primaryRed,
-                    //           size: 16,
-                    //         ),
-                    //       ),
-                    //       Text(
-                    //         'Report an Issue',
-                    //         style: TextStyle(
-                    //           color: AppColor.primaryRed,
-                    //           fontSize: 12,
-                    //           fontWeight: FontWeight.w600,
-                    //         ),
-                    //       ),
-                    //     ],
+                    //   child: Icon(
+                    //     Icons.arrow_back_ios,
+                    //     color: AppColor.primaryWhite,
+                    //     size: 25,
                     //   ),
                     // ),
                   ],
@@ -115,14 +83,14 @@ class _InfoScreenState extends State<InfoScreen> {
                 ),
                 AppInfoSection(
                   title: Constants.appName,
-                  subtitle: widget.appName,
+                  subtitle: getIt<SplashController>().appName,
                 ),
                 SizedBox(
                   height: height * 0.010,
                 ),
                 AppInfoSection(
                   title: Constants.version,
-                  subtitle: widget.appVersion,
+                  subtitle: getIt<SplashController>().appVersion,
                 ),
                 SizedBox(
                   height: height * 0.030,
@@ -244,31 +212,23 @@ class AppInfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
-                color: AppColor.secondaryWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                fontFamily: Constants.kFontFamilySS3),
-          ),
-          Text(
-            subtitle,
-            style: TextStyle(
-                color: AppColor.secondaryWhite,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                fontFamily: Constants.kFontFamilySS3),
-          ),
-        ],
-      ),
+    final TextStyle textStyle = TextStyle(
+        color: AppColor.secondaryWhite,
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+        fontFamily: Constants.kFontFamilySS3);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: textStyle,
+        ),
+        Text(
+          subtitle,
+          style: textStyle.copyWith(fontWeight: FontWeight.w400),
+        ),
+      ],
     );
   }
 }
@@ -295,7 +255,7 @@ class InfoButtonSection extends StatelessWidget {
         child: Container(
           height: height * 0.065,
           width: width * 0.85,
-          padding: EdgeInsets.symmetric(horizontal: width * 0.01),
+          padding: const EdgeInsets.only(left: 15, right: 9),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: AppColor.greyPrimary,
@@ -314,7 +274,7 @@ class InfoButtonSection extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios,
                 color: AppColor.secondaryWhite,
-                size: 30,
+                // size: 30,
               ),
             ],
           ),

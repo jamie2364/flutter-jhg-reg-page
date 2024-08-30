@@ -11,10 +11,10 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/repositories/repo.dart';
 import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
-import 'package:reg_page/src/utils/dialogs/subscription_url_screen.dart';
 import 'package:reg_page/src/utils/navigate/nav.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
+import 'package:reg_page/src/views/screens/subscription/subcription_url_screen.dart';
 
 class WelcomeController {
   late String appName;
@@ -31,7 +31,7 @@ class WelcomeController {
   Set<String> variant = <String>{};
   int selectedPlan = 2;
 
-  InAppPurchase inAppPurchase = InAppPurchase.instance;
+  late InAppPurchase inAppPurchase;
   late StreamSubscription<dynamic> streamSubscription;
   List<ProductDetails> products = [];
 
@@ -40,6 +40,8 @@ class WelcomeController {
     appName = spController.appName;
     yearlySubscriptionId = spController.yearlySubscriptionId;
     monthlySubscriptionId = spController.monthlySubscriptionId;
+    if (kIsWeb) return;
+    inAppPurchase = InAppPurchase.instance;
   }
 
   replaceAppName() {
@@ -63,7 +65,10 @@ class WelcomeController {
 
     yearlyKey = yearlySubscriptionId;
     monthlyKey = monthlySubscriptionId;
-
+    if (kIsWeb) {
+      loading = false;
+      return;
+    }
     if (!await inAppPurchase.isAvailable()) {
       loading = false;
       return;

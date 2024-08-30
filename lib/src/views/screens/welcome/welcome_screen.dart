@@ -7,14 +7,14 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
-import 'package:reg_page/src/controllers/welcome/in_app_purchase_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
+import 'package:reg_page/src/utils/navigate/nav.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/views/screens/info/info_screen.dart';
 import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
 import 'package:reg_page/src/views/widgets/welcome/header_image.dart';
-import 'package:reg_page/src/views/widgets/welcome/info_button.dart';
 import 'package:reg_page/src/views/widgets/welcome/plan_options_widget.dart';
 import 'package:reg_page/src/views/widgets/welcome/welcome_text.dart';
 
@@ -33,7 +33,6 @@ class _WelcomeState extends State<WelcomeScreen> {
   int selectedPlan = 1;
   List<ProductDetails> products = [];
 
-  late InAppPurchaseHandler purchaseHandler;
   late WelcomeController controller;
 
   @override
@@ -84,12 +83,20 @@ class _WelcomeState extends State<WelcomeScreen> {
                       child: WelcomeText(
                           appName: controller.replaceAppName(), height: height),
                     ),
-                    InfoButton(
-                      width: width,
-                      height: height,
-                      appName: spController.appName,
-                      appVersion: spController.appVersion,
-                      restorePurchase: controller.restorePurchase,
+                    Positioned(
+                      right: width * 0.05,
+                      top: MediaQuery.of(context).padding.top + height * 0.01,
+                      child: JHGIconButton(
+                        iconData: Icons.info_rounded,
+                        size: 30,
+                        onTap: () {
+                          Nav.to(
+                            InfoScreen(
+                              callback: controller.restorePurchase,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -144,11 +151,5 @@ class _WelcomeState extends State<WelcomeScreen> {
               ],
             ),
     );
-  }
-
-  @override
-  void dispose() {
-    purchaseHandler.dispose();
-    super.dispose();
   }
 }
