@@ -14,7 +14,7 @@ import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
 import 'package:reg_page/src/utils/navigate/nav.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
-import 'package:reg_page/src/views/screens/subscription/subcription_url_screen.dart';
+import 'package:reg_page/src/views/screens/subscription/subscription_url_screen.dart';
 
 class WelcomeController {
   late String appName;

@@ -7,6 +7,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/utils.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -17,11 +18,10 @@ class LoginScreen extends StatelessWidget {
   final bool isAppLogin;
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final height = Utils.height(context);
+    final width = Utils.width(context);
     final controller = getIt<UserController>();
 
-    // controller.clearFields();
     return Scaffold(
       backgroundColor: AppColor.primaryBlack,
       body: Container(

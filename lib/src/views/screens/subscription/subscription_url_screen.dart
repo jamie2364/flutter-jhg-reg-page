@@ -29,44 +29,39 @@ class _SubscriptionState extends State<SubscriptionUrlScreen> {
             horizontal: width < 850
                 ? 0
                 : width < 1100 && width >= 850
-                    ? width * .20
-                    : width * .25,
+                    ? width * .25
+                    : width * .30,
           ),
-          margin: EdgeInsets.only(
-              bottom: height * 0.1, left: width * 0.090, right: width * 0.090),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: height * 0.030),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.arrow_back_ios,
-                  color: AppColor.primaryWhite,
-                  size: 25,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * 0.07),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // SizedBox(height: height * 0.030),
+                const JHGAppBar(),
+                SizedBox(height: height * 0.1),
+                const Heading(
+                    text: Constants.chooseYourSubscriptionText, height: 320),
+                SizedBox(height: height * 0.08),
+                Text(
+                  Constants.subscriptionUrlSubText,
+                  style: TextStyle(
+                    color: AppColor.greySecondary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: Constants.kFontFamilySS3,
+                  ),
                 ),
-              ),
-              SizedBox(height: height * 0.1),
-              const Heading(
-                  text: Constants.chooseYourSubscriptionText, height: 320),
-              SizedBox(height: height * 0.06),
-              Text(
-                Constants.subscriptionUrlSubText,
-                style: TextStyle(
-                  color: AppColor.greySecondary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: Constants.kFontFamilySS3,
+                SizedBox(height: height * 0.04),
+                const Expanded(child: SelectUrlsWidget()),
+                JHGPrimaryBtn(
+                  label: Constants.continueText,
+                  onPressed: () => controller.getProductIds(),
                 ),
-              ),
-              SizedBox(height: height * 0.04),
-              const Expanded(child: SelectUrlsWidget()),
-              JHGPrimaryBtn(
-                label: Constants.continueText,
-                onPressed: () => controller.getProductIds(),
-              ),
-            ],
+                SizedBox(height: height * 0.04),
+              ],
+            ),
           ),
         ),
       ),
