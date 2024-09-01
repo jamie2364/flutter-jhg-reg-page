@@ -5,7 +5,6 @@ import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/dialogs/subscription_info_popup.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
-import 'package:reg_page/src/utils/utils.dart';
 
 class PlanOptionsWidget extends StatefulWidget {
   final Function(int) onPlanSelect;

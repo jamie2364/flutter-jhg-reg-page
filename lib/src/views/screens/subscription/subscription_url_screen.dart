@@ -4,7 +4,6 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/subscription/subscription_url_controller.dart';
 import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
-import 'package:reg_page/src/utils/utils.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 import 'package:reg_page/src/views/widgets/patform_selection_widget.dart';
 

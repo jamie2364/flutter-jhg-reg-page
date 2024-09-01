@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
@@ -33,10 +34,10 @@ class Utils {
       MediaQuery.of(context).size.width;
   static BuildContext? get getContext => Nav.key.currentState?.context;
 
-  File getAsset(String path) =>
+  static File getAsset(String path) =>
       File("${StringsDownloadService().dir?.path}/$path");
 
-  Future<bool> checkInternet() async {
+  static Future<bool> checkInternet() async {
     try {
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult == ConnectivityResult.mobile ||
