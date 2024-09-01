@@ -30,8 +30,11 @@ class _WelcomeState extends State<WelcomeScreen> {
   bool loading = true;
   String? monthlyPrice;
   String? yearlyPrice;
-  int selectedPlan = 1;
+  // int selectedPlan = 1;
   List<ProductDetails> products = [];
+  void onPlanSelect(int plan) {
+    controller.onPlanSelect(plan);
+  }
 
   late WelcomeController controller;
 
@@ -49,11 +52,6 @@ class _WelcomeState extends State<WelcomeScreen> {
     });
     monthlyPrice = controller.monthlyPrice;
     yearlyPrice = controller.yearlyPrice;
-  }
-
-  void onPlanSelect(int plan) {
-    controller.onPlanSelect(plan);
-    selectedPlan = plan;
   }
 
   @override
@@ -90,11 +88,9 @@ class _WelcomeState extends State<WelcomeScreen> {
                         iconData: Icons.info_rounded,
                         size: 30,
                         onTap: () {
-                          Nav.to(
-                            InfoScreen(
-                              callback: controller.restorePurchase,
-                            ),
-                          );
+                          Nav.to(InfoScreen(
+                            callback: controller.restorePurchase,
+                          ));
                         },
                       ),
                     ),
@@ -118,7 +114,7 @@ class _WelcomeState extends State<WelcomeScreen> {
                           height: height > 650 ? height * 0.03 : height * 0.02),
                       PlanOptionsWidget(
                         plans: plans,
-                        selectedPlan: selectedPlan,
+                        selectedPlan: controller.selectedPlan.value,
                         onPlanSelect: onPlanSelect,
                       ),
                       SizedBox(
@@ -129,20 +125,23 @@ class _WelcomeState extends State<WelcomeScreen> {
                       }),
                       SizedBox(
                           height: height > 650 ? height * 0.03 : height * 0.02),
-                      JHGPrimaryBtn(
-                        label: selectedPlan == 1
-                            ? Constants.tryFree
-                            : Constants.continueText,
-                        onPressed: () async {
-                          if (selectedPlan == 0) {
-                            LocalDB.setIsFreePlan(true);
-                            Navigator.pushAndRemoveUntil(context,
-                                MaterialPageRoute(builder: (context) {
-                              return spController.nextPage();
-                            }), (route) => false);
-                            return;
-                          }
-                          await controller.purchaseSubscription(selectedPlan);
+                      ListenableBuilder(
+                        listenable: controller.selectedPlan,
+                        builder: (context, _) {
+                          return JHGPrimaryBtn(
+                            label: controller.selectedPlan.value == 2
+                                ? Constants.tryFree
+                                : Constants.continueText,
+                            onPressed: () async {
+                              if (controller.selectedPlan.value == 0) {
+                                LocalDB.setIsFreePlan(true);
+                                Nav.offAll(spController.nextPage());
+                                return;
+                              }
+                              await controller.purchaseSubscription(
+                                  controller.selectedPlan.value);
+                            },
+                          );
                         },
                       ),
                     ],

@@ -22,6 +22,7 @@ class WelcomeController {
   late String monthlySubscriptionId;
   late SplashController spController;
 
+  ValueNotifier<int> selectedPlan = ValueNotifier<int>(1);
   String? monthlyPrice;
   String? yearlyPrice;
   bool loading = true;
@@ -29,7 +30,6 @@ class WelcomeController {
   String? yearlyKey;
 
   Set<String> variant = <String>{};
-  int selectedPlan = 2;
 
   late InAppPurchase inAppPurchase;
   late StreamSubscription<dynamic> streamSubscription;
@@ -43,14 +43,13 @@ class WelcomeController {
     if (kIsWeb) return;
     inAppPurchase = InAppPurchase.instance;
   }
+  void onPlanSelect(int plan) {
+    selectedPlan.value = plan;
+  }
 
   replaceAppName() {
-    // Define the text to remove (uppercase)
     const excludedText = "JHG";
-
-    // Replace the specified text with an empty string
     String result = appName.replaceAll(excludedText, '');
-
     return result;
   }
 
@@ -167,10 +166,6 @@ class WelcomeController {
     }
   }
 
-  void onPlanSelect(int plan) {
-    selectedPlan = plan;
-  }
-
   // Purchase subscription
   Future<void> purchaseSubscription(int plan) async {
     loaderDialog();
@@ -186,9 +181,9 @@ class WelcomeController {
         await inAppPurchase.buyNonConsumable(purchaseParam: param);
       }
     } on PlatformException catch (e) {
-      hideLoading();
       showToast(message: e.message!, isError: true);
     }
+    hideLoading();
   }
 
   // Helper function to get the index of the selected product
