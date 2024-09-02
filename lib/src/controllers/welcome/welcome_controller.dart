@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:async';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
@@ -43,6 +41,7 @@ class WelcomeController {
     if (kIsWeb) return;
     inAppPurchase = InAppPurchase.instance;
   }
+
   void onPlanSelect(int plan) {
     selectedPlan.value = plan;
   }
@@ -98,60 +97,86 @@ class WelcomeController {
 
   // Initialize store
   Future<void> _initStore() async {
-    ProductDetailsResponse productDetailsResponse =
-        await inAppPurchase.queryProductDetails(variant);
+    try {
+      ProductDetailsResponse productDetailsResponse =
+          await inAppPurchase.queryProductDetails(variant);
 
-    if (productDetailsResponse.error == null) {
-      products = productDetailsResponse.productDetails;
-      for (var element in products) {
-        if (element.id == yearlyKey) {
-          yearlyPrice = element.price;
-        } else if (element.id == monthlyKey) {
-          monthlyPrice = element.price;
+      if (productDetailsResponse.error == null) {
+        products = productDetailsResponse.productDetails;
+        for (var element in products) {
+          if (element.id == yearlyKey) {
+            yearlyPrice = element.price;
+          } else if (element.id == monthlyKey) {
+            monthlyPrice = element.price;
+          }
         }
+        loading = false;
+      } else {
+        loading = false;
+        showToast(
+          message: productDetailsResponse.error!.message,
+          isError: true,
+        );
+        debugPrint("Error ${productDetailsResponse.error}");
       }
+    } catch (e) {
       loading = false;
-    } else {
-      loading = false;
-      showToast(
-        message: productDetailsResponse.error!.message,
-        isError: true,
-      );
-      debugPrint("Error ${productDetailsResponse.error}");
+      exceptionLog(e.toString());
+      showToast(message: "Error initializing store", isError: true);
+    } finally {
+      // hideLoading();
     }
   }
 
   // Listen to purchase
   Future<void> _listenToPurchase(
       List<PurchaseDetails> purchaseDetailsList) async {
-    if (purchaseDetailsList.isEmpty) {
-      _restorePopupDialog(
-          Constants.restoreNotFound, Constants.restoreNotFoundDescription);
-    } else {
-      for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
-        if (purchaseDetails.status == PurchaseStatus.purchased) {
-          await _onPurchasedSuccess();
+    debugLog('listening to purchase $purchaseDetailsList');
+    try {
+      if (purchaseDetailsList.first.error != null) {
+        debugLog(purchaseDetailsList.first.error.toString(), name: 'ERROR');
+        hideLoading();
+        return;
+      }
 
-          Nav.off(spController.nextPage());
-        } else if (purchaseDetails.pendingCompletePurchase) {
-          await InAppPurchase.instance.completePurchase(purchaseDetails);
+      if (purchaseDetailsList.isEmpty) {
+        _restorePopupDialog(
+            Constants.restoreNotFound, Constants.restoreNotFoundDescription);
+      } else {
+        for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
+          if (purchaseDetails.status == PurchaseStatus.purchased) {
+            await _onPurchasedSuccess();
+            Nav.off(spController.nextPage());
+          } else if (purchaseDetails.pendingCompletePurchase) {
+            await InAppPurchase.instance.completePurchase(purchaseDetails);
+          }
         }
       }
+    } catch (e) {
+      hideLoading();
+      exceptionLog(e.toString());
+      showToast(message: "Error processing purchase", isError: true);
     }
   }
 
   // Handle purchased success
   Future<void> _onPurchasedSuccess() async {
-    loaderDialog();
-    await LocalDB.storeSubscriptionPurchase(true);
-    await LocalDB.storeInAppSubscriptionPurchase(true);
+    try {
+      loaderDialog();
+      await LocalDB.storeSubscriptionPurchase(true);
+      await LocalDB.storeInAppSubscriptionPurchase(true);
 
-    final proIds = await Repo().getProductIds(appName, baseUrl: Urls.evoloUrl);
-    if (proIds != null) {
-      await LocalDB.saveProductIds(proIds);
-      await LocalDB.saveBaseUrl(Urls.evoloUrl);
+      final proIds =
+          await Repo().getProductIds(appName, baseUrl: Urls.evoloUrl);
+      if (proIds != null) {
+        await LocalDB.saveProductIds(proIds);
+        await LocalDB.saveBaseUrl(Urls.evoloUrl);
+      }
+    } catch (e) {
+      exceptionLog(e.toString());
+      showToast(
+          message: "Error during purchase success handling", isError: true);
     }
-    Nav.back();
   }
 
   // Restore purchases
@@ -159,31 +184,31 @@ class WelcomeController {
     try {
       loaderDialog();
       await inAppPurchase.restorePurchases();
-      hideLoading();
     } on PlatformException catch (e) {
       exceptionLog(e);
+      showToast(message: e.message!, isError: true);
+    } finally {
       hideLoading();
     }
   }
 
   // Purchase subscription
   Future<void> purchaseSubscription(int plan) async {
-    loaderDialog();
-    debugLog("SELECTED PLAN IS $plan");
-
-    int selectedProductIndex = _getProductIndex(plan);
-
-    final PurchaseParam param =
-        PurchaseParam(productDetails: products[selectedProductIndex]);
-
     try {
+      loaderDialog();
+      debugLog("SELECTED PLAN IS $plan");
+
+      int selectedProductIndex = _getProductIndex(plan);
+
+      final PurchaseParam param =
+          PurchaseParam(productDetails: products[selectedProductIndex]);
+
       if (await inAppPurchase.isAvailable()) {
         await inAppPurchase.buyNonConsumable(purchaseParam: param);
       }
     } on PlatformException catch (e) {
       showToast(message: e.message!, isError: true);
     }
-    hideLoading();
   }
 
   // Helper function to get the index of the selected product

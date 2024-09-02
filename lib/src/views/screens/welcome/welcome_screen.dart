@@ -49,9 +49,9 @@ class _WelcomeState extends State<WelcomeScreen> {
     await controller.initializeData();
     setState(() {
       loading = controller.loading;
+      monthlyPrice = controller.monthlyPrice;
+      yearlyPrice = controller.yearlyPrice;
     });
-    monthlyPrice = controller.monthlyPrice;
-    yearlyPrice = controller.yearlyPrice;
   }
 
   @override
