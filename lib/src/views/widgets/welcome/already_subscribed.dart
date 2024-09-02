@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 class AlreadySubscribed extends StatelessWidget {
@@ -12,11 +12,11 @@ class AlreadySubscribed extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           Constants.alreadySubscribed,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-            color: AppColor.primaryWhite,
+            color: JHGColors.white,
             fontSize: 16,
             fontWeight: FontWeight.w300,
             fontFamily: Constants.kFontFamilySS3,
@@ -24,11 +24,11 @@ class AlreadySubscribed extends StatelessWidget {
         ),
         GestureDetector(
           onTap: onLogin,
-          child: Text(
+          child: const Text(
             Constants.logIn,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
-              color: AppColor.primaryWhite,
+              color: JHGColors.white,
               fontSize: 16,
               fontWeight: FontWeight.w700,
               fontFamily: Constants.kFontFamilySS3,

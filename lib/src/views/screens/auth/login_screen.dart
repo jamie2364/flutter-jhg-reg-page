@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
@@ -22,7 +21,7 @@ class LoginScreen extends StatelessWidget {
     final controller = getIt<UserController>();
 
     return Scaffold(
-      backgroundColor: AppColor.primaryBlack,
+      backgroundColor: JHGColors.primaryBlack,
       body: Container(
         padding: EdgeInsets.symmetric(
           horizontal: width < 850
@@ -33,7 +32,7 @@ class LoginScreen extends StatelessWidget {
         ),
         height: height,
         width: width,
-        color: AppColor.primaryBlack,
+        color: JHGColors.primaryBlack,
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(

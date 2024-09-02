@@ -1,0 +1,42 @@
+import 'package:flutter/material.dart';
+import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
+import 'package:reg_page/src/repositories/repo.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
+
+class BugReportController {
+  ValueNotifier<bool> isChecked = ValueNotifier<bool>(false);
+
+  Future<bool> submitBugReport(
+    String issueDesc,
+    String device,
+  ) async {
+    try {
+      if (issueDesc.isEmpty) {
+        showErrorToast(Constants.fieldError);
+        return false;
+      }
+      loaderDialog();
+      final user = SplashScreen.session.user;
+      final response = await Repo().postBug({
+        'name': user?.userName ?? '',
+        'email': user?.email ?? '',
+        'issue': issueDesc,
+        'device': device,
+        'application': getIt<SplashController>().appName,
+      });
+      debugLog('Response: $response');
+
+      if (response != null) {
+        Nav.back();
+        showToast(message: Constants.yourMessageHas);
+        isChecked.value = false;
+        return true;
+      }
+    } catch (e) {
+      Nav.back();
+      debugLog('Error: $e');
+    }
+    return false;
+  }
+}

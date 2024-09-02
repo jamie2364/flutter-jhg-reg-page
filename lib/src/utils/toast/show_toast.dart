@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/navigate/nav.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 showToast(
-    {BuildContext? context, required String message, required bool isError}) {
+    {BuildContext? context, required String message, bool isError = false}) {
   context = context ?? Nav.key.currentState!.context;
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     margin: EdgeInsets.symmetric(
@@ -18,12 +18,12 @@ showToast(
     content: Text(
       message,
       textAlign: TextAlign.center,
-      style: TextStyle(
-          color: AppColor.primaryWhite,
+      style: const TextStyle(
+          color: JHGColors.white,
           fontSize: 16,
           fontFamily: Constants.kFontFamilySS3),
     ),
-    backgroundColor: isError ? AppColor.primaryRed : AppColor.primaryGreen,
+    backgroundColor: isError ? JHGColors.primary : JHGColors.primaryGreen,
     padding: EdgeInsets.symmetric(
         horizontal: MediaQuery.of(context).size.width * 0.02,
         vertical: MediaQuery.of(context).size.height * 0.02),

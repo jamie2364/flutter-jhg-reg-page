@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/navigate/nav.dart';
 
 loaderDialog([BuildContext? context]) {
@@ -9,16 +9,16 @@ loaderDialog([BuildContext? context]) {
       useSafeArea: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: AppColor.loaderBackground.withOpacity(0.2),
+          backgroundColor: JHGColors.loaderBackground.withOpacity(0.2),
           insetPadding: EdgeInsets.zero,
-          surfaceTintColor: AppColor.loaderBackground,
+          surfaceTintColor: JHGColors.loaderBackground,
           child: Container(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).height,
-              color: AppColor.loaderBackground.withOpacity(0.7),
-              child: Center(
+              color: JHGColors.loaderBackground.withOpacity(0.7),
+              child: const Center(
                   child: CircularProgressIndicator(
-                color: AppColor.primaryRed,
+                color: JHGColors.primary,
               ))),
         );
       });

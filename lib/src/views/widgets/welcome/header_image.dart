@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 class HeaderImage extends StatelessWidget {
@@ -34,7 +34,7 @@ class HeaderImage extends StatelessWidget {
                 colors: [
                   Colors.transparent,
                   Colors.transparent,
-                  AppColor.primaryBlack,
+                  JHGColors.primaryBlack,
                 ],
               ),
             ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/dialogs/subscription_info_popup.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 class PlanOptionsWidget extends StatefulWidget {
@@ -111,12 +111,11 @@ class PlanOption extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: selectedPlan == planIndex
-                ? AppColor.primaryRed
-                : AppColor.primaryWhite,
+            color:
+                selectedPlan == planIndex ? JHGColors.primary : JHGColors.white,
             width: 1.5,
           ),
-          color: AppColor.primaryBlack,
+          color: JHGColors.primaryBlack,
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: width * 0.050),
@@ -130,8 +129,8 @@ class PlanOption extends StatelessWidget {
                   Text(
                     label,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: AppColor.primaryWhite,
+                    style: const TextStyle(
+                      color: JHGColors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       fontFamily: Constants.kFontFamilySS3,
@@ -143,19 +142,19 @@ class PlanOption extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedPlan == planIndex
-                          ? AppColor.primaryRed
-                          : AppColor.primaryBlack,
+                          ? JHGColors.primary
+                          : JHGColors.primaryBlack,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: selectedPlan == planIndex
-                            ? AppColor.primaryRed
-                            : AppColor.primaryWhite,
+                            ? JHGColors.primary
+                            : JHGColors.white,
                         width: 1.8,
                       ),
                     ),
                     child: Icon(
                       Icons.done,
-                      color: AppColor.primaryBlack,
+                      color: JHGColors.primaryBlack,
                       size: width * 0.04,
                     ),
                   ),
@@ -169,16 +168,16 @@ class PlanOption extends StatelessWidget {
                       description,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        color: AppColor.secondaryWhite,
+                        color: JHGColors.secondaryWhite,
                         fontSize: 14,
                         fontWeight: FontWeight.w400,
                         fontFamily: Constants.kFontFamilySS3,
                       ),
                     ),
-                    Divider(color: AppColor.secondaryWhite),
+                    Divider(color: JHGColors.secondaryWhite),
                     GestureDetector(
                       onTap: () {
-                        showWeeklySaveInfoDialog(
+                        showPlanInfoDialog(
                           context,
                           yearlyPrice,
                           featuresList,
@@ -186,10 +185,10 @@ class PlanOption extends StatelessWidget {
                           desc: description,
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         Constants.weeklySave,
                         style: TextStyle(
-                          color: AppColor.primaryRed,
+                          color: JHGColors.primary,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           fontFamily: Constants.kFontFamilySS3,

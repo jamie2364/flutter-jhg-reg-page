@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 class Heading extends StatelessWidget {
@@ -14,7 +14,7 @@ class Heading extends StatelessWidget {
       text,
       textAlign: textAlign,
       style: TextStyle(
-          color: AppColor.primaryRed,
+          color: JHGColors.primary,
           fontSize: height > 650
               ? 36
               : height > 440

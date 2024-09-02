@@ -3,10 +3,9 @@ import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/utils/navigate/nav.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
@@ -39,12 +38,12 @@ class StringsDownloadService {
         max: 100,
         msg: 'Downloading Audio Files',
         barrierColor: Colors.black87,
-        backgroundColor: AppColor.dialogBackground,
-        surfaceTintColor: AppColor.dialogBackground,
-        progressBgColor: AppColor.secondaryWhite,
-        progressValueColor: AppColor.primaryRed,
-        msgColor: AppColor.primaryWhite,
-        valueColor: AppColor.primaryWhite);
+        backgroundColor: JHGColors.dialogBackground,
+        surfaceTintColor: JHGColors.dialogBackground,
+        progressBgColor: JHGColors.white,
+        progressValueColor: JHGColors.primary,
+        msgColor: JHGColors.white,
+        valueColor: JHGColors.white);
     File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
     try {

@@ -9,8 +9,6 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
-import 'package:reg_page/src/utils/navigate/nav.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/screens/info/info_screen.dart';
 import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
@@ -62,11 +60,11 @@ class _WelcomeState extends State<WelcomeScreen> {
     final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
     if (spController.appName.contains(Constants.courseHUB)) plans.removeAt(0);
     return Scaffold(
-      backgroundColor: AppColor.primaryBlack,
+      backgroundColor: JHGColors.primaryBlack,
       body: loading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(
-                color: AppColor.primaryRed,
+                color: JHGColors.primary,
               ),
             )
           : Column(
@@ -104,7 +102,7 @@ class _WelcomeState extends State<WelcomeScreen> {
                       Text(
                         Constants.pleaseChoosePlan,
                         style: TextStyle(
-                          color: AppColor.secondaryWhite,
+                          color: JHGColors.secondaryWhite,
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
                           fontFamily: Constants.kFontFamilySS3,

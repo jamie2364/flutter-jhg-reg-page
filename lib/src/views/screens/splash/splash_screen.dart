@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:get_it/get_it.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
@@ -8,7 +9,6 @@ import 'package:reg_page/src/controllers/subscription/subscription_url_controlle
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 final GetIt getIt = GetIt.instance;
@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        color: AppColor.primaryBlack,
+        color: JHGColors.primaryBlack,
         child: Center(
           child: AnimatedScale(
             scale: logoSize,

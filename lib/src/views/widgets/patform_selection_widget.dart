@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
-import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/models/platform_model.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 
 class PlatformSelectionWidget extends StatelessWidget {
   final PlatformModel model;
@@ -28,11 +28,11 @@ class PlatformSelectionWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: selectedPlatform == model.platform
-                ? AppColor.primaryRed
-                : AppColor.primaryWhite,
+                ? JHGColors.primary
+                : JHGColors.white,
             width: 1.5,
           ),
-          color: AppColor.primaryBlack,
+          color: JHGColors.primaryBlack,
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -49,7 +49,7 @@ class PlatformSelectionWidget extends StatelessWidget {
                     model.platform,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        color: AppColor.greySecondary,
+                        color: JHGColors.greySecondary,
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                         fontFamily: Constants.kFontFamilySS3),
@@ -60,19 +60,19 @@ class PlatformSelectionWidget extends StatelessWidget {
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: selectedPlatform == model.platform
-                          ? AppColor.primaryRed
-                          : AppColor.primaryBlack,
+                          ? JHGColors.primary
+                          : JHGColors.primaryBlack,
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: selectedPlatform == model.platform
-                            ? AppColor.primaryRed
-                            : AppColor.primaryWhite,
+                            ? JHGColors.primary
+                            : JHGColors.white,
                         width: 1.8,
                       ),
                     ),
                     child: Icon(
                       Icons.done,
-                      color: AppColor.primaryBlack,
+                      color: JHGColors.primaryBlack,
                       size: width * 0.04,
                     ),
                   )

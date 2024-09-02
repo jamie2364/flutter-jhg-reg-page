@@ -133,6 +133,7 @@ class Constants {
   static const String regPackage = 'reg_page';
   static const String yourMessageHas =
       'Your message has been succesfully delivered';
+  static const String fieldError = 'Issue description field is required';
   static const String reportAnIssue = 'Report an Issue';
   static const String spottedABugOr =
       'Spotted a bug or issue in the app? Please let us know so we can get it sorted immediately.';

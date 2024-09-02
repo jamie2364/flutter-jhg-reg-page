@@ -2,7 +2,6 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/models/platform_model.dart';
 import 'package:reg_page/src/repositories/repo.dart';
-import 'package:reg_page/src/utils/navigate/nav.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 

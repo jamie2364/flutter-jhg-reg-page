@@ -1,6 +1,6 @@
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/services/base_service.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 
 class Repo extends BaseService with BaseController {
@@ -25,9 +25,7 @@ class Repo extends BaseService with BaseController {
       final res = await get(
         Urls.checkSub,
         baseUrl: baseUrl,
-        queryParams: {
-          "product_ids": productIds,
-        },
+        queryParams: {"product_ids": productIds},
         headers: {'Authorization': 'Bearer $token'},
       ).catchError((error) => handleError(error));
       return res;
@@ -40,10 +38,8 @@ class Repo extends BaseService with BaseController {
   dynamic postBug(Map<String, dynamic> requestData) async {
     try {
       final token = await LocalDB.getBearerToken;
-
       final response = await post(
-        Urls.reportBugUrl,
-        baseUrl: '',
+        Urls.report,
         requestData,
         headers: {'Authorization': 'Bearer $token'},
       ).catchError((error) => handleError(error));

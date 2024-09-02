@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
 restorePopupDialog(BuildContext context, String title, String description) {
@@ -24,11 +24,11 @@ restorePopupDialog(BuildContext context, String title, String description) {
                 height: height * 0.5,
                 width: width,
                 decoration: BoxDecoration(
-                  color: AppColor.greyPrimary,
+                  color: JHGColors.greyPrimary,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Material(
-                  color: AppColor.greyPrimary,
+                  color: JHGColors.greyPrimary,
                   borderRadius: BorderRadius.circular(20),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
@@ -59,8 +59,8 @@ restorePopupDialog(BuildContext context, String title, String description) {
                         ),
                         Text(
                           title,
-                          style: TextStyle(
-                              color: AppColor.primaryWhite,
+                          style: const TextStyle(
+                              color: JHGColors.white,
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                               fontFamily: Constants.kFontFamilySS3),
@@ -71,7 +71,7 @@ restorePopupDialog(BuildContext context, String title, String description) {
                         Text(
                           description,
                           style: TextStyle(
-                              color: AppColor.greySecondary,
+                              color: JHGColors.greySecondary,
                               fontSize: 14,
                               fontWeight: FontWeight.w500,
                               fontFamily: Constants.kFontFamilySS3),
@@ -89,12 +89,12 @@ restorePopupDialog(BuildContext context, String title, String description) {
                                   horizontal: width * 0.055),
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                  color: AppColor.primaryRed,
+                                  color: JHGColors.primary,
                                   borderRadius: BorderRadius.circular(10)),
-                              child: Text(
+                              child: const Text(
                                 Constants.close,
                                 style: TextStyle(
-                                    color: AppColor.primaryWhite,
+                                    color: JHGColors.white,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     fontFamily: Constants.kFontFamilySS3),

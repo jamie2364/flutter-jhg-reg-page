@@ -6,7 +6,6 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/dialogs/restore_popup_dialog.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,7 +35,7 @@ class _InfoScreenState extends State<InfoScreen> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: AppColor.primaryBlack,
+      backgroundColor: JHGColors.primaryBlack,
       body: Container(
         height: height,
         width: width,
@@ -47,7 +46,7 @@ class _InfoScreenState extends State<InfoScreen> {
                   ? width * .25
                   : width * .30,
         ),
-        color: AppColor.primaryBlack,
+        color: JHGColors.primaryBlack,
         child: Padding(
           padding: EdgeInsets.only(
             left: width * 0.08,
@@ -72,7 +71,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     //   },
                     //   child: Icon(
                     //     Icons.arrow_back_ios,
-                    //     color: AppColor.primaryWhite,
+                    //     color: JHGColors.primaryWhite,
                     //     size: 25,
                     //   ),
                     // ),
@@ -142,7 +141,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontStyle: FontStyle.italic,
-                        color: AppColor.secondaryWhite,
+                        color: JHGColors.secondaryWhite,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                         fontFamily: Constants.kFontFamilySS3),
@@ -156,7 +155,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     Constants.williamShakespeare,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color: AppColor.secondaryWhite,
+                        color: JHGColors.secondaryWhite,
                         fontSize: 11,
                         fontWeight: FontWeight.w400,
                         fontFamily: Constants.kFontFamilySS3),
@@ -184,7 +183,7 @@ class _InfoScreenState extends State<InfoScreen> {
                     Constants.copyRight,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: AppColor.secondaryWhite,
+                      color: JHGColors.secondaryWhite,
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       fontFamily: Constants.kFontFamilySS3,
@@ -213,7 +212,7 @@ class AppInfoSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle textStyle = TextStyle(
-        color: AppColor.secondaryWhite,
+        color: JHGColors.secondaryWhite,
         fontSize: 14,
         fontWeight: FontWeight.bold,
         fontFamily: Constants.kFontFamilySS3);
@@ -258,7 +257,7 @@ class InfoButtonSection extends StatelessWidget {
           padding: const EdgeInsets.only(left: 15, right: 9),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            color: AppColor.greyPrimary,
+            color: JHGColors.greyPrimary,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,14 +265,14 @@ class InfoButtonSection extends StatelessWidget {
               Text(
                 title,
                 style: TextStyle(
-                    color: AppColor.secondaryWhite,
+                    color: JHGColors.secondaryWhite,
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
                     fontFamily: Constants.kFontFamilySS3),
               ),
               Icon(
                 Icons.arrow_forward_ios,
-                color: AppColor.secondaryWhite,
+                color: JHGColors.secondaryWhite,
                 // size: 30,
               ),
             ],

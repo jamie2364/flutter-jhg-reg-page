@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/subscription/subscription_url_controller.dart';
-import 'package:reg_page/src/utils/res/colors.dart';
+
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 import 'package:reg_page/src/views/widgets/patform_selection_widget.dart';
@@ -21,7 +21,7 @@ class _SubscriptionState extends State<SubscriptionUrlScreen> {
     final width = Utils.width(context);
     final controller = getIt<SubscriptionUrlController>()..initController();
     return Scaffold(
-      backgroundColor: AppColor.primaryBlack,
+      backgroundColor: JHGColors.primaryBlack,
       body: SafeArea(
         child: Container(
           padding: EdgeInsets.symmetric(
@@ -46,7 +46,7 @@ class _SubscriptionState extends State<SubscriptionUrlScreen> {
                 Text(
                   Constants.subscriptionUrlSubText,
                   style: TextStyle(
-                    color: AppColor.greySecondary,
+                    color: JHGColors.greySecondary,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     fontFamily: Constants.kFontFamilySS3,
