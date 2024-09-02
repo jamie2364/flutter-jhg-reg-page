@@ -2,7 +2,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/services/base_service.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 class UserRepo extends BaseService with BaseController {
   //User
@@ -23,14 +23,14 @@ class UserRepo extends BaseService with BaseController {
   }
 
   Future<Result> loginUser(Map<String, dynamic> userData,
-      {bool checkError = false}) async {
+      {bool checkError = false, bool hideLoader = false}) async {
     Result result = Result(code: 0, message: '');
     try {
       final res = await post(
         Urls.login,
         userData,
       ).catchError((error) {
-        if (checkError) return handleError(error);
+        if (checkError) return handleError(error, hideLoader: hideLoader);
         if (error is UnAutthorizedException) {
           if (error.errorCode == null) return handleError(error);
           if (error.errorCode!.contains('incorrect_password')) {
@@ -41,7 +41,7 @@ class UserRepo extends BaseService with BaseController {
             return null;
           }
         }
-        return handleError(error);
+        return handleError(error, hideLoader: hideLoader);
       });
       if (res == null) return result;
 

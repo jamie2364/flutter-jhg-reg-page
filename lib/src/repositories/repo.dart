@@ -1,7 +1,7 @@
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/constant.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/services/base_service.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 class Repo extends BaseService with BaseController {
   Future<String?> getProductIds(String appName, {String? baseUrl}) async {
@@ -9,7 +9,7 @@ class Repo extends BaseService with BaseController {
       final res = await get(Urls.productIds,
               queryParams: {'app_name': _formatAppName(appName)},
               baseUrl: baseUrl)
-          .catchError(handleError);
+          .catchError((error) => handleError(error));
       if (res == null) return null;
       return res['product_ids'];
     } catch (e) {
@@ -29,7 +29,7 @@ class Repo extends BaseService with BaseController {
           "product_ids": productIds,
         },
         headers: {'Authorization': 'Bearer $token'},
-      ).catchError(handleError);
+      ).catchError((error) => handleError(error));
       return res;
     } catch (e) {
       exceptionLog('exception on  check subscription $e');
@@ -46,7 +46,7 @@ class Repo extends BaseService with BaseController {
         baseUrl: '',
         requestData,
         headers: {'Authorization': 'Bearer $token'},
-      ).catchError(handleError);
+      ).catchError((error) => handleError(error));
       return response;
     } catch (e) {
       exceptionLog('exception on  post bug $e');
@@ -73,7 +73,7 @@ class Repo extends BaseService with BaseController {
               {"email": email, "tag_as_event": "$appName User"}
             ]
           },
-          headers: Constant.marketingHeaders);
+          headers: Constants.marketingHeaders);
       return res;
     } catch (e) {
       exceptionLog('exception on  marketing api $e');

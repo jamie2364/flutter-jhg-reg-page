@@ -1,5 +1,5 @@
-import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 class PlatformModel {
   String platform;
@@ -13,15 +13,15 @@ class PlatformModel {
   static List<PlatformModel> getList() {
     var list = <PlatformModel>[];
     list.add(PlatformModel(
-      platform: Constant.jamieUrlText,
+      platform: Constants.jamieUrlText,
       baseUrl: Urls.jhgUrl,
     ));
     list.add(PlatformModel(
-      platform: Constant.evoloUrlText,
+      platform: Constants.evoloUrlText,
       baseUrl: Urls.evoloUrl,
     ));
     list.add(PlatformModel(
-      platform: Constant.musicToolUrlText,
+      platform: Constants.musicToolUrlText,
       baseUrl: Urls.musicUrl,
     ));
     return list;

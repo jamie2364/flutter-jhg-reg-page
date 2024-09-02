@@ -5,8 +5,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 
 class BaseService {
   final int _apiTimeOut = 25;
@@ -134,18 +134,18 @@ class BaseService {
 }
 
 mixin BaseController {
-  Future<void> handleError(error) async {
-    hideLoading();
+  Future<void> handleError(error, {bool hideLoader = true}) async {
+    if (hideLoader) hideLoading();
     if (error is BadRequestException) {
-      showErrorToast(Constant.productIdsFailedMessage);
+      showErrorToast(Constants.productIdsFailedMessage);
     } else if (error is FetchDataException) {
       showErrorToast(error.message);
     } else if (error is ApiNotRespondingException) {
       showErrorToast('Oops! It tooks too long to respond');
     } else if (error is UnAutthorizedException) {
-      showErrorToast(Constant.emailPasswordInCorrect);
+      showErrorToast(Constants.emailPasswordInCorrect);
     } else {
-      showErrorToast('${Constant.productIdsFailedMessage} $error');
+      showErrorToast('${Constants.productIdsFailedMessage} $error');
     }
   }
 }

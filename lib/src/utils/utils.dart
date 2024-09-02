@@ -1,13 +1,19 @@
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
-import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/auth/controllers/user_controller.dart';
-import 'package:reg_page/src/auth/screens/account_check_screen.dart';
-import 'package:reg_page/src/constant.dart';
-import 'package:reg_page/src/utils/urls.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
+import 'package:reg_page/src/utils/navigate/nav.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
+import 'package:reg_page/src/views/screens/auth/account_check_screen.dart';
 
 class Utils {
+  Utils._();
+
   static EdgeInsets customPadding(context) {
     return EdgeInsets.symmetric(
       horizontal: JHGResponsive.isMobile(context)
@@ -18,69 +24,80 @@ class Utils {
     );
   }
 
-  static BuildContext? get getContext {
-    return SplashScreen.staticNavKey?.currentState?.context;
+  static isValidEmail(String email) => RegExp(
+          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+      .hasMatch(email);
+
+  static double height(BuildContext context) =>
+      MediaQuery.of(context).size.height;
+  static double width(BuildContext context) =>
+      MediaQuery.of(context).size.width;
+  static BuildContext? get getContext => Nav.key.currentState?.context;
+
+  static File getAsset(String path) =>
+      File("${StringsDownloadService().dir?.path}/$path");
+
+  static Future<bool> checkInternet() async {
+    try {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        return await InternetConnectionChecker().hasConnection;
+      }
+    } catch (e) {
+      return true;
+    }
+    return false;
   }
 
   static void handleNextScreenOnSuccess(String appName) {
-    if (Constant.musictoolsApps.contains(appName)) {
+    final page = getIt<SplashController>().nextPage;
+    if (Constants.musictoolsApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.musicUrl)) {
-        Navigator.pushAndRemoveUntil(
-            Utils.getContext!,
-            MaterialPageRoute(builder: (context) => globalNextPage()),
-            (route) => false);
+        Nav.offAll(page());
       } else if (!Urls.base.isEqual(Urls.musicUrl)) {
         Urls.base = BaseUrl.musictools;
         SplashScreen.session.url = Urls.base;
-        Get.put(UserController());
-        Navigator.push(
-            Utils.getContext!,
-            MaterialPageRoute(
-              builder: (context) => const AccountCheckScreen(),
-            ));
+        Nav.off(const AccountCheckScreen());
       }
-    } else if (Constant.evoloApps.contains(appName)) {
+    } else if (Constants.evoloApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.evoloUrl)) {
-        Navigator.pushAndRemoveUntil(
-            Utils.getContext!,
-            MaterialPageRoute(builder: (context) => globalNextPage()),
-            (route) => false);
+        Nav.offAll(page());
       } else {
         Urls.base = BaseUrl.evolo;
         SplashScreen.session.url = Urls.base;
-        Get.put(UserController());
-        Navigator.push(
-            SplashScreen.staticNavKey!.currentState!.context,
-            MaterialPageRoute(
-              builder: (context) => const AccountCheckScreen(),
-            ));
+        Nav.off(const AccountCheckScreen());
       }
-    } else if (Constant.jhgApps.contains(appName)) {
+    } else if (Constants.jhgApps.contains(appName)) {
       if (Urls.base.isEqual(Urls.jhgUrl)) {
-        Navigator.pushAndRemoveUntil(
-            Utils.getContext!,
-            MaterialPageRoute(builder: (context) => globalNextPage()),
-            (route) => false);
+        Nav.offAll(page());
       } else {
         Urls.base = BaseUrl.jhg;
         SplashScreen.session.url = Urls.base;
-        Get.put(UserController());
-        Navigator.pushReplacement(
-            Utils.getContext!,
-            MaterialPageRoute(
-              builder: (context) => const AccountCheckScreen(),
-            ));
+        Nav.off(const AccountCheckScreen());
       }
     } else {
       //! currently hardcoced for looper
-      if (appName == 'JHG Looper') {
-        Navigator.pushAndRemoveUntil(
-            Utils.getContext!,
-            MaterialPageRoute(builder: (context) => globalNextPage()),
-            (route) => false);
+      if (appName == Constants.jhgLooper) {
+        Nav.offAll(page());
         return;
       }
       showErrorToast('app name $appName not found');
     }
+  }
+
+  static bool isSubscriptionActive(Map<String, dynamic>? json,
+      {bool isCourseHubApp = false}) {
+    if (json == null) return false;
+    for (var entry in json.entries) {
+      if ((isCourseHubApp) &&
+          (entry.key == Constants.courseHub) &&
+          (entry.value == Constants.active)) {
+        return true;
+      } else if (entry.value == Constants.active) {
+        return true;
+      }
+    }
+    return false;
   }
 }
