@@ -106,7 +106,11 @@ class SplashController {
   }
 
   Future<void> elseFunction() async {
-    await LocalDB.clearLocalDB();
+    try {
+      await LocalDB.clearLocalDB();
+    } catch (e) {
+      exceptionLog('on LocalDB.clearLocalDB in  elseFunction $e');
+    }
     Nav.off(const WelcomeScreen());
   }
 }
