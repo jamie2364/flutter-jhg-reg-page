@@ -35,11 +35,12 @@ class _WelcomeState extends State<WelcomeScreen> {
   }
 
   late WelcomeController controller;
-
+  late SplashController spController;
   @override
   void initState() {
     super.initState();
     controller = getIt<WelcomeController>();
+    spController = getIt<SplashController>();
     _initializeData();
   }
 
@@ -56,9 +57,11 @@ class _WelcomeState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final spController = getIt<SplashController>();
     final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
-    if (spController.appName.contains(Constants.courseHUB)) plans.removeAt(0);
+    if (spController.appName.contains(Constants.courseHUB) ||
+        spController.appName.contains(Constants.practiceRoutines)) {
+      plans.removeAt(0);
+    }
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
       body: loading
@@ -85,11 +88,9 @@ class _WelcomeState extends State<WelcomeScreen> {
                       child: JHGIconButton(
                         iconData: Icons.info_rounded,
                         size: 30,
-                        onTap: () {
-                          Nav.to(InfoScreen(
-                            callback: controller.restorePurchase,
-                          ));
-                        },
+                        onTap: () => Nav.to(InfoScreen(
+                          callback: controller.restorePurchase,
+                        )),
                       ),
                     ),
                   ],

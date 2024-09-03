@@ -4,38 +4,22 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
-import 'package:reg_page/src/controllers/report_bug/report_bug_controller.dart';
+import 'package:reg_page/src/controllers/report_bug/bug_report_controller.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
-class ReportBugScreen extends StatefulWidget {
-  const ReportBugScreen({
+class BugReportScreen extends StatefulWidget {
+  const BugReportScreen({
     super.key,
     required this.device,
-    required this.appName,
-    this.isLogout,
-    this.yearlySubscriptionId,
-    this.monthlySubscriptionId,
-    this.appVersion,
-    this.featuresList,
-    this.nextPage,
   });
-
   final String device;
 
-  final String appName;
-  final bool? isLogout;
-  final String? yearlySubscriptionId;
-  final String? monthlySubscriptionId;
-  final String? appVersion;
-  final List<String>? featuresList;
-  final Widget Function()? nextPage;
-
   @override
-  // ignore: library_private_types_in_public_api
-  ReportBugScreenState createState() => ReportBugScreenState();
+  BugReportScreenState createState() => BugReportScreenState();
 }
 
-class ReportBugScreenState extends State<ReportBugScreen> {
+class BugReportScreenState extends State<BugReportScreen> {
   late TextEditingController descCntrlr;
   late BugReportController controller;
   @override
@@ -137,7 +121,7 @@ class ReportBugScreenState extends State<ReportBugScreen> {
                           const SizedBox(width: 5),
                           Flexible(
                             child: Text(
-                              '${Constants.iUnderstandThisPage} ${widget.appName}',
+                              '${Constants.iUnderstandThisPage} ${getIt<SplashController>().appName}',
                               style: const TextStyle(
                                   fontSize: 14.0,
                                   color: Colors.white,

@@ -10,6 +10,6 @@ export 'src/utils/res/logs.dart';
 export 'src/utils/toast/show_toast.dart';
 export 'src/utils/utils.dart';
 export 'src/views/screens/auth/login_screen.dart';
-export 'src/views/screens/report_bug/report_bug_screen.dart';
+export 'src/views/screens/report_bug/bug_report_screen.dart';
 export 'src/views/screens/splash/splash_screen.dart';
 export 'src/views/screens/welcome/welcome_screen.dart';

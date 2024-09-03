@@ -143,6 +143,7 @@ class Constants {
   static const String submit = 'Submit';
   static const String logout = 'Logout';
   static const String courseHUB = 'Course Hub';
+  static const String practiceRoutines = 'Practice Routines';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
   static const registerDesc =
