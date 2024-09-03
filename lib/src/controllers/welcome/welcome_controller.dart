@@ -206,6 +206,7 @@ class WelcomeController {
         await inAppPurchase.buyNonConsumable(purchaseParam: param);
       }
     } on PlatformException catch (e) {
+      hideLoading();
       showToast(message: e.message!, isError: true);
     }
   }
