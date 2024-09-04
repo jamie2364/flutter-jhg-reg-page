@@ -11,9 +11,7 @@ import 'package:reg_page/src/utils/res/constants.dart';
 class BugReportScreen extends StatefulWidget {
   const BugReportScreen({
     super.key,
-    required this.device,
   });
-  final String device;
 
   @override
   BugReportScreenState createState() => BugReportScreenState();
@@ -26,6 +24,7 @@ class BugReportScreenState extends State<BugReportScreen> {
   void initState() {
     descCntrlr = TextEditingController();
     controller = BugReportController();
+    controller.getDeviceInfo();
     super.initState();
   }
 
@@ -140,8 +139,7 @@ class BugReportScreenState extends State<BugReportScreen> {
                           onPressed: controller.isChecked.value
                               ? () async {
                                   controller
-                                      .submitBugReport(
-                                          descCntrlr.text, widget.device)
+                                      .submitBugReport(descCntrlr.text)
                                       .then(
                                     (value) {
                                       if (value) {

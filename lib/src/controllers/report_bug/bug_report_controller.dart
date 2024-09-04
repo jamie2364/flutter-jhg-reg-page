@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
@@ -7,9 +10,20 @@ import 'package:reg_page/src/utils/res/constants.dart';
 class BugReportController {
   ValueNotifier<bool> isChecked = ValueNotifier<bool>(false);
 
+  String deviceName = 'Unknown';
+  Future<void> getDeviceInfo() async {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    if (Platform.isAndroid) {
+      final device = await deviceInfoPlugin.androidInfo;
+      deviceName = "${device.manufacturer} ${device.model}";
+    } else if (Platform.isIOS) {
+      final device = await deviceInfoPlugin.iosInfo;
+      deviceName = device.name;
+    }
+  }
+
   Future<bool> submitBugReport(
     String issueDesc,
-    String device,
   ) async {
     try {
       if (issueDesc.isEmpty) {
@@ -22,7 +36,7 @@ class BugReportController {
         'name': user?.userName ?? '',
         'email': user?.email ?? '',
         'issue': issueDesc,
-        'device': device,
+        'device': deviceName,
         'application': getIt<SplashController>().appName,
       });
       debugLog('Response: $response');
