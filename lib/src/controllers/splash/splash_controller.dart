@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/models/user_session.dart';
@@ -12,7 +13,7 @@ class SplashController {
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
-  final String appVersion;
+  String appVersion = '';
   final List<String> featuresList;
   final Widget Function() nextPage;
   final GlobalKey<NavigatorState> navKey;
@@ -22,7 +23,6 @@ class SplashController {
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,
     required this.appName,
-    required this.appVersion,
     required this.featuresList,
     required this.nextPage,
     required this.navKey,
@@ -30,10 +30,12 @@ class SplashController {
   });
 
   Future<void> initializeSplash() async {
-    // SplashScreen.staticNavKey = navKey;
     Nav.key = navKey;
     Future.delayed(const Duration(milliseconds: 500), () {
-      onUpdateUI(); // Trigger the UI update
+      onUpdateUI();
+    });
+    PackageInfo.fromPlatform().then((value) {
+      appVersion = value.version;
     });
     await Future.delayed(const Duration(seconds: 3));
     await routes();

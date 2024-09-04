@@ -19,7 +19,6 @@ class SplashScreen extends StatefulWidget {
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,
     required this.appName,
-    required this.appVersion,
     required this.featuresList,
     required this.nextPage,
     required this.navKey,
@@ -28,7 +27,6 @@ class SplashScreen extends StatefulWidget {
   final String yearlySubscriptionId;
   final String monthlySubscriptionId;
   final String appName;
-  final String appVersion;
   final List<String> featuresList;
   final GlobalKey<NavigatorState> navKey;
   final Widget Function() nextPage;
@@ -50,7 +48,6 @@ class _SplashScreenState extends State<SplashScreen> {
       yearlySubscriptionId: widget.yearlySubscriptionId,
       monthlySubscriptionId: widget.monthlySubscriptionId,
       appName: widget.appName,
-      appVersion: widget.appVersion,
       featuresList: widget.featuresList,
       nextPage: widget.nextPage,
       navKey: widget.navKey,
