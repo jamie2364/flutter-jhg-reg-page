@@ -214,13 +214,13 @@ class WelcomeController {
   // Helper function to get the index of the selected product
   int _getProductIndex(int plan) {
     for (int i = 0; i < products.length; i++) {
-      if (plan == 1 && products[i].id.contains("annual")) {
+      if (plan == 2 && products[i].id.contains("annual")) {
         return i;
-      } else if (plan == 2 && products[i].id.contains("monthly")) {
+      } else if (plan == 1 && products[i].id.contains("monthly")) {
         return i;
       }
     }
-    return 0; // Default to first product if no match is found
+    return 1;
   }
 
   void _restorePopupDialog(String title, String description) {
