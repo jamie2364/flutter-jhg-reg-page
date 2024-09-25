@@ -94,7 +94,7 @@ class _SplashScreenState extends State<SplashScreen> {
               package: Constants.regPackage,
               height: MediaQuery.of(context).size.height * 0.30,
               width: MediaQuery.of(context).size.height * 0.30,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
             ),
           ),
         ),
