@@ -66,14 +66,14 @@ class _SplashScreenState extends State<SplashScreen> {
   animate() async {
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        logoSize = 1.04;
+        logoSize = 1.0;
       });
     });
   }
 
   void onUpdateUI() {
     setState(() {
-      logoSize = 1.04;
+      logoSize = 1.0;
     });
   }
 
@@ -90,10 +90,10 @@ class _SplashScreenState extends State<SplashScreen> {
             duration: const Duration(milliseconds: 2000),
             curve: Curves.linearToEaseOut,
             child: Image.asset(
-              "assets/images/MUSICTOOLS.png",
+              "assets/images/Copy of MUSICTOOLS.png",
               package: Constants.regPackage,
               height: MediaQuery.of(context).size.height * 0.30,
-              width: MediaQuery.of(context).size.height * 0.80,
+              width: MediaQuery.of(context).size.height * 0.60,
               fit: BoxFit.contain,
             ),
           ),
