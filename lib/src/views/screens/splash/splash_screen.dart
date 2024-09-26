@@ -66,14 +66,14 @@ class _SplashScreenState extends State<SplashScreen> {
   animate() async {
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        logoSize = 1.1;
+        logoSize = 1.15;
       });
     });
   }
 
   void onUpdateUI() {
     setState(() {
-      logoSize = 1.1;
+      logoSize = 1.15;
     });
   }
 
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
     final double maxHeight = constraints.height * 0.3;
-    final double maxWidth = constraints.width * 0.7;
+    final double maxWidth = constraints.width * 0.8;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
