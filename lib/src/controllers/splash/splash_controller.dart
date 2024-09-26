@@ -101,7 +101,11 @@ class SplashController {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
     if (user != null) {
-      Nav.off(nextPage());
+      if (Navigator.canPop(Nav.key.currentState!.context,)) {
+        Nav.off(nextPage());
+      }else {
+        Nav.to(nextPage());
+      }
       return;
     }
     Utils.handleNextScreenOnSuccess(appName);
