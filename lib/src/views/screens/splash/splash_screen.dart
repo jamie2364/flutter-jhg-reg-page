@@ -95,8 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Image.asset(
               "assets/images/Copy of MUSICTOOLS.png",
               package: Constants.regPackage,
-              height: maxHeight * logoSize,
-              width: maxWidth * logoSize,
+              height: maxHeight,
+              width: maxWidth,
               fit: BoxFit.contain,
             ),
           ),
