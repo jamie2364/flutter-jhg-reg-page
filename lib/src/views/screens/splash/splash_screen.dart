@@ -66,14 +66,14 @@ class _SplashScreenState extends State<SplashScreen> {
   animate() async {
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        logoSize = 1.1;
+        logoSize = 1.04;
       });
     });
   }
 
   void onUpdateUI() {
     setState(() {
-      logoSize = 1.1;
+      logoSize = 1.04;
     });
   }
 
