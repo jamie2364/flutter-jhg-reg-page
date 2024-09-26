@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
     final double maxHeight = constraints.height * 0.3;
-    final double maxWidth = constraints.width * 0.6;
+    final double maxWidth = constraints.width * 0.7;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
