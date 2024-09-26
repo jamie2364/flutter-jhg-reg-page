@@ -66,19 +66,22 @@ class _SplashScreenState extends State<SplashScreen> {
   animate() async {
     Future.delayed(const Duration(milliseconds: 500), () {
       setState(() {
-        logoSize = 1.0;
+        logoSize = 1.1;
       });
     });
   }
 
   void onUpdateUI() {
     setState(() {
-      logoSize = 1.0;
+      logoSize = 1.1;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final constraints = MediaQuery.of(context).size;
+    final double maxHeight = constraints.height * 0.3;
+    final double maxWidth = constraints.width * 0.6;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -92,8 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Image.asset(
               "assets/images/Copy of MUSICTOOLS.png",
               package: Constants.regPackage,
-              height: MediaQuery.of(context).size.height * 0.30,
-              width: MediaQuery.of(context).size.height * 0.60,
+              height: maxHeight * logoSize,
+              width: maxWidth * logoSize,
               fit: BoxFit.contain,
             ),
           ),
