@@ -8,17 +8,17 @@ class Constants {
 
   static List<String> musictoolsApps = [
     'JHG Tuner',
-    'JHG Drills',
-    'JHG Dictionaries',
+    'Drills',
+    'Dictionaries',
     'JHG Ear Training',
     'JHG Guitar Coach',
     'JHG Rhythm Toolkit',
-    'JHG Backing Tracks',
+    'Backing Tracks',
     'JHG Vocal Separator',
     'JHG Velocity Toolkit',
     'JHG Fretboard Trainer',
   ];
-  static List<String> evoloApps = ['JHG Practice Routines'];
+  static List<String> evoloApps = ['Practice Routines'];
   static List<String> jhgApps = ['JHG Course Hub'];
   static const String policyPrivacyUrl =
       'https://www.Jamieharrisonguitar.com/privacy-policy';
