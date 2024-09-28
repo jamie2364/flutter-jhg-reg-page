@@ -12,7 +12,7 @@ class Constants {
     'Dictionaries',
     'JHG Ear Training',
     'JHG Guitar Coach',
-    'JHG Rhythm Toolkit',
+    'Rhythm Toolkit',
     'Backing Tracks',
     'JHG Vocal Separator',
     'JHG Velocity Toolkit',
