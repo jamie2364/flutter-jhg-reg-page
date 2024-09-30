@@ -138,7 +138,10 @@ class UserController {
 
       // await Future.delayed(const Duration(seconds: 2));
       // print('after delay');
-      if (loginRes.code == 0) return;
+      if (loginRes.code == 0){
+        hideLoading(); 
+        return;
+      };
       SplashController splashController = getIt<SplashController>();
       final appName = splashController.appName;
       final loggedInUser = loginRes.data as User;
@@ -160,10 +163,8 @@ class UserController {
         await LocalDB.storeAppUser(loggedInUser);
       }
       await LocalDB.storeBearerToken(loggedInUser.token!);
-      final subRes =
-          await Repo().checkSubscription(splashController.productIds);
-      bool isActive = Utils.isSubscriptionActive(subRes,
-          isCourseHubApp: appName == "JHG Course Hub");
+      final subRes = await Repo().checkSubscription(splashController.productIds);
+      bool isActive = Utils.isSubscriptionActive(subRes, isCourseHubApp: appName == "JHG Course Hub");
       debugLog('isSubscriptionActive $isActive');
       if (isActive) {
         LocalDB.storeUserEmail(loggedInUser.email!);
@@ -185,6 +186,7 @@ class UserController {
         showErrorToast(Constants.serverErrorMessage);
       }
     } catch (e) {
+      hideLoading();
       showErrorToast("Something Went Wrong ");
     }
   }
