@@ -70,6 +70,10 @@ void showPlanInfoDialog(
                       ),
                       Column(
                         children: featuresList.map<Widget>((item) {
+                          if (label.toString().contains('Free Plan') &&
+                              item.contains('Ad free')) {
+                            return const SizedBox.shrink();
+                          }
                           return Container(
                             margin: const EdgeInsets.only(top: 20),
                             child: Row(
