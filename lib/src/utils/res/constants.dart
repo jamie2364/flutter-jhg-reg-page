@@ -7,16 +7,16 @@ class Constants {
   };
 
   static List<String> musictoolsApps = [
-    'JHG Tuner',
+    'Tuner',
     'Drills',
     'Dictionaries',
     'JHG Ear Training',
-    'JHG Guitar Coach',
+    'Guitar Coach',
     'Rhythm Toolkit',
     'Backing Tracks',
     'JHG Vocal Separator',
     'JHG Velocity Toolkit',
-    'JHG Fretboard Trainer',
+    'Fretboard Trainer',
   ];
   static List<String> evoloApps = ['Practice Routines'];
   static List<String> jhgApps = ['JHG Course Hub'];
