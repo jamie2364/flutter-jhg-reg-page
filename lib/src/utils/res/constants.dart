@@ -10,16 +10,16 @@ class Constants {
     'Tuner',
     'Drills',
     'Dictionaries',
-    'JHG Ear Training',
+    'Ear Training',
     'Guitar Coach',
     'Rhythm Toolkit',
     'Backing Tracks',
-    'JHG Vocal Separator',
-    'JHG Velocity Toolkit',
+    'Vocal Separator',
+    'Velocity Toolkit',
     'Fretboard Trainer',
   ];
   static List<String> evoloApps = ['Practice Routines'];
-  static List<String> jhgApps = ['JHG Course Hub'];
+  static List<String> jhgApps = ['Course Hub'];
   static const String policyPrivacyUrl =
       'https://www.Jamieharrisonguitar.com/privacy-policy';
   static const String termAndServicesUrl =
