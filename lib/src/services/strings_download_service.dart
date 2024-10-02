@@ -32,7 +32,7 @@ class StringsDownloadService {
     directory.create();
   }
 
-  Future<void> _downloadStrings(BuildContext context, String appName) async {
+  Future<bool> _downloadStrings(BuildContext context, String appName) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
         max: 100,
@@ -49,7 +49,7 @@ class StringsDownloadService {
     try {
       await dio.download("${Urls.downloadAssetsUrl}$appName", file.path,
           onReceiveProgress: (rec, total) {
-        int progress = (((rec / total) * 100).toInt());
+       int progress = (((rec / total) * 100).toInt());
         // print("progress===${progress}");
         pd.update(value: progress);
         if (progress == 100) {
@@ -60,18 +60,24 @@ class StringsDownloadService {
           extractFiles(appName);
         }
       });
+      return false;
     } on Exception catch (ex) {
       pd.close();
       exceptionLog("downloadString exception==$ex");
+      return false;
     }
   }
 
-  Future<void> isStringsDownloaded(String appName) async {
+  Future<bool> isStringsDownloaded(String appName) async {
     File file = File("${dir!.path}/$folderAndFileName.zip");
 
     if (!(await file.exists())) {
       // ignore: use_build_context_synchronously
-      _downloadStrings(Nav.key.currentState!.context, appName);
+     bool isDownload = await _downloadStrings(Nav.key.currentState!.context, appName);
+     return isDownload;
+    }
+    else{
+      return false;
     }
   }
 
