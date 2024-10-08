@@ -22,6 +22,7 @@ class SplashScreen extends StatefulWidget {
     required this.featuresList,
     required this.nextPage,
     required this.navKey,
+    this.showFreePlan = true,
   });
 
   final String yearlySubscriptionId;
@@ -30,7 +31,7 @@ class SplashScreen extends StatefulWidget {
   final List<String> featuresList;
   final GlobalKey<NavigatorState> navKey;
   final Widget Function() nextPage;
-
+  final bool showFreePlan;
   static UserSession session = UserSession(url: BaseUrl.jhg, user: null);
 
   @override
@@ -52,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
       nextPage: widget.nextPage,
       navKey: widget.navKey,
       onUpdateUI: onUpdateUI,
+      showFreePlan: widget.showFreePlan,
     );
     if (!getIt.isRegistered<SplashController>()) {
       getIt.registerSingleton<SplashController>(controller);

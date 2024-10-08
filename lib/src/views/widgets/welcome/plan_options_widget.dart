@@ -49,6 +49,7 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
           return PlanOption(
             label: e.label,
             description: e.description,
+            tileDescription: e.tiledesc,
             selectedPlan: selectedPlan,
             planIndex: e.index,
             onPlanSelect: onPlanSelect,
@@ -69,6 +70,7 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
 class PlanOption extends StatelessWidget {
   final String label;
   final String description;
+  final String tileDescription;
   final int selectedPlan;
   final int planIndex;
   final Function(int) onPlanSelect;
@@ -80,6 +82,7 @@ class PlanOption extends StatelessWidget {
     required this.label,
     this.bottomSpace = 0,
     required this.description,
+    required this.tileDescription,
     required this.selectedPlan,
     required this.planIndex,
     required this.onPlanSelect,
@@ -126,14 +129,37 @@ class PlanOption extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    label,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: JHGColors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: Constants.kFontFamilySS3,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          label,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: JHGColors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: Constants.kFontFamilySS3,
+                          ),
+                        ),
+                        if (selectedPlan != planIndex)
+                          Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Text(
+                                tileDescription,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: JHGColors.secondaryWhite,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: Constants.kFontFamilySS3,
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                   Container(
@@ -165,7 +191,7 @@ class PlanOption extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      description,
+                      tileDescription,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: JHGColors.secondaryWhite,

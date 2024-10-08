@@ -19,6 +19,8 @@ class SplashController {
   final GlobalKey<NavigatorState> navKey;
   final VoidCallback onUpdateUI; // Callback to trigger setState in the UI
   String productIds = '';
+  final bool showFreePlan;
+
   SplashController({
     required this.yearlySubscriptionId,
     required this.monthlySubscriptionId,
@@ -27,6 +29,7 @@ class SplashController {
     required this.nextPage,
     required this.navKey,
     required this.onUpdateUI,
+    required this.showFreePlan,
   });
 
   Future<void> initializeSplash() async {
@@ -101,9 +104,11 @@ class SplashController {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
     if (user != null) {
-      if (Navigator.canPop(Nav.key.currentState!.context,)) {
+      if (Navigator.canPop(
+        Nav.key.currentState!.context,
+      )) {
         Nav.off(nextPage());
-      }else {
+      } else {
         Nav.to(nextPage());
       }
       return;

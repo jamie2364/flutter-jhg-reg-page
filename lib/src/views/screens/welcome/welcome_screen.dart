@@ -59,7 +59,8 @@ class _WelcomeState extends State<WelcomeScreen> {
     final width = MediaQuery.of(context).size.width;
     final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
     if (spController.appName.contains(Constants.courseHUB) ||
-        spController.appName.contains(Constants.practiceRoutines)) {
+        spController.appName.contains(Constants.practiceRoutines) ||
+        !spController.showFreePlan) {
       plans.removeAt(0);
     }
     return Scaffold(
