@@ -138,8 +138,8 @@ class LocalDB {
 
   static Future<String?> get getBaseurl async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? purchase = sharedPreferences.getString(baseUrl);
-    return purchase;
+    String? url = sharedPreferences.getString(baseUrl);
+    return url;
   }
 
   static Future<void> saveProductIds(String value) async {
@@ -149,13 +149,12 @@ class LocalDB {
 
   static Future<String?> get getproductIds async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? purchase = sharedPreferences.getString(productIds);
-    return purchase;
+    String? id = sharedPreferences.getString(productIds);
+    return id;
   }
 
   static Future<void> saveLoginTime(String dateTime) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-
     sharedPreferences.setString(loginDateTime, dateTime);
   }
 

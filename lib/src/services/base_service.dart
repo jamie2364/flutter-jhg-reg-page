@@ -52,7 +52,7 @@ class BaseService {
       'Content-Type': 'application/json'
     },
     Map<String, dynamic>? queryParams,
-    String? baseUrl,
+    String? baseUrl
   }) async {
     var uri = Uri.parse(baseUrl ?? Urls.base.url + api)
         .replace(queryParameters: queryParams);

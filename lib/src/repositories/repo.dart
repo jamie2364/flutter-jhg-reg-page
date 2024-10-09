@@ -38,9 +38,11 @@ class Repo extends BaseService with BaseController {
   dynamic postBug(Map<String, dynamic> requestData) async {
     try {
       final token = await LocalDB.getBearerToken;
+      String? baseUrl = await LocalDB.getBaseurl;
       final response = await post(
         Urls.report,
         requestData,
+        baseUrl: baseUrl,
         headers: {'Authorization': 'Bearer $token'},
       ).catchError((error) => handleError(error));
       return response;
