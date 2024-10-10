@@ -27,7 +27,7 @@ dependencies:
   flutter_jhg_elements:
     git:
       url: https://github.com/jamie2364/flutter_jhg_elements.git
-#      ref: main
+      ref: main
   get_it: ^7.7.0
   animated_custom_dropdown: ^3.1.1
   device_info_plus: ^10.1.2
