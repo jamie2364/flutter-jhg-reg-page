@@ -9,6 +9,7 @@ import 'package:reg_page/src/repositories/user_repo.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/views/screens/auth/complete_register_screen.dart';
+import 'package:reg_page/src/views/screens/auth/start_register_screen.dart';
 
 class UserController {
   final GlobalKey<FormState> starRegFormKey = GlobalKey<FormState>();
