@@ -25,7 +25,6 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final isMobile = MediaQuery.of(context).size.width < 600;
-    _controller.clearFields();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Padding(

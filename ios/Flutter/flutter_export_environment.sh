@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/kamran/Kamran/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/kamran/Documents/GitHub/flutter-jhg-reg-page"
+export "FLUTTER_ROOT=/Users/imrannawaz/fvm/versions/3.22.1"
+export "FLUTTER_APPLICATION_PATH=/Users/imrannawaz/Developer/upwork/JHG Apps/flutter-jhg-reg-page"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

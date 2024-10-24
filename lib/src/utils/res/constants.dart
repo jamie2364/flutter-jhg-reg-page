@@ -1,3 +1,5 @@
+import 'package:reg_page/src/utils/url/urls.dart';
+
 class Constants {
   static const marketingHeaders = {
     'Content-Type': 'application/json',
@@ -114,6 +116,7 @@ class Constants {
   static const String pleaseWait = 'Please wait';
   static const String weAreChecking = 'We are checking your account on';
   static const String evolo = 'evolo';
+  static const String jhg = 'jamieharrisonguitar';
   static const String musictools = 'musictools';
   static const String next = 'Next';
   static const String createAnAccount = 'Step 2 - Create your account';
@@ -146,6 +149,16 @@ class Constants {
   static const String practiceRoutines = 'Practice Routines';
 
   static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
-  static const registerDesc =
-      'It looks like you do not have an account on evolo.app, or your login credentials are different than where you have your subscription. Please register below or login with your evolo.app credentials using the Login button';
+  static registerDesc(String url) =>
+      'Your subscription has been verified through the selected platform. It looks like you do not have an account on $url, or your login credentials are different than where you have your subscription. Please register below or login with your $url credentials using the Login button';
+
+  static get loginAppDesc {
+    final url = Urls.base.isEqual(Urls.evoloUrl)
+        ? Constants.evolo
+        : Constants.musictools;
+    return 'Your subscription has been verified through the selected platform. However, your login credentials of selected platform are different from your $url account. Please use your $url credentials to log in.';
+  }
+
+  static String loginDesc =
+      'Log in to ${Urls.base.isEqual(Urls.jhgUrl) ? Constants.jhg : Urls.base.isEqual(Urls.evoloUrl) ? Constants.evolo : Constants.musictools.toLowerCase()} to unlock your music tool.';
 }

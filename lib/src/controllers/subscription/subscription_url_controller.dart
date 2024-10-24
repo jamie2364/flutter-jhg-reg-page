@@ -33,7 +33,7 @@ class SubscriptionUrlController {
         LocalDB.saveProductIds(res);
         Nav.to(const LoginScreen());
       } else {
-        showErrorToast(Constants.productIdsFailedMessage);
+        // showErrorToast(Constants.productIdsFailedMessage);
       }
     } catch (e) {
       showErrorToast(Constants.productIdsFailedMessage);

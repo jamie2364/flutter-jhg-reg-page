@@ -7,6 +7,8 @@ import 'package:reg_page/src/models/country.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
+import '../../../utils/url/urls.dart';
+
 class StartRegisterScreen extends StatefulWidget {
   const StartRegisterScreen({super.key});
 
@@ -40,12 +42,19 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
         ),
         child: JHGPrimaryBtn(
           label: Constants.next,
-          onPressed: () {
-            controller.completeRegister(context);
-          },
+          onPressed: () => controller.completeRegister(),
         ),
       ),
       body: JHGBody(
+        bodyAppBar: JHGAppBar(
+          autoImplyLeading: false,
+          trailingWidget: JHGIconButton(
+            iconData: Icons.logout,
+            enabled: true,
+            childPadding: const EdgeInsets.all(4),
+            onTap: () => Utils.logOut(context),
+          ),
+        ),
         padding: EdgeInsets.symmetric(
           horizontal: isMobile
               ? kBodyHrPadding
@@ -57,13 +66,11 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Heading(text: Constants.step1YourDetails, height: height),
-              // Text(
-
-              //   style: JHGTextStyles.lrlabelStyle.copyWith(fontSize: 29),
-              // ),
               SizedBox(height: height * .03),
               Text(
-                Constants.registerDesc,
+                Constants.registerDesc(Urls.base.isEqual(Urls.evoloUrl)
+                    ? Constants.evolo
+                    : Constants.musictools),
                 style: JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
               ),
               SizedBox(height: height * .05),
@@ -96,9 +103,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
                         .copyWith(fontWeight: FontWeight.normal),
                   ),
                   InkWell(
-                    onTap: () {
-                      Nav.to(const LoginScreen(isAppLogin: true));
-                    },
+                    onTap: () => Nav.to(const LoginScreen(isAppLogin: true)),
                     child: Text(
                       Constants.logIn,
                       style: JHGTextStyles.btnLabelStyle

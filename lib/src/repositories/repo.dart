@@ -9,7 +9,7 @@ class Repo extends BaseService with BaseController {
       final res = await get(Urls.productIds,
               queryParams: {'app_name': _formatAppName(appName)},
               baseUrl: baseUrl)
-          .catchError((error) => handleError(error));
+          .catchError((error) => handleError(error, hideLoader: false));
       if (res == null) return null;
       return res['product_ids'];
     } catch (e) {
@@ -25,7 +25,7 @@ class Repo extends BaseService with BaseController {
       final res = await get(
         Urls.checkSub,
         baseUrl: baseUrl,
-        queryParams: {"product_ids": productIds},
+        queryParams: {'product_ids': productIds},
         headers: {'Authorization': 'Bearer $token'},
       ).catchError((error) => handleError(error));
       return res;
@@ -61,9 +61,9 @@ class Repo extends BaseService with BaseController {
     return input;
   }
 
-  marketingAPi(String email, String appName) async {
+  Future<void> marketingApi(String email, String appName) async {
     try {
-      final res = await post(
+      await post(
           Urls.marketingUrl,
           baseUrl: Urls.base.url,
           {
@@ -72,10 +72,8 @@ class Repo extends BaseService with BaseController {
             ]
           },
           headers: Constants.marketingHeaders);
-      return res;
     } catch (e) {
       exceptionLog('exception on  marketing api $e');
-      return null;
     }
   }
 }

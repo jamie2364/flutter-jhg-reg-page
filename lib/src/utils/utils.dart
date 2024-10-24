@@ -8,7 +8,6 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
-import 'package:reg_page/src/views/screens/auth/account_check_screen.dart';
 
 class Utils {
   Utils._();
@@ -98,5 +97,22 @@ class Utils {
       }
     }
     return false;
+  }
+
+  static void logOut([BuildContext? context]) async {
+    DialogHelper.showLogoutDialog(context ?? Nav.key.currentState!.context,
+        () async {
+      await LocalDB.clearLocalDB();
+      final spController = getIt<SplashController>();
+      Nav.offAll(
+        SplashScreen(
+            yearlySubscriptionId: spController.yearlySubscriptionId,
+            monthlySubscriptionId: spController.monthlySubscriptionId,
+            appName: spController.appName,
+            featuresList: spController.featuresList,
+            nextPage: spController.nextPage,
+            navKey: spController.navKey),
+      );
+    });
   }
 }

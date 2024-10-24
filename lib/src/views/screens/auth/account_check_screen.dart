@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
+import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
@@ -23,18 +24,22 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
     _checkUserAccount();
   }
 
-  Future<void> _checkUserAccount() async {
-    await controller.checkUserAccount(context);
-    setState(() {
-      tryAgain = controller.tryAgain;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: JHGBody(
         padding: Utils.customPadding(context),
+        bodyAppBar: tryAgain
+            ? null
+            : JHGAppBar(
+                autoImplyLeading: false,
+                trailingWidget: JHGIconButton(
+                  iconData: Icons.logout,
+                  enabled: true,
+                  childPadding: const EdgeInsets.all(4),
+                  onTap: () => Utils.logOut(),
+                ),
+              ),
         body: tryAgain
             ? Center(
                 child: JHGPrimaryBtn(
@@ -70,5 +75,27 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
               ),
       ),
     );
+  }
+
+  Future<void> _checkUserAccount() async {
+    setUrl();
+    await controller.checkUserAccount(context);
+    setState(() {
+      tryAgain = controller.tryAgain;
+    });
+  }
+
+  void setUrl() {
+    final appName = getIt<SplashController>().appName;
+    if (Constants.musictoolsApps.contains(appName)) {
+      Urls.base = BaseUrl.musictools;
+      SplashScreen.session.url = Urls.base;
+    } else if (Constants.evoloApps.contains(appName)) {
+      Urls.base = BaseUrl.evolo;
+      SplashScreen.session.url = Urls.base;
+    } else {
+      Urls.base = BaseUrl.jhg;
+      SplashScreen.session.url = Urls.base;
+    }
   }
 }

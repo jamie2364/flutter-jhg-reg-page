@@ -6,6 +6,7 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -19,7 +20,8 @@ class LoginScreen extends StatelessWidget {
     final height = Utils.height(context);
     final width = Utils.width(context);
     final controller = getIt<UserController>();
-
+    controller.clearFields();
+    print('login screen ${Urls.base.url}');
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
       body: Container(
@@ -41,11 +43,21 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: height * 0.030),
                 const JHGAppBar(),
                 SizedBox(height: height * 0.1),
                 Heading(text: Constants.login, height: height),
-                SizedBox(height: height * 0.18),
+                SizedBox(height: height * .03),
+                isAppLogin
+                    ? Text(
+                        Constants.loginAppDesc,
+                        style:
+                            JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
+                      )
+                    : Text(
+                        Constants.loginDesc,
+                        style: JHGTextStyles.labelStyle,
+                      ),
+                SizedBox(height: isAppLogin ? height * .05 : height * 0.15),
                 Form(
                   key: controller.loginFormKey,
                   child: Column(
@@ -60,6 +72,7 @@ class LoginScreen extends StatelessWidget {
                         controller: controller.passC,
                         isPasswordField: true,
                         label: Constants.passwordHint,
+                        onSubmitted: (val) => onLogin(controller),
                       ),
                     ],
                   ),
@@ -67,17 +80,18 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: height * 0.05),
                 JHGPrimaryBtn(
                     label: Constants.login,
-                    onPressed: () async {
-                      isAppLogin
-                          ? await controller.loginUserForApp()
-                          : await controller.userLogin();
-                      controller.clearFields();
-                    })
+                    onPressed: () => onLogin(controller))
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> onLogin(UserController controller) async {
+    isAppLogin
+        ? await controller.loginUserForApp()
+        : await controller.userLogin();
   }
 }

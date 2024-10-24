@@ -44,16 +44,13 @@ class BaseService {
   }
 
   @protected
-  Future<dynamic> post(
-    String api,
-    payLoadObj, {
-    Map<String, String> headers = const {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    Map<String, dynamic>? queryParams,
-    String? baseUrl
-  }) async {
+  Future<dynamic> post(String api, payLoadObj,
+      {Map<String, String> headers = const {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      Map<String, dynamic>? queryParams,
+      String? baseUrl}) async {
     var uri = Uri.parse(baseUrl ?? Urls.base.url + api)
         .replace(queryParameters: queryParams);
 
@@ -116,7 +113,7 @@ class BaseService {
       case 404:
         throw BadRequestException(
             errorCode: json.decode(response.body)['code'],
-            message: json.decode(response.body)[''],
+            message: json.decode(response.body)['message'],
             url: response.request?.url.toString());
 
       case 409:
@@ -136,8 +133,11 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error, {bool hideLoader = true}) async {
     if (hideLoader) hideLoading();
+    print('error in basecontroller $error ${error.message}');
     if (error is BadRequestException) {
-      showErrorToast(Constants.productIdsFailedMessage);
+      showErrorToast(error.message.isEmpty
+          ? Constants.productIdsFailedMessage
+          : error.message);
     } else if (error is FetchDataException) {
       showErrorToast(error.message);
     } else if (error is ApiNotRespondingException) {

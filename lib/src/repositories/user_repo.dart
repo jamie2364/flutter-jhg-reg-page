@@ -22,14 +22,16 @@ class UserRepo extends BaseService with BaseController {
     }
   }
 
-  Future<Result> loginUser(Map<String, dynamic> userData,
-      {bool checkError = false, bool hideLoader = false}) async {
+  Future<Result> loginUser(
+    Map<String, dynamic> userData, {
+    bool checkError = false,
+    bool hideLoader = false,
+    String? baseUrl,
+  }) async {
     Result result = Result(code: 0, message: '');
     try {
-      final res = await post(
-        Urls.login,
-        userData,
-      ).catchError((error) {
+      final res = await post(Urls.login, userData, baseUrl: baseUrl)
+          .catchError((error) {
         if (checkError) return handleError(error, hideLoader: hideLoader);
         if (error is UnAutthorizedException) {
           if (error.errorCode == null) return handleError(error);

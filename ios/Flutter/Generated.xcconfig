@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/kamran/Kamran/flutter
-FLUTTER_APPLICATION_PATH=/Users/kamran/Documents/GitHub/flutter-jhg-reg-page
+FLUTTER_ROOT=/Users/imrannawaz/fvm/versions/3.22.1
+FLUTTER_APPLICATION_PATH=/Users/imrannawaz/Developer/upwork/JHG Apps/flutter-jhg-reg-page
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build

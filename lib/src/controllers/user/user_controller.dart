@@ -9,7 +9,6 @@ import 'package:reg_page/src/repositories/user_repo.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/views/screens/auth/complete_register_screen.dart';
-import 'package:reg_page/src/views/screens/auth/start_register_screen.dart';
 
 class UserController {
   final GlobalKey<FormState> starRegFormKey = GlobalKey<FormState>();
@@ -29,19 +28,15 @@ class UserController {
 
   final UserRepo _repo = UserRepo();
 
-  void completeRegister(BuildContext context) {
+  void completeRegister() {
     if (!starRegFormKey.currentState!.validate()) return;
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const CompleteRegisterScreen()),
-    );
+    Nav.to(const CompleteRegisterScreen());
   }
 
   Future<void> registerUser(BuildContext context) async {
     if (!compRegFormKey.currentState!.validate()) return;
     loaderDialog();
-    final newUser = User(
+    User newUser = User(
       email: emailC.text,
       userName: userNameC.text,
       password: passC.text,
@@ -53,16 +48,11 @@ class UserController {
     hideLoading();
     if (res == null) return;
     if (res.code == 1) {
+      newUser = newUser.copyWith(token: res.token, userId: res.userId);
       await LocalDB.storeAppUser(
           newUser.copyWith(token: res.token, userId: res.userId));
       SplashScreen.session.user = newUser;
-      Navigator.pushAndRemoveUntil(
-        // ignore: use_build_context_synchronously
-        context,
-        MaterialPageRoute(
-            builder: (context) => getIt<SplashController>().nextPage()),
-        (route) => false,
-      );
+      Nav.offAll(getIt<SplashController>().nextPage());
     } else {
       showErrorToast(res.message ?? '');
     }
@@ -71,10 +61,7 @@ class UserController {
   Future<void> loginUserForApp() async {
     if (!loginFormKey.currentState!.validate()) return;
     loaderDialog();
-    final newUser = User(
-      userName: userNameC.text,
-      password: passC.text,
-    );
+    final newUser = User(userName: userNameC.text, password: passC.text);
     final res = await _repo.loginUser(newUser.toMapToLogin());
     hideLoading();
     if (res.code == 1) {
@@ -83,7 +70,7 @@ class UserController {
       SplashScreen.session.user = user;
       Nav.offAll(getIt<SplashController>().nextPage());
     } else {
-      showErrorToast(res.message ?? "");
+      // showErrorToast(res.message ?? "");
     }
   }
 
@@ -91,10 +78,7 @@ class UserController {
     tryAgain = false;
     final userName = await LocalDB.getUserName ?? '';
     final password = await LocalDB.getPassword ?? '';
-    final newUser = User(
-      userName: userName,
-      password: password,
-    );
+    final newUser = User(userName: userName, password: password);
     final res =
         await _repo.loginUser(newUser.toMapToLogin(), checkError: false);
     debugLog('res in controller $res');
@@ -107,27 +91,25 @@ class UserController {
       final u = res.data as User;
       await LocalDB.storeAppUser(u);
       SplashScreen.session.user = u;
-
+      tryAgain = false;
       Nav.offAll(getIt<SplashController>().nextPage());
     } else if (res.code.contains('incorrect_password')) {
       // Handle incorrect password case
-      Nav.off(const LoginScreen());
+      Nav.off(const LoginScreen(isAppLogin: true));
     } else if (res.code.contains('invalid_username')) {
       Nav.off(const StartRegisterScreen());
     }
   }
 
-  Future marketingApi(String email) async {
+  Future<void> marketingApi(String email) async {
     bool? isAlreadyLoggedIn = await LocalDB.getFirstTimeLogin;
     if (isAlreadyLoggedIn == null) {
       await LocalDB.storeFirstTimeLogin(true);
-      await Repo().marketingAPi(email, getIt<SplashController>().appName);
-    } else {
-      debugPrint("Already Logged In");
+      await Repo().marketingApi(email, getIt<SplashController>().appName);
     }
   }
 
-  userLogin() async {
+  Future<void> userLogin() async {
     if (!loginFormKey.currentState!.validate()) return;
     loaderDialog();
     try {
@@ -135,13 +117,10 @@ class UserController {
       final loginRes =
           await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
       // print('login res $loginRes ${loginRes.code}${loginRes.data}');
-
-      // await Future.delayed(const Duration(seconds: 2));
-      // print('after delay');
-      if (loginRes.code == 0){
-        hideLoading(); 
+      if (loginRes.code == 0) {
+        hideLoading();
         return;
-      };
+      }
       SplashController splashController = getIt<SplashController>();
       final appName = splashController.appName;
       final loggedInUser = loginRes.data as User;
@@ -159,12 +138,14 @@ class UserController {
         await LocalDB.storeAppUser(loggedInUser);
       }
       //! currently hardcoced for looper
-      if (appName == 'JHG Looper') {
+      if (appName == 'Looper') {
         await LocalDB.storeAppUser(loggedInUser);
       }
       await LocalDB.storeBearerToken(loggedInUser.token!);
-      final subRes = await Repo().checkSubscription(splashController.productIds);
-      bool isActive = Utils.isSubscriptionActive(subRes, isCourseHubApp: appName == "JHG Course Hub");
+      final subRes =
+          await Repo().checkSubscription(splashController.productIds);
+      bool isActive = Utils.isSubscriptionActive(subRes,
+          isCourseHubApp: appName == "Course Hub");
       debugLog('isSubscriptionActive $isActive');
       if (isActive) {
         LocalDB.storeUserEmail(loggedInUser.email!);
@@ -182,8 +163,8 @@ class UserController {
         marketingApi(loggedInUser.email ?? '');
       } else {
         await LocalDB.clearLocalDB();
-        hideLoading();
-        showErrorToast(Constants.serverErrorMessage);
+        // hideLoading();
+        // showErrorToast(Constants.serverErrorMessage);
       }
     } catch (e) {
       hideLoading();
