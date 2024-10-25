@@ -96,8 +96,10 @@ class UserController {
       Nav.offAll(getIt<SplashController>().nextPage());
     } else if (res.code.contains('incorrect_password')) {
       // Handle incorrect password case
+      clearFields();
       Nav.off(const LoginScreen(isAppLogin: true));
     } else if (res.code.contains('invalid_username')) {
+      clearFields();
       Nav.off(const StartRegisterScreen());
     }
   }
