@@ -178,11 +178,12 @@ class PlanOption extends StatelessWidget {
                         width: 1.8,
                       ),
                     ),
-                    child: Center(
+                    child: Align(
+                      alignment: Alignment.center,
                       child: Icon(
                         Icons.done,
                         color: JHGColors.primaryBlack,
-                        size: width * 0.03,
+                        size: height * 0.02,
                       ),
                     ),
                   ),
