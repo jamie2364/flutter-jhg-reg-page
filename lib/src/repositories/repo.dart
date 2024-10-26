@@ -27,7 +27,7 @@ class Repo extends BaseService with BaseController {
         baseUrl: baseUrl,
         queryParams: {'product_ids': productIds},
         headers: {'Authorization': 'Bearer $token'},
-      ).catchError((error) => handleError(error));
+      ).catchError((error) => handleError(error, hideLoader: false));
       return res;
     } catch (e) {
       exceptionLog('exception on  check subscription $e');

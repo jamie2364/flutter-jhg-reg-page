@@ -29,7 +29,7 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
     return Scaffold(
       body: JHGBody(
         padding: Utils.customPadding(context),
-        bodyAppBar: tryAgain
+        bodyAppBar: !tryAgain
             ? null
             : JHGAppBar(
                 autoImplyLeading: false,

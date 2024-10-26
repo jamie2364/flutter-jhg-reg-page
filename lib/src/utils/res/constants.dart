@@ -104,6 +104,8 @@ class Constants {
 
   static const String serverErrorMessage =
       'Sorry, we encountered an error. \n Please contact us here \n And link here to jamieharrisonguitar.com/support';
+  static const String noSubscriptionMessage =
+      'You don\'t have active subscription for this app.';
 
   static const String productIdsFailedMessage =
       'Sorry, Something went wrong, please try again.';

@@ -114,12 +114,13 @@ class UserController {
 
   Future<void> userLogin() async {
     if (!loginFormKey.currentState!.validate()) return;
+    bool showingLoader = true;
     loaderDialog();
     try {
       final newUser = User(userName: userNameC.text, password: passC.text);
       final loginRes =
           await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
-      // print('login res $loginRes ${loginRes.code}${loginRes.data}');
+
       if (loginRes.code == 0) {
         hideLoading();
         return;
@@ -147,6 +148,9 @@ class UserController {
       await LocalDB.storeBearerToken(loggedInUser.token!);
       final subRes =
           await Repo().checkSubscription(splashController.productIds);
+      hideLoading();
+      showingLoader = false;
+      if (subRes == null) return;
       bool isActive = Utils.isSubscriptionActive(subRes,
           isCourseHubApp: appName == "Course Hub");
       debugLog('isSubscriptionActive $isActive');
@@ -166,11 +170,10 @@ class UserController {
         marketingApi(loggedInUser.email ?? '');
       } else {
         await LocalDB.clearLocalDB();
-        // hideLoading();
-        // showErrorToast(Constants.serverErrorMessage);
+        showErrorToast(Constants.noSubscriptionMessage);
       }
     } catch (e) {
-      hideLoading();
+      if (showingLoader) hideLoading();
       showErrorToast("Something Went Wrong ");
     }
   }
