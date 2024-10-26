@@ -11,7 +11,7 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class StringsDownloadService {
   static final StringsDownloadService _instance =
-      StringsDownloadService._internal();
+  StringsDownloadService._internal();
 
   Directory? dir;
   final String folderAndFileName = "audio_strings";
@@ -49,17 +49,17 @@ class StringsDownloadService {
     try {
       await dio.download("${Urls.downloadAssetsUrl}$appName", file.path,
           onReceiveProgress: (rec, total) {
-       int progress = (((rec / total) * 100).toInt());
-        // print("progress===${progress}");
-        pd.update(value: progress);
-        if (progress == 100) {
-          showToast(
-              context: context,
-              message: "Audio files downloaded",
-              isError: false);
-          extractFiles(appName);
-        }
-      });
+            int progress = (((rec / total) * 100).toInt());
+            // print("progress===${progress}");
+            pd.update(value: progress);
+            if (progress == 100) {
+              showToast(
+                  context: context,
+                  message: "Audio files downloaded",
+                  isError: false);
+              extractFiles(appName);
+            }
+          });
       return false;
     } on Exception catch (ex) {
       pd.close();
@@ -73,8 +73,8 @@ class StringsDownloadService {
 
     if (!(await file.exists())) {
       // ignore: use_build_context_synchronously
-     bool isDownload = await _downloadStrings(Nav.key.currentState!.context, appName);
-     return isDownload;
+      bool isDownload = await _downloadStrings(Nav.key.currentState!.context, appName);
+      return isDownload;
     }
     else{
       return false;
@@ -96,7 +96,7 @@ class StringsDownloadService {
           ..writeAsBytesSync(data);
       } else {
         Directory(
-                "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
+            "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
             .create(recursive: true);
       }
     }

@@ -23,9 +23,10 @@ dependencies:
   permission_handler: ^11.3.1
   app_tracking_transparency: ^2.0.5
   http: ^1.2.2
+  upgrader: ^10.3.0
 
   flutter_jhg_elements:
-    # path: ../flutter_jhg_elements
+#     path: ../flutter_jhg_elements
     git:
       url: https://github.com/jamie2364/flutter_jhg_elements.git
       ref: main

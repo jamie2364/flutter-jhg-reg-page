@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:async';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -15,6 +17,7 @@ import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
 import 'package:reg_page/src/views/widgets/welcome/header_image.dart';
 import 'package:reg_page/src/views/widgets/welcome/plan_options_widget.dart';
 import 'package:reg_page/src/views/widgets/welcome/welcome_text.dart';
+import 'package:upgrader/upgrader.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({
@@ -53,6 +56,8 @@ class _WelcomeState extends State<WelcomeScreen> {
     });
   }
 
+  // final upgrader = Upgrader(debugDisplayAlways: true);
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -63,92 +68,100 @@ class _WelcomeState extends State<WelcomeScreen> {
         !spController.showFreePlan) {
       plans.removeAt(0);
     }
-    return Scaffold(
-      backgroundColor: JHGColors.primaryBlack,
-      body: loading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: JHGColors.primary,
-              ),
-            )
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    HeaderImage(height: height, width: width),
-                    Positioned(
-                      left: width * 0.05,
-                      bottom: 20,
-                      child: WelcomeText(
-                          appName: controller.replaceAppName(), height: height),
-                    ),
-                    Positioned(
-                      right: width * 0.05,
-                      top: MediaQuery.of(context).padding.top + height * 0.01,
-                      child: JHGIconButton(
-                        iconData: Icons.info_rounded,
-                        size: 30,
-                        onTap: () => Nav.to(InfoScreen(
-                          callback: controller.restorePurchase,
-                        )),
-                      ),
-                    ),
-                  ],
+    return UpgradeAlert(
+      // upgrader: upgrader,
+      dialogStyle: !kIsWeb
+          ? Platform.isIOS
+          ? UpgradeDialogStyle.cupertino
+          : UpgradeDialogStyle.material
+          : UpgradeDialogStyle.material,
+      child: Scaffold(
+        backgroundColor: JHGColors.primaryBlack,
+        body: loading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: JHGColors.primary,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.07),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Stack(
                     children: [
-                      Text(
-                        Constants.pleaseChoosePlan,
-                        style: TextStyle(
-                          color: JHGColors.secondaryWhite,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: Constants.kFontFamilySS3,
+                      HeaderImage(height: height, width: width),
+                      Positioned(
+                        left: width * 0.05,
+                        bottom: 20,
+                        child: WelcomeText(
+                            appName: controller.replaceAppName(), height: height),
+                      ),
+                      Positioned(
+                        right: width * 0.05,
+                        top: MediaQuery.of(context).padding.top + height * 0.01,
+                        child: JHGIconButton(
+                          iconData: Icons.info_rounded,
+                          size: 30,
+                          onTap: () => Nav.to(InfoScreen(
+                            callback: controller.restorePurchase,
+                          )),
                         ),
-                      ),
-                      SizedBox(
-                          height: height > 650 ? height * 0.03 : height * 0.02),
-                      PlanOptionsWidget(
-                        plans: plans,
-                        selectedPlan: controller.selectedPlan.value,
-                        onPlanSelect: onPlanSelect,
-                      ),
-                      SizedBox(
-                          height: height > 650 ? height * 0.03 : height * 0.02),
-                      AlreadySubscribed(onLogin: () {
-                        LocalDB.setIsFreePlan(false);
-                        controller.launchNextPage();
-                      }),
-                      SizedBox(
-                          height: height > 650 ? height * 0.03 : height * 0.02),
-                      ListenableBuilder(
-                        listenable: controller.selectedPlan,
-                        builder: (context, _) {
-                          return JHGPrimaryBtn(
-                            label: controller.selectedPlan.value == 2
-                                ? Constants.tryFree
-                                : Constants.continueText,
-                            onPressed: () async {
-                              if (controller.selectedPlan.value == 0) {
-                                LocalDB.setIsFreePlan(true);
-                                Nav.offAll(spController.nextPage());
-                                return;
-                              }
-                              await controller.purchaseSubscription(
-                                  controller.selectedPlan.value);
-                            },
-                          );
-                        },
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: width * 0.07),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          Constants.pleaseChoosePlan,
+                          style: TextStyle(
+                            color: JHGColors.secondaryWhite,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: Constants.kFontFamilySS3,
+                          ),
+                        ),
+                        SizedBox(
+                            height: height > 650 ? height * 0.03 : height * 0.02),
+                        PlanOptionsWidget(
+                          plans: plans,
+                          selectedPlan: controller.selectedPlan.value,
+                          onPlanSelect: onPlanSelect,
+                        ),
+                        SizedBox(
+                            height: height > 650 ? height * 0.03 : height * 0.02),
+                        AlreadySubscribed(onLogin: () {
+                          LocalDB.setIsFreePlan(false);
+                          controller.launchNextPage();
+                        }),
+                        SizedBox(
+                            height: height > 650 ? height * 0.03 : height * 0.02),
+                        ListenableBuilder(
+                          listenable: controller.selectedPlan,
+                          builder: (context, _) {
+                            return JHGPrimaryBtn(
+                              label: controller.selectedPlan.value == 2
+                                  ? Constants.tryFree
+                                  : Constants.continueText,
+                              onPressed: () async {
+                                if (controller.selectedPlan.value == 0) {
+                                  LocalDB.setIsFreePlan(true);
+                                  Nav.offAll(spController.nextPage());
+                                  return;
+                                }
+                                await controller.purchaseSubscription(
+                                    controller.selectedPlan.value);
+                              },
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+      ),
     );
   }
 }
