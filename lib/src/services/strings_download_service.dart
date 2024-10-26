@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,11 +26,13 @@ class StringsDownloadService {
   }
 
   Future<void> init() async {
-    dir = await (Platform.isIOS
-        ? getApplicationSupportDirectory()
-        : getApplicationDocumentsDirectory());
-    Directory directory = Directory("${dir?.path}/assets/");
-    directory.create();
+    if(!kIsWeb){
+      dir = await (Platform.isIOS
+          ? getApplicationSupportDirectory()
+          : getApplicationDocumentsDirectory());
+      Directory directory = Directory("${dir?.path}/assets/");
+      directory.create();
+    }
   }
 
   Future<bool> _downloadStrings(BuildContext context, String appName) async {

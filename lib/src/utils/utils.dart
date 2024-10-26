@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -33,8 +34,9 @@ class Utils {
       MediaQuery.of(context).size.width;
   static BuildContext? get getContext => Nav.key.currentState?.context;
 
-  static File getAsset(String path) =>
-      File("${StringsDownloadService().dir?.path}/$path");
+  static File getAsset(String path, {String? appName = ""}) => (kIsWeb && appName == "Drills")
+      ? File("web/$path")
+      : File("${StringsDownloadService().dir?.path}/$path");
 
   static Future<bool> checkInternet() async {
     try {
