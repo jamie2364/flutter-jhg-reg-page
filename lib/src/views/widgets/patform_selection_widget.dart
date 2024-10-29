@@ -70,10 +70,13 @@ class PlatformSelectionWidget extends StatelessWidget {
                         width: 1.8,
                       ),
                     ),
-                    child: Icon(
-                      Icons.done,
-                      color: JHGColors.primaryBlack,
-                      size: width * 0.04,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Icon(
+                        Icons.done,
+                        color: JHGColors.primaryBlack,
+                        size: height * 0.02,
+                      ),
                     ),
                   )
                 ],
