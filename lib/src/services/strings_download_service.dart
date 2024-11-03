@@ -12,7 +12,7 @@ import 'package:sn_progress_dialog/progress_dialog.dart';
 
 class StringsDownloadService {
   static final StringsDownloadService _instance =
-  StringsDownloadService._internal();
+      StringsDownloadService._internal();
 
   Directory? dir;
   final String folderAndFileName = "audio_strings";
@@ -26,7 +26,7 @@ class StringsDownloadService {
   }
 
   Future<void> init() async {
-    if(!kIsWeb){
+    if (!kIsWeb) {
       dir = await (Platform.isIOS
           ? getApplicationSupportDirectory()
           : getApplicationDocumentsDirectory());
@@ -35,7 +35,7 @@ class StringsDownloadService {
     }
   }
 
-  Future<bool> _downloadStrings(BuildContext context, String appName) async {
+  Future<bool> _downloadStrings(BuildContext context) async {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
         max: 100,
@@ -49,24 +49,26 @@ class StringsDownloadService {
         valueColor: JHGColors.white);
     File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
+    final appName = Utils.getMtAppName;
+    final url = '${Urls.downloadAssetsUrl}$appName';
     try {
-      await dio.download("${Urls.downloadAssetsUrl}$appName", file.path,
+      await dio.download(url, file.path,
           onReceiveProgress: (rec, total) {
-            int progress = (((rec / total) * 100).toInt());
-            // print("progress===${progress}");
-            pd.update(value: progress);
-            if (progress == 100) {
-              showToast(
-                  context: context,
-                  message: "Audio files downloaded",
-                  isError: false);
-              extractFiles(appName);
-            }
-          });
+        int progress = (((rec / total) * 100).toInt());
+        // print("progress===${progress}");
+        pd.update(value: progress);
+        if (progress == 100) {
+          showToast(
+              context: context,
+              message: "Audio files downloaded",
+              isError: false);
+          extractFiles(appName);
+        }
+      });
       return false;
     } on Exception catch (ex) {
       pd.close();
-      exceptionLog("downloadString exception==$ex");
+      exceptionLog("downloadString exception==$ex",name: url);
       return false;
     }
   }
@@ -76,10 +78,9 @@ class StringsDownloadService {
 
     if (!(await file.exists())) {
       // ignore: use_build_context_synchronously
-      bool isDownload = await _downloadStrings(Nav.key.currentState!.context, appName);
+      bool isDownload = await _downloadStrings(Nav.key.currentState!.context);
       return isDownload;
-    }
-    else{
+    } else {
       return false;
     }
   }
@@ -99,7 +100,7 @@ class StringsDownloadService {
           ..writeAsBytesSync(data);
       } else {
         Directory(
-            "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
+                "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
             .create(recursive: true);
       }
     }

@@ -14,7 +14,7 @@ class Urls {
       'https://www.jamieharrisonguitar.com/wp-json/custom/v1/report';
 
   static const String downloadAssetsUrl =
-      'https://www.jamieharrisonguitar.com/wp-json/jhg-apps/v1/download-audio/?app_name=';
+      'https://www.musictools.io/wp-json/mt-apps/v1/download-audio/?app_name=';
   static const String productIds = 'wp-json/jhg-apps/v1/product-ids';
   static const String checkSub = 'wp-json/myplugin/v1/jwt-check-subscription/';
   static const String report = 'wp-json/custom/v1/report/';

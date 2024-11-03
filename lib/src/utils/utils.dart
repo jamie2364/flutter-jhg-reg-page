@@ -34,9 +34,10 @@ class Utils {
       MediaQuery.of(context).size.width;
   static BuildContext? get getContext => Nav.key.currentState?.context;
 
-  static File getAsset(String path, {String? appName = ""}) => (kIsWeb && appName == "Drills")
-      ? File("web/$path")
-      : File("${StringsDownloadService().dir?.path}/$path");
+  static File getAsset(String path, {String? appName = ""}) =>
+      (kIsWeb && appName == "Drills")
+          ? File("web/$path")
+          : File("${StringsDownloadService().dir?.path}/$path");
 
   static Future<bool> checkInternet() async {
     try {
@@ -117,5 +118,11 @@ class Utils {
             navKey: spController.navKey),
       );
     });
+  }
+
+  static String get getMtAppName {
+    String appName = getIt<SplashController>().appName;
+    appName = appName.toLowerCase().replaceAll(' ', '-');
+    return 'mt-$appName';
   }
 }

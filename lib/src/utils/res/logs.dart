@@ -8,22 +8,31 @@ const resTag = ' Response';
 
 requestLog(Uri uri, String tag, {dynamic body}) {
   log(
-    'url==>: $uri  base: ${uri.authority}, api: ${uri.path} ,'
-    'params: ${uri.queryParameters}  body: $body',
+    '''⏳ ⏳ ⏳
+url==>: $uri  base: ${uri.authority}, api: ${uri.path} ,
+params: ${uri.queryParameters}  
+body: $body
+⏳ ⏳ ⏳''',
     name: tag + reqTag,
   );
 }
 
 responseLog(String api, Response res, String tag) {
+  String emoji =
+      res.statusCode == 200 || res.statusCode == 201 ? '✅ ✅ ✅' : '🚫 🚫 🚫';
   log(
     name: tag + resTag,
-    '$tag=> "$api"  status ===>> ${res.statusCode}\n'
-    'response  ===>>   ${res.body}',
+    '''$emoji
+"$api"  status ===>> ${res.statusCode}
+response  ===>>   ${res.body} 
+$emoji''',
   );
 }
 
-exceptionLog(Object message, {dynamic name}) {
-  log('\n${message.toString()}\n', name: 'Exception $name');
+exceptionLog(Object e, {dynamic name}) {
+  log('''🚫 🚫 🚫
+${e.toString()}
+🚫 🚫 🚫''', name: 'Exception $name');
 }
 
 debugLog(Object message, {String? name}) {
