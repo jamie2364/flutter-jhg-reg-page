@@ -11,7 +11,7 @@ class Urls {
   static const String marketingUrl =
       'https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f';
   static const String reportBugUrl =
-      'https://www.jamieharrisonguitar.com/wp-json/custom/v1/report';
+      'https://www.musictools.io/wp-json/custom/v1/report';
 
   static const String downloadAssetsUrl =
       'https://www.musictools.io/wp-json/mt-apps/v1/download-audio/?app_name=';
