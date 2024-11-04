@@ -29,7 +29,6 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final isMobile = MediaQuery.of(context).size.width < 600;
-    controller.clearFields();
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
       resizeToAvoidBottomInset: false,
