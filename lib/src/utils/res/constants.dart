@@ -1,5 +1,3 @@
-import 'package:reg_page/src/utils/url/urls.dart';
-
 class Constants {
   static const marketingHeaders = {
     'Content-Type': 'application/json',
@@ -154,13 +152,10 @@ class Constants {
   static registerDesc(String url) =>
       'Your subscription has been verified through the selected platform. It looks like you do not have an account on $url, or your login credentials are different than where you have your subscription. Please register below or login with your $url credentials using the Login button';
 
-  static get loginAppDesc {
-    final url = Urls.base.isEqual(Urls.evoloUrl)
-        ? Constants.evolo
-        : Constants.musictools;
+  static String loginAppDesc(String url) {
     return 'Your subscription has been verified through the selected platform. However, your login credentials of selected platform are different from your $url account. Please use your $url credentials to log in.';
   }
 
-  static String loginDesc =
-      'Log in to ${Urls.base.isEqual(Urls.jhgUrl) ? Constants.jhg : Urls.base.isEqual(Urls.evoloUrl) ? Constants.evolo : Constants.musictools.toLowerCase()} to unlock your music tool.';
+  static String loginDesc(String url) =>
+      'Log in to $url to unlock your music tool.';
 }

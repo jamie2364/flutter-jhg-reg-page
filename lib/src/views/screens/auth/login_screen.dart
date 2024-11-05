@@ -48,12 +48,12 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: height * .03),
                 isAppLogin
                     ? Text(
-                        Constants.loginAppDesc,
+                        Constants.loginAppDesc(Utils.urlInText),
                         style:
                             JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
                       )
                     : Text(
-                        Constants.loginDesc,
+                        Constants.loginDesc(Utils.urlInText),
                         style: JHGTextStyles.labelStyle,
                       ),
                 SizedBox(height: isAppLogin ? height * .05 : height * 0.15),

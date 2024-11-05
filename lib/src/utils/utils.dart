@@ -125,4 +125,10 @@ class Utils {
     appName = appName.toLowerCase().replaceAll(' ', '-');
     return 'mt-$appName';
   }
+
+  static String get urlInText => Urls.base.isEqual(Urls.jhgUrl)
+      ? Constants.jhg
+      : Urls.base.isEqual(Urls.evoloUrl)
+          ? Constants.evolo
+          : Constants.musictools;
 }
