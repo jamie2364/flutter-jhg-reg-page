@@ -21,55 +21,59 @@ class LoginScreen extends StatelessWidget {
     final controller = getIt<UserController>();
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: Utils.screenHrPadding(context),
-        ),
-        height: height,
-        width: width,
-        color: JHGColors.primaryBlack,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const JHGAppBar(),
-              SizedBox(height: height * 0.1),
-              Heading(text: Constants.login, height: height),
-              SizedBox(height: height * .03),
-              isAppLogin
-                  ? Text(
-                      Constants.loginAppDesc(Utils.urlInText),
-                      style: JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
-                    )
-                  : Text(
-                      Constants.loginDesc(Utils.urlInText),
-                      style: JHGTextStyles.labelStyle,
-                    ),
-              SizedBox(height: isAppLogin ? height * .05 : height * 0.15),
-              Form(
-                key: controller.loginFormKey,
-                child: Column(
-                  children: [
-                    JHGTextFormField(
-                      controller: controller.userNameC,
-                      inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                      label: Constants.userNameHint,
-                    ),
-                    SizedBox(height: height * 0.02),
-                    JHGTextFormField(
-                      controller: controller.passC,
-                      isPasswordField: true,
-                      label: Constants.passwordHint,
-                      onSubmitted: (val) => onLogin(controller),
-                    ),
-                  ],
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: Utils.screenHrPadding(context),
+          ),
+          height: height,
+          width: width,
+          color: JHGColors.primaryBlack,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const JHGAppBar(),
+                SizedBox(height: height * 0.1),
+                Heading(text: Constants.login, height: height),
+                SizedBox(height: height * .03),
+                isAppLogin
+                    ? Text(
+                        Constants.loginAppDesc(Utils.urlInText),
+                        style:
+                            JHGTextStyles.subLabelStyle.copyWith(fontSize: 14),
+                      )
+                    : Text(
+                        Constants.loginDesc(Utils.urlInText),
+                        style: JHGTextStyles.labelStyle,
+                      ),
+                SizedBox(height: isAppLogin ? height * .05 : height * 0.15),
+                Form(
+                  key: controller.loginFormKey,
+                  child: Column(
+                    children: [
+                      JHGTextFormField(
+                        controller: controller.userNameC,
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                        label: Constants.userNameHint,
+                      ),
+                      SizedBox(height: height * 0.02),
+                      JHGTextFormField(
+                        controller: controller.passC,
+                        isPasswordField: true,
+                        label: Constants.passwordHint,
+                        onSubmitted: (val) => onLogin(controller),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height: height * 0.05),
-              JHGPrimaryBtn(
-                  label: Constants.login, onPressed: () => onLogin(controller))
-            ],
+                SizedBox(height: height * 0.05),
+                JHGPrimaryBtn(
+                    label: Constants.login,
+                    onPressed: () => onLogin(controller))
+              ],
+            ),
           ),
         ),
       ),

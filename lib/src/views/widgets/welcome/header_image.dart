@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
@@ -14,11 +15,13 @@ class HeaderImage extends StatelessWidget {
       children: [
         SizedBox(
           width: width,
-          height: height > 650
-              ? height * 0.46
-              : height > 440
-                  ? height * 0.36
-                  : height * 0.30,
+          height: kIsWeb
+              ? height * 0.7
+              : height > 650
+                  ? height * 0.46
+                  : height > 440
+                      ? height * 0.36
+                      : height * 0.30,
           child: Image.asset(
             "assets/images/jhg_background.png",
             package: Constants.regPackage,

@@ -148,7 +148,9 @@ class Constants {
   static const String courseHUB = 'Course Hub';
   static const String practiceRoutines = 'Practice Routines';
 
-  static const kFontFamilySS3 = 'SourceSans3'; // this style is for texts style
+  static const kFontFamilySS3 = 'SourceSans3';
+
+  static const String getStarted = 'Get Started';
   static registerDesc(String url) =>
       'Your subscription has been verified through the selected platform. It looks like you do not have an account on $url, or your login credentials are different than where you have your subscription. Please register below or login with your $url credentials using the Login button';
 

@@ -13,6 +13,7 @@ import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/plan_options.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/views/screens/info/info_screen.dart';
+import 'package:reg_page/src/views/screens/subscription/subscription_url_screen.dart';
 import 'package:reg_page/src/views/widgets/welcome/already_subscribed.dart';
 import 'package:reg_page/src/views/widgets/welcome/header_image.dart';
 import 'package:reg_page/src/views/widgets/welcome/plan_options_widget.dart';
@@ -113,61 +114,81 @@ class _WelcomeState extends State<WelcomeScreen> {
                     padding: EdgeInsets.symmetric(horizontal: width * 0.07),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          Constants.pleaseChoosePlan,
-                          style: TextStyle(
-                            color: JHGColors.secondaryWhite,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: Constants.kFontFamilySS3,
-                          ),
-                        ),
-                        SizedBox(
-                            height:
-                                height > 650 ? height * 0.03 : height * 0.02),
-                        Align(
-                          alignment: Alignment.center,
-                          child: PlanOptionsWidget(
-                            plans: plans,
-                            selectedPlan: controller.selectedPlan.value,
-                            onPlanSelect: onPlanSelect,
-                          ),
-                        ),
-                        SizedBox(
-                            height:
-                                height > 650 ? height * 0.03 : height * 0.02),
-                        AlreadySubscribed(onLogin: () {
-                          LocalDB.setIsFreePlan(false);
-                          controller.launchNextPage();
-                        }),
-                        SizedBox(
-                            height:
-                                height > 650 ? height * 0.03 : height * 0.02),
-                        Align(
-                          alignment: Alignment.center,
-                          child: ListenableBuilder(
-                            listenable: controller.selectedPlan,
-                            builder: (context, _) {
-                              return JHGPrimaryBtn(
-                                width: width > 768 ? 500 : width * 0.85,
-                                label: controller.selectedPlan.value == 2
-                                    ? Constants.tryFree
-                                    : Constants.continueText,
-                                onPressed: () async {
-                                  if (controller.selectedPlan.value == 0) {
-                                    LocalDB.setIsFreePlan(true);
-                                    Nav.offAll(spController.nextPage());
-                                    return;
-                                  }
-                                  await controller.purchaseSubscription(
-                                      controller.selectedPlan.value);
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ],
+                      children: kIsWeb
+                          ? [
+                              // const Spacer(),
+                              SizedBox(
+                                height: height * 0.18,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: JHGPrimaryBtn(
+                                  width: width > 768 ? 500 : width * 0.85,
+                                  label: Constants.getStarted,
+                                  onPressed: () =>
+                                      Nav.to(const SubscriptionUrlScreen()),
+                                ),
+                              )
+                            ]
+                          : [
+                              Text(
+                                Constants.pleaseChoosePlan,
+                                style: TextStyle(
+                                  color: JHGColors.secondaryWhite,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: Constants.kFontFamilySS3,
+                                ),
+                              ),
+                              SizedBox(
+                                  height: height > 650
+                                      ? height * 0.03
+                                      : height * 0.02),
+                              Align(
+                                alignment: Alignment.center,
+                                child: PlanOptionsWidget(
+                                  plans: plans,
+                                  selectedPlan: controller.selectedPlan.value,
+                                  onPlanSelect: onPlanSelect,
+                                ),
+                              ),
+                              SizedBox(
+                                  height: height > 650
+                                      ? height * 0.03
+                                      : height * 0.02),
+                              AlreadySubscribed(onLogin: () {
+                                LocalDB.setIsFreePlan(false);
+                                controller.launchNextPage();
+                              }),
+                              SizedBox(
+                                  height: height > 650
+                                      ? height * 0.03
+                                      : height * 0.02),
+                              Align(
+                                alignment: Alignment.center,
+                                child: ListenableBuilder(
+                                  listenable: controller.selectedPlan,
+                                  builder: (context, _) {
+                                    return JHGPrimaryBtn(
+                                      width: width > 768 ? 500 : width * 0.85,
+                                      label: controller.selectedPlan.value == 2
+                                          ? Constants.tryFree
+                                          : Constants.continueText,
+                                      onPressed: () async {
+                                        if (controller.selectedPlan.value ==
+                                            0) {
+                                          LocalDB.setIsFreePlan(true);
+                                          Nav.offAll(spController.nextPage());
+                                          return;
+                                        }
+                                        await controller.purchaseSubscription(
+                                            controller.selectedPlan.value);
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                     ),
                   ),
                 ],
