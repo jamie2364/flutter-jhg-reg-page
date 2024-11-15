@@ -22,7 +22,7 @@ class PlatformSelectionWidget extends StatelessWidget {
       onTap: () => onTap(model),
       child: Container(
         height: height * 0.06,
-        width: width * 0.85,
+        width: width > 768 ? 500 : width * 0.85,
         margin: EdgeInsets.only(top: height * 0.03),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -35,8 +35,8 @@ class PlatformSelectionWidget extends StatelessWidget {
           color: JHGColors.primaryBlack,
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: width * 0.050,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20,
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

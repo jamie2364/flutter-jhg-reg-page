@@ -40,19 +40,11 @@ class _InfoScreenState extends State<InfoScreen> {
         height: height,
         width: width,
         padding: EdgeInsets.symmetric(
-          horizontal: width < 850
-              ? 0
-              : width < 1100 && width >= 850
-                  ? width * .25
-                  : width * .30,
+          horizontal: Utils.screenHrPadding(context),
         ),
         color: JHGColors.primaryBlack,
         child: Padding(
-          padding: EdgeInsets.only(
-            left: width * 0.08,
-            right: width * 0.08,
-            top: height * 0.04,
-          ),
+          padding: EdgeInsets.only(top: height * 0.04),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,

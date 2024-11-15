@@ -24,15 +24,14 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final isMobile = MediaQuery.of(context).size.width < 600;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           bottom: 50,
           top: 25,
-          left: kBodyHrPadding,
-          right: kBodyHrPadding,
+          left: Utils.screenHrPadding(context),
+          right: Utils.screenHrPadding(context),
         ),
         child: JHGPrimaryBtn(
           label: Constants.next,
@@ -42,11 +41,8 @@ class _CompleteRegisterScreenState extends State<CompleteRegisterScreen> {
         ),
       ),
       body: JHGBody(
-        padding: EdgeInsets.symmetric(
-          horizontal: isMobile
-              ? kBodyHrPadding
-              : MediaQuery.of(context).size.width * (isMobile ? 0.25 : 0.30),
-        ),
+        padding:
+            EdgeInsets.symmetric(horizontal: Utils.screenHrPadding(context)),
         bodyAppBar: const JHGAppBar(),
         body: Form(
           key: _controller.compRegFormKey,

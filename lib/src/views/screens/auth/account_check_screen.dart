@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
@@ -28,7 +29,8 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: JHGBody(
-        padding: Utils.customPadding(context),
+        padding:
+            EdgeInsets.symmetric(horizontal: Utils.screenHrPadding(context)),
         bodyAppBar: !tryAgain
             ? null
             : JHGAppBar(
@@ -53,12 +55,15 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
               )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: kIsWeb
+                    ? CrossAxisAlignment.center
+                    : CrossAxisAlignment.start,
                 children: [
                   const Text(
                     Constants.pleaseWait,
                     style: JHGTextStyles.smlabelStyle,
                   ),
+                  const SizedBox(height: kIsWeb ? 15 : null),
                   Text(
                     '${Constants.weAreChecking} ${Urls.base.isEqual(Urls.evoloUrl) ? Constants.evolo : Constants.musictools}',
                     style: JHGTextStyles.btnLabelStyle.copyWith(

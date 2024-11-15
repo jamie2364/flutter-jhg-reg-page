@@ -28,16 +28,15 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final isMobile = MediaQuery.of(context).size.width < 600;
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           bottom: 50,
           top: 25,
-          left: kBodyHrPadding,
-          right: kBodyHrPadding,
+          left: Utils.screenHrPadding(context),
+          right: Utils.screenHrPadding(context),
         ),
         child: JHGPrimaryBtn(
           label: Constants.next,
@@ -54,11 +53,8 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
             onTap: () => Utils.logOut(context),
           ),
         ),
-        padding: EdgeInsets.symmetric(
-          horizontal: isMobile
-              ? kBodyHrPadding
-              : MediaQuery.of(context).size.width * (isMobile ? 0.25 : 0.30),
-        ),
+        padding:
+            EdgeInsets.symmetric(horizontal: Utils.screenHrPadding(context)),
         body: Form(
           key: controller.starRegFormKey,
           child: Column(

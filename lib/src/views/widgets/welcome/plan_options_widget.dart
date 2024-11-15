@@ -46,7 +46,7 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
         widget.plans.length,
         (index) {
           final e = widget.plans[index];
-          return PlanOption(
+          return PlanOptionWidget(
             label: e.label,
             description: e.description,
             tileDescription: e.tiledesc,
@@ -67,7 +67,7 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
   }
 }
 
-class PlanOption extends StatelessWidget {
+class PlanOptionWidget extends StatelessWidget {
   final String label;
   final String description;
   final String tileDescription;
@@ -77,7 +77,7 @@ class PlanOption extends StatelessWidget {
   final String yearlyPrice;
   final List<String> featuresList;
   final double bottomSpace;
-  const PlanOption({
+  const PlanOptionWidget({
     super.key,
     required this.label,
     this.bottomSpace = 0,
@@ -109,7 +109,7 @@ class PlanOption extends StatelessWidget {
             : height > 440
                 ? height * 0.06
                 : height * 0.07,
-        width: width * 0.85,
+        width: width > 768 ? 500 : width * 0.85,
         margin: EdgeInsets.only(bottom: bottomSpace),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
@@ -121,7 +121,7 @@ class PlanOption extends StatelessWidget {
           color: JHGColors.primaryBlack,
         ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * 0.050),
+          padding: const EdgeInsets.symmetric(horizontal: 20), //width * 0.050),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,

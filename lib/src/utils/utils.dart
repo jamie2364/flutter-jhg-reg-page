@@ -9,20 +9,21 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/splash/splash_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
-import 'package:reg_page/src/views/screens/auth/account_check_screen.dart';
+
+import '../views/screens/auth/account_check_screen.dart';
 
 class Utils {
   Utils._();
 
-  static EdgeInsets customPadding(context) {
-    return EdgeInsets.symmetric(
-      horizontal: JHGResponsive.isMobile(context)
-          ? kBodyHrPadding
-          : JHGResponsive.isTablet(context)
-              ? MediaQuery.sizeOf(context).width * .25
-              : MediaQuery.sizeOf(context).width * .30,
-    );
-  }
+  // static EdgeInsets customPadding(context) {
+  //   return EdgeInsets.symmetric(
+  //     horizontal: JHGResponsive.isMobile(context)
+  //         ? kBodyHrPadding
+  //         : JHGResponsive.isTablet(context)
+  //             ? MediaQuery.sizeOf(context).width * .25
+  //             : MediaQuery.sizeOf(context).width * .30,
+  //   );
+  // }
 
   static isValidEmail(String email) => RegExp(
           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
@@ -131,4 +132,22 @@ class Utils {
       : Urls.base.isEqual(Urls.evoloUrl)
           ? Constants.evolo
           : Constants.musictools;
+
+  static double screenHrPadding(BuildContext context) {
+    final w = width(context);
+    double val = w <= 500
+        ? kBodyHrPadding
+        : w > 500 && w <= 768
+            ? w * .14
+            : w > 768 && w <= 1024
+                ? w * .25
+                : w > 1024 && w <= 1440
+                    ? w * .3
+                    : w > 1440 && w <= 1920
+                        ? w * .34
+                        : w > 1920 && w <= 2560
+                            ? w * .44
+                            : w * .64;
+    return val;
+  }
 }

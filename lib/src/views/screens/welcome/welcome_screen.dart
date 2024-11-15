@@ -72,8 +72,8 @@ class _WelcomeState extends State<WelcomeScreen> {
       // upgrader: upgrader,
       dialogStyle: !kIsWeb
           ? Platform.isIOS
-          ? UpgradeDialogStyle.cupertino
-          : UpgradeDialogStyle.material
+              ? UpgradeDialogStyle.cupertino
+              : UpgradeDialogStyle.material
           : UpgradeDialogStyle.material,
       child: Scaffold(
         backgroundColor: JHGColors.primaryBlack,
@@ -93,7 +93,8 @@ class _WelcomeState extends State<WelcomeScreen> {
                         left: width * 0.05,
                         bottom: 20,
                         child: WelcomeText(
-                            appName: controller.replaceAppName(), height: height),
+                            appName: controller.replaceAppName(),
+                            height: height),
                       ),
                       Positioned(
                         right: width * 0.05,
@@ -123,38 +124,48 @@ class _WelcomeState extends State<WelcomeScreen> {
                           ),
                         ),
                         SizedBox(
-                            height: height > 650 ? height * 0.03 : height * 0.02),
-                        PlanOptionsWidget(
-                          plans: plans,
-                          selectedPlan: controller.selectedPlan.value,
-                          onPlanSelect: onPlanSelect,
+                            height:
+                                height > 650 ? height * 0.03 : height * 0.02),
+                        Align(
+                          alignment: Alignment.center,
+                          child: PlanOptionsWidget(
+                            plans: plans,
+                            selectedPlan: controller.selectedPlan.value,
+                            onPlanSelect: onPlanSelect,
+                          ),
                         ),
                         SizedBox(
-                            height: height > 650 ? height * 0.03 : height * 0.02),
+                            height:
+                                height > 650 ? height * 0.03 : height * 0.02),
                         AlreadySubscribed(onLogin: () {
                           LocalDB.setIsFreePlan(false);
                           controller.launchNextPage();
                         }),
                         SizedBox(
-                            height: height > 650 ? height * 0.03 : height * 0.02),
-                        ListenableBuilder(
-                          listenable: controller.selectedPlan,
-                          builder: (context, _) {
-                            return JHGPrimaryBtn(
-                              label: controller.selectedPlan.value == 2
-                                  ? Constants.tryFree
-                                  : Constants.continueText,
-                              onPressed: () async {
-                                if (controller.selectedPlan.value == 0) {
-                                  LocalDB.setIsFreePlan(true);
-                                  Nav.offAll(spController.nextPage());
-                                  return;
-                                }
-                                await controller.purchaseSubscription(
-                                    controller.selectedPlan.value);
-                              },
-                            );
-                          },
+                            height:
+                                height > 650 ? height * 0.03 : height * 0.02),
+                        Align(
+                          alignment: Alignment.center,
+                          child: ListenableBuilder(
+                            listenable: controller.selectedPlan,
+                            builder: (context, _) {
+                              return JHGPrimaryBtn(
+                                width: width > 768 ? 500 : width * 0.85,
+                                label: controller.selectedPlan.value == 2
+                                    ? Constants.tryFree
+                                    : Constants.continueText,
+                                onPressed: () async {
+                                  if (controller.selectedPlan.value == 0) {
+                                    LocalDB.setIsFreePlan(true);
+                                    Nav.offAll(spController.nextPage());
+                                    return;
+                                  }
+                                  await controller.purchaseSubscription(
+                                      controller.selectedPlan.value);
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
