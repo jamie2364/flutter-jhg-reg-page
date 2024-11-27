@@ -48,11 +48,8 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/jhg_background.png
-    - assets/images/jhg_logo.png
     - assets/images/jhg_sign.png
     - assets/images/icon_cross.png
-    - assets/images/plus.png
-    - assets/images/MUSICTOOLS.png
     - assets/images/Copy of MUSICTOOLS.png
 
   fonts:

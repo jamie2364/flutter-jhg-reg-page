@@ -79,15 +79,11 @@ void showPlanInfoDialog(
                               margin: const EdgeInsets.only(top: 20),
                               child: Row(
                                 children: [
-                                  SizedBox(
-                                      width: 17,
-                                      height: 17,
-                                      child: Image.asset(
-                                        "assets/images/plus.png",
-                                        package: 'reg_page',
-                                        fit: BoxFit.cover,
-                                        color: JHGColors.primary,
-                                      )),
+                                  
+                                  const Icon(
+                                    Icons.check_circle_outlined,
+                                    color: JHGColors.primary,
+                                  ),
                                   const SizedBox(width: 15),
                                   Expanded(
                                       child: Text(
