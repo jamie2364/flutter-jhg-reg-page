@@ -95,7 +95,7 @@ class _SplashScreenState extends State<SplashScreen> {
             duration: const Duration(milliseconds: 2000),
             curve: Curves.linearToEaseOut,
             child: Image.asset(
-              "assets/images/Copy of MUSICTOOLS.png",
+              "assets/images/jhg_logo.png",
               package: Constants.regPackage,
               height: maxHeight,
               width: maxWidth,
