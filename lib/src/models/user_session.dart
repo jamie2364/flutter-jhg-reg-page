@@ -5,9 +5,11 @@ import 'package:reg_page/src/models/user.dart';
 class UserSession {
   BaseUrl url;
   User? user;
+  bool isFreePlan;
   UserSession({
     required this.url,
     required this.user,
+    this.isFreePlan = false,
   });
 
   @override

@@ -55,9 +55,11 @@ class SplashController {
     }
     bool isFreePlan = await LocalDB.getIsFreePlan();
     if (isFreePlan) {
+      SplashScreen.session.isFreePlan = true;
       Nav.off(nextPage());
       return;
     }
+    SplashScreen.session.isFreePlan = false;
     String? token = await LocalDB.getBearerToken;
     final url = await LocalDB.getBaseurl;
     final appUser = await LocalDB.getAppUser;
@@ -103,6 +105,7 @@ class SplashController {
   Future<void> successFunction(User? user) async {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
+    print('successFunction ${SplashScreen.session.user}');
     if (user != null) {
       Nav.offAll(nextPage());
       return;

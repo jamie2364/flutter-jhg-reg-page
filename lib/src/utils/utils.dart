@@ -105,7 +105,7 @@ class Utils {
   }
 
   static void logOut([BuildContext? context]) async {
-    DialogHelper.showLogoutDialog(context ?? Nav.key.currentState!.context,
+    JHGDialogHelper.showLogoutDialog(context ?? Nav.key.currentState!.context,
         () async {
       await LocalDB.clearLocalDB();
       final spController = getIt<SplashController>();
@@ -119,6 +119,21 @@ class Utils {
             navKey: spController.navKey),
       );
     });
+  }
+
+  static void logOutWitoutWarning([Function? callback]) async {
+    await LocalDB.clearLocalDB();
+    if (callback != null) callback();
+    final spController = getIt<SplashController>();
+    Nav.offAll(
+      SplashScreen(
+          yearlySubscriptionId: spController.yearlySubscriptionId,
+          monthlySubscriptionId: spController.monthlySubscriptionId,
+          appName: spController.appName,
+          featuresList: spController.featuresList,
+          nextPage: spController.nextPage,
+          navKey: spController.navKey),
+    );
   }
 
   static String get getMtAppName {

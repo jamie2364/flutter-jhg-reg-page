@@ -178,6 +178,8 @@ class _WelcomeState extends State<WelcomeScreen> {
                                         if (controller.selectedPlan.value ==
                                             0) {
                                           LocalDB.setIsFreePlan(true);
+                                          SplashScreen.session.isFreePlan =
+                                              true;
                                           Nav.offAll(spController.nextPage());
                                           return;
                                         }

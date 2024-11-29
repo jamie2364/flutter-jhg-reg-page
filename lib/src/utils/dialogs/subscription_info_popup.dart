@@ -6,6 +6,9 @@ void showPlanInfoDialog(
     BuildContext context, String? price, List<String> featuresList,
     {String? label, String? desc}) {
   final height = MediaQuery.of(context).size.height;
+  final list = label.toString().contains('Free Plan')
+      ? ['Limited use of app', 'Enjoy free features with ads']
+      : featuresList;
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -70,16 +73,11 @@ void showPlanInfoDialog(
                           height: height * 0.03,
                         ),
                         Column(
-                          children: featuresList.map<Widget>((item) {
-                            if (label.toString().contains('Free Plan') &&
-                                item.contains('Ad free')) {
-                              return const SizedBox.shrink();
-                            }
+                          children: list.map<Widget>((item) {
                             return Container(
                               margin: const EdgeInsets.only(top: 20),
                               child: Row(
                                 children: [
-                                  
                                   const Icon(
                                     Icons.check_circle_outlined,
                                     color: JHGColors.primary,
