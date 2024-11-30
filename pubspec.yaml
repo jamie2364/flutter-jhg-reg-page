@@ -28,7 +28,7 @@ dependencies:
   flutter_jhg_elements:
     # path: ../flutter_jhg_elements
     git:
-      url: https://github.com/jamie2364/flutter_jhg_elements.git
+      url: https://github.com/jamie2364/flutter_jhg_elements
       ref: main
   get_it: ^7.7.0
   animated_custom_dropdown: ^3.1.1
