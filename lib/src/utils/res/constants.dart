@@ -49,7 +49,8 @@ class Constants {
       'I want to receive messages\nabout the sales';
   static const String logOut = 'Log Out';
   static const String welcome = 'Welcome';
-  static const String welcomeDescription = ' to Jamie Harrison';
+  static const String welcomeToJamieHarrison = ' to Jamie Harrison';
+  static const String welcomeToMusicTools = ' to Music Tools';
   static const String pleaseChoosePlan =
       'Please choose a plan below to get started';
   static const String annualPlan = 'Annual Plan';

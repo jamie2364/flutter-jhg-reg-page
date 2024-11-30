@@ -19,7 +19,9 @@ class WelcomeText extends StatelessWidget {
           height: height,
         ),
         Text(
-          Constants.welcomeDescription,
+          appName == "Course Hub"?
+          Constants.welcomeToJamieHarrison:
+          Constants.welcomeToMusicTools,
           style: TextStyle(
             color: JHGColors.white,
             fontSize: height > 650

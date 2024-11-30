@@ -11,7 +11,7 @@ import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
-final GetIt getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;  
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -79,6 +79,12 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
+   bool isCourseHub(String name) {
+    const excludedText = "JHG";
+    String result = name.replaceAll(excludedText, '');
+    return result == "Course Hub" ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
@@ -95,7 +101,10 @@ class _SplashScreenState extends State<SplashScreen> {
             duration: const Duration(milliseconds: 2000),
             curve: Curves.linearToEaseOut,
             child: Image.asset(
-              "assets/images/jhg_logo.png",
+
+              isCourseHub(widget.appName) ?
+              "assets/images/jhg_logo.png" :
+              "assets/images/Copy of MUSICTOOLS.png",
               package: Constants.regPackage,
               height: maxHeight,
               width: maxWidth,
