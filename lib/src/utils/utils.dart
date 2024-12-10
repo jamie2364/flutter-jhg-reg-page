@@ -150,7 +150,7 @@ class Utils {
 
   static double screenHrPadding(BuildContext context) {
     final w = width(context);
-    double val = w <= 500
+    double val = w <= 500 || (!kIsWeb && (w > 768 && w <= 1024))
         ? kBodyHrPadding
         : w > 500 && w <= 768
             ? w * .14
