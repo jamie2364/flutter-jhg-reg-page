@@ -159,5 +159,5 @@ class Constants {
     return 'Your subscription has been verified through the selected platform. However, your login credentials of selected platform are different from your $url account. Please use your $url credentials to log in.';
   }
 
-  static String loginDesc(String url) => 'Log in to $url';
+  static String loginDesc(String url) => 'to $url';
 }
