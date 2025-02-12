@@ -18,9 +18,9 @@ class HeaderImage extends StatelessWidget {
           height: kIsWeb
               ? height * 0.7
               : height > 650
-                  ? height * 0.46
+                  ? height * 0.44
                   : height > 440
-                      ? height * 0.36
+                      ? height * 0.34
                       : height * 0.30,
           child: Image.asset(
             "assets/images/jhg_background.png",

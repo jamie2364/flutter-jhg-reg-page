@@ -19,9 +19,9 @@ class WelcomeText extends StatelessWidget {
           height: height,
         ),
         Text(
-          appName == "Course Hub"?
-          Constants.welcomeToJamieHarrison:
-          Constants.welcomeToMusicTools,
+          appName == Constants.courseHUB
+              ? Constants.welcomeToJamieHarrison
+              : Constants.welcomeToMusicTools,
           style: TextStyle(
             color: JHGColors.white,
             fontSize: height > 650
@@ -33,6 +33,7 @@ class WelcomeText extends StatelessWidget {
             fontFamily: Constants.kFontFamilySS3,
           ),
         ),
+        const SizedBox(height: 2),
         Text(
           appName,
           style: TextStyle(

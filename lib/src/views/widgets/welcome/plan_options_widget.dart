@@ -49,13 +49,14 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
           return PlanOptionWidget(
             label: e.label,
             description: e.description,
-            tileDescription: e.tiledesc,
+            tileDescription: e.tileDesc,
+            tileDetailedDescription: e.tileDetailedDesc,
             selectedPlan: selectedPlan,
             planIndex: e.index,
             onPlanSelect: onPlanSelect,
             yearlyPrice: e.price,
             featuresList: getIt<SplashController>().featuresList,
-            bottomSpace: index != 2
+            bottomSpace: index !=  widget.plans.length-1
                 ? height > 650
                     ? height * 0.02
                     : height * 0.01
@@ -71,6 +72,7 @@ class PlanOptionWidget extends StatelessWidget {
   final String label;
   final String description;
   final String tileDescription;
+  final String tileDetailedDescription;
   final int selectedPlan;
   final int planIndex;
   final Function(int) onPlanSelect;
@@ -83,6 +85,7 @@ class PlanOptionWidget extends StatelessWidget {
     this.bottomSpace = 0,
     required this.description,
     required this.tileDescription,
+    required this.tileDetailedDescription,
     required this.selectedPlan,
     required this.planIndex,
     required this.onPlanSelect,
@@ -98,17 +101,6 @@ class PlanOptionWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => onPlanSelect(planIndex),
       child: Container(
-        height: selectedPlan == planIndex
-            ? height > 640
-                ? height * 0.13
-                : height > 470
-                    ? height * 0.18
-                    : height > 410
-                        ? height * 0.20
-                        : height * 0.25
-            : height > 440
-                ? height * 0.06
-                : height * 0.07,
         width: width > 768 ? 500 : width * 0.85,
         margin: EdgeInsets.only(bottom: bottomSpace),
         decoration: BoxDecoration(
@@ -121,7 +113,7 @@ class PlanOptionWidget extends StatelessWidget {
           color: JHGColors.primaryBlack,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20), //width * 0.050),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -194,8 +186,7 @@ class PlanOptionWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      tileDescription,
-                      overflow: TextOverflow.ellipsis,
+                      tileDetailedDescription,
                       style: TextStyle(
                         color: JHGColors.secondaryWhite,
                         fontSize: 14,
