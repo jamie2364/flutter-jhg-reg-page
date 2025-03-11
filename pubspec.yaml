@@ -23,16 +23,15 @@ dependencies:
   permission_handler: ^11.3.1
   app_tracking_transparency: ^2.0.5
   http: ^1.2.2
-  upgrader: ^10.3.0
-
+  upgrader: ^11.3.1
   flutter_jhg_elements:
-    # path: ../flutter_jhg_elements
-    git:
-      url: https://github.com/jamie2364/flutter_jhg_elements
-      ref: main
+    path: ../flutter_jhg_elements
+    # git:
+    #   url: https://github.com/jamie2364/flutter_jhg_elements
+    #   ref: main
   get_it: ^7.7.0
   animated_custom_dropdown: ^3.1.1
-  device_info_plus: ^10.1.2
+  device_info_plus: ^11.1.1
   package_info_plus: ^8.0.2
 
 dev_dependencies:
