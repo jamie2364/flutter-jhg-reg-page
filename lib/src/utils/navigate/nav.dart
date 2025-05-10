@@ -11,6 +11,8 @@ class Nav {
         builder: (context) => page,
       ));
 
+  static BuildContext get context => key.currentState!.context;
+
   static off(Widget page, [BuildContext? context]) => Navigator.pushReplacement(
       context ?? key.currentState!.context,
       MaterialPageRoute(
