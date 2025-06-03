@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=C:\src\flutter"
-export "FLUTTER_APPLICATION_PATH=C:\Users\Lenovo\StudioProjects\flutter-jhg-reg-page"
+export "FLUTTER_ROOT=/Users/imrannawaz/fvm/versions/3.29.2"
+export "FLUTTER_APPLICATION_PATH=/Users/imrannawaz/Developer/upwork/JHGApps/flutter-jhg-reg-page"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=0.0.1"

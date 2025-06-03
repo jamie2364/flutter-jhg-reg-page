@@ -105,7 +105,7 @@ class SplashController {
   Future<void> successFunction(User? user) async {
     await LocalDB.storeSubscriptionPurchase(true);
     SplashScreen.session.user = user;
-    print('successFunction ${SplashScreen.session.user}');
+    dLog('successFunction ${SplashScreen.session.user}');
     if (user != null) {
       Nav.offAll(nextPage());
       return;

@@ -12,9 +12,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class InfoScreen extends StatefulWidget {
   const InfoScreen({
-    Key? key,
+    super.key,
     required this.callback,
-  }) : super(key: key);
+  });
 
   final VoidCallback callback;
 
@@ -193,10 +193,10 @@ class _InfoScreenState extends State<InfoScreen> {
 
 class AppInfoSection extends StatelessWidget {
   const AppInfoSection({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
-  }) : super(key: key);
+  });
 
   final String title;
   final String subtitle;
@@ -226,10 +226,10 @@ class AppInfoSection extends StatelessWidget {
 
 class InfoButtonSection extends StatelessWidget {
   const InfoButtonSection({
-    Key? key,
+    super.key,
     required this.title,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final String title;
   final VoidCallback onPressed;

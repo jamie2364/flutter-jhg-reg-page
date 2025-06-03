@@ -42,15 +42,16 @@ class Utils {
 
   static Future<bool> checkInternet() async {
     try {
-      var connectivityResult = await (Connectivity().checkConnectivity());
-      if (connectivityResult == ConnectivityResult.mobile ||
-          connectivityResult == ConnectivityResult.wifi) {
-        return await InternetConnectionChecker().hasConnection;
+      List<ConnectivityResult> connectivityResult =
+          await (Connectivity().checkConnectivity());
+      if (connectivityResult.isEmpty) return false;
+      if (connectivityResult.contains(ConnectivityResult.none)) {
+        return false;
       }
+      return await InternetConnectionChecker.instance.hasConnection;
     } catch (e) {
       return true;
     }
-    return false;
   }
 
   static void handleNextScreenOnSuccess(String appName) {

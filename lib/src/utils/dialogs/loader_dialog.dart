@@ -9,13 +9,13 @@ loaderDialog([BuildContext? context]) {
       useSafeArea: false,
       builder: (context) {
         return Dialog(
-          backgroundColor: JHGColors.loaderBackground.withOpacity(0.2),
+          backgroundColor: JHGColors.loaderBackground.withValues(alpha: 0.2),
           insetPadding: EdgeInsets.zero,
           surfaceTintColor: JHGColors.loaderBackground,
           child: Container(
               height: MediaQuery.sizeOf(context).height,
               width: MediaQuery.sizeOf(context).height,
-              color: JHGColors.loaderBackground.withOpacity(0.7),
+              color: JHGColors.loaderBackground.withValues(alpha: 0.7),
               child: const Center(
                   child: CircularProgressIndicator(
                 color: JHGColors.primary,

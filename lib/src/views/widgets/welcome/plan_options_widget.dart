@@ -12,11 +12,11 @@ class PlanOptionsWidget extends StatefulWidget {
   final int selectedPlan;
 
   const PlanOptionsWidget({
-    Key? key,
+    super.key,
     required this.onPlanSelect,
     required this.selectedPlan,
     required this.plans,
-  }) : super(key: key);
+  });
 
   @override
   State<PlanOptionsWidget> createState() => _PlanOptionsWidgetState();
@@ -56,7 +56,7 @@ class _PlanOptionsWidgetState extends State<PlanOptionsWidget> {
             onPlanSelect: onPlanSelect,
             yearlyPrice: e.price,
             featuresList: getIt<SplashController>().featuresList,
-            bottomSpace: index !=  widget.plans.length-1
+            bottomSpace: index != widget.plans.length - 1
                 ? height > 650
                     ? height * 0.02
                     : height * 0.01

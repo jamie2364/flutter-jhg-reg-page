@@ -1,4 +1,4 @@
-library reg_page;
+library;
 
 export 'src/services/app_exceptions.dart';
 export 'src/services/strings_download_service.dart';

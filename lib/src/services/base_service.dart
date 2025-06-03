@@ -133,7 +133,7 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error, {bool hideLoader = true}) async {
     if (hideLoader) hideLoading();
-    print('error in basecontroller $error ${error.message}');
+    dLog('error in basecontroller $error ${error.message}');
     if (error is BadRequestException) {
       showErrorToast(error.message.isEmpty
           ? Constants.productIdsFailedMessage
