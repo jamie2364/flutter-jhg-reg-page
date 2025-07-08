@@ -37,7 +37,7 @@ class UnAutthorizedException extends AppException {
   String? errorCode;
   @override
   String toString() =>
-      '🚨 🚨 🚨 \n message : $message \n prefix : $prefix \n url : $url \n 🚨 🚨 🚨';
+      'UnAutthorizedException(🚨 🚨 🚨 \n message : $message \n prefix : $prefix \n url : $url \n 🚨 🚨 🚨)';
 }
 
 class UnProcessableException extends AppException {

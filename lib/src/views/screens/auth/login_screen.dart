@@ -13,6 +13,11 @@ class LoginScreen extends StatelessWidget {
     super.key,
     this.isAppLogin = false,
   });
+  ///
+  ///It identifies the second time user login for the spcific platform/baseURL of that app. 
+  ///e.g. evolo for practice routines
+  ///
+  ///
   final bool isAppLogin;
   @override
   Widget build(BuildContext context) {

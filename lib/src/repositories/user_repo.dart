@@ -30,21 +30,31 @@ class UserRepo extends BaseService with BaseController {
   }) async {
     Result result = Result(code: 0, message: '');
     try {
+      // print('----->>>> requesting');
       final res = await post(Urls.login, userData, baseUrl: baseUrl)
           .catchError((error) {
+        // print('----->>>> error in login user res $error');
         if (checkError) return handleError(error, hideLoader: hideLoader);
         if (error is UnAutthorizedException) {
+          // print(
+          //     '----->>>> in UnAutthorizedException error in login user res $error');
           if (error.errorCode == null) return handleError(error);
           if (error.errorCode!.contains('incorrect_password')) {
+            // print(
+            //     '----->>>> in UnAutthorizedException error in login user res incorrect_password');
             result = Result(code: error.errorCode, message: error.message);
             return null;
-          } else if (error.errorCode!.contains('invalid_username')) {
+          } else if (error.errorCode!.contains('invalid_username') ||
+              error.errorCode!.contains('invalid_email')) {
+            // print(
+            //     '----->>>> in UnAutthorizedException error in login user res invalid_email');
             result = Result(code: error.errorCode, message: error.message);
             return null;
           }
         }
         return handleError(error, hideLoader: hideLoader);
       });
+      // print('----->>>> res in login user res $result');
       if (res == null) return result;
 
       return Result(code: 1, message: 'success', data: User.fromMap(res));

@@ -98,7 +98,8 @@ class UserController {
       // Handle incorrect password case
       clearFields();
       Nav.off(const LoginScreen(isAppLogin: true));
-    } else if (res.code.contains('invalid_username')) {
+    } else if (res.code.contains('invalid_username') ||
+        res.code.contains('invalid_email')) {
       clearFields();
       Nav.off(const StartRegisterScreen());
     }
