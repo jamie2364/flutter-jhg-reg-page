@@ -53,8 +53,8 @@ class WelcomeController {
 
   // Initialize data
   Future<void> initializeData() async {
-    debugLog(yearlySubscriptionId);
-    debugLog(monthlySubscriptionId);
+    Log.d(yearlySubscriptionId);
+    Log.d(monthlySubscriptionId);
 
     variant.clear();
     variant.add(yearlySubscriptionId);
@@ -78,7 +78,7 @@ class WelcomeController {
 
   // Subscription stream listener
   Future<void> _subscriptionStream() async {
-    debugLog("Subscription stream called");
+    Log.d("Subscription stream called");
     products.clear();
     Stream purchaseUpdated = inAppPurchase.purchaseStream;
 
@@ -87,7 +87,7 @@ class WelcomeController {
     }, onDone: () {
       streamSubscription.cancel();
     }, onError: (error) {
-      exceptionLog("Error $error");
+      Log.ex("Error $error");
       streamSubscription.cancel();
     });
 
@@ -120,8 +120,8 @@ class WelcomeController {
       }
     } catch (e) {
       loading = false;
-      exceptionLog(e.toString());
-      showToast(message: "Error initializing store", isError: true);
+      Log.ex(e.toString(), name: '_initStore()');
+      showToast(message: 'Error initializing store', isError: true);
     } finally {
       // hideLoading();
     }
@@ -130,10 +130,10 @@ class WelcomeController {
   // Listen to purchase
   Future<void> _listenToPurchase(
       List<PurchaseDetails> purchaseDetailsList) async {
-    debugLog('listening to purchase $purchaseDetailsList');
+    Log.d('listening to purchase $purchaseDetailsList');
     try {
       if (purchaseDetailsList.first.error != null) {
-        debugLog(purchaseDetailsList.first.error.toString(), name: 'ERROR');
+        Log.d(purchaseDetailsList.first.error.toString(), name: 'ERROR');
         hideLoading();
         return;
       }
@@ -153,8 +153,8 @@ class WelcomeController {
       }
     } catch (e) {
       hideLoading();
-      exceptionLog(e.toString());
-      showToast(message: "Error processing purchase", isError: true);
+      Log.ex(e.toString(), name: '_listenToPurchase');
+      showToast(message: 'Error processing purchase', isError: true);
     }
   }
 
@@ -172,7 +172,7 @@ class WelcomeController {
         await LocalDB.saveBaseUrl(Urls.evoloUrl);
       }
     } catch (e) {
-      exceptionLog(e.toString());
+      Log.ex(e.toString(), name: '_onPurchasedSuccess');
       showToast(
           message: "Error during purchase success handling", isError: true);
     }
@@ -184,7 +184,7 @@ class WelcomeController {
       loaderDialog();
       await inAppPurchase.restorePurchases();
     } on PlatformException catch (e) {
-      exceptionLog(e);
+      Log.ex(e, name: 'restorePurchase()');
       showToast(message: e.message!, isError: true);
     } finally {
       hideLoading();
@@ -195,7 +195,7 @@ class WelcomeController {
   Future<void> purchaseSubscription(int plan) async {
     try {
       loaderDialog();
-      debugLog("SELECTED PLAN IS $plan");
+      Log.d("SELECTED PLAN IS $plan");
 
       int selectedProductIndex = _getProductIndex(plan);
 

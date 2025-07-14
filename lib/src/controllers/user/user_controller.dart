@@ -82,7 +82,7 @@ class UserController {
     final newUser = User(userName: userName, password: password);
     final res =
         await _repo.loginUser(newUser.toMapToLogin(), checkError: false);
-    debugLog('res in controller $res');
+    Log.d('res in controller $res');
     if (res.code is int) {
       if (res.code == 0) {
         // showErrorToast('Something went wrong');
@@ -154,7 +154,7 @@ class UserController {
       if (subRes == null) return;
       bool isActive = Utils.isSubscriptionActive(subRes,
           isCourseHubApp: appName == "Course Hub");
-      debugLog('isSubscriptionActive $isActive');
+      Log.d('isSubscriptionActive $isActive');
       if (isActive) {
         LocalDB.storeUserEmail(loggedInUser.email!);
         LocalDB.storeUserName(loggedInUser.userName);
@@ -164,7 +164,7 @@ class UserController {
         LocalDB.saveBaseUrl(Urls.base.url);
         LocalDB.saveProductIds(splashController.productIds);
         LocalDB.saveLoginTime(DateTime.now().toIso8601String());
-        debugLog(Constants.musictoolsApps.contains(appName));
+        Log.d(Constants.musictoolsApps.contains(appName));
         hideLoading();
         Utils.handleNextScreenOnSuccess(appName);
         await LocalDB.storeSubscriptionPurchase(true);

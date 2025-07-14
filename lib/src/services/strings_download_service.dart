@@ -68,7 +68,7 @@ class StringsDownloadService {
       return false;
     } on Exception catch (ex) {
       pd.close();
-      exceptionLog("downloadString exception==$ex",name: url);
+      Log.ex("downloadString exception==$ex",name: url);
       return false;
     }
   }

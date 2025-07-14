@@ -30,7 +30,7 @@ class Nav {
     } else {
       // Handle the case where the context is null or there's no valid navigation stack
       off(page);
-      debugLog("Navigation context is invalid or no routes in the stack.");
+      Log.d("Navigation context is invalid or no routes in the stack.");
     }
   }
 

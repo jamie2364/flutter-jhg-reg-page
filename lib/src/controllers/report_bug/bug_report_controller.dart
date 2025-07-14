@@ -39,7 +39,7 @@ class BugReportController {
         'device': deviceName,
         'application': getIt<SplashController>().appName,
       });
-      debugLog('Response: $response');
+      Log.d('Response: $response');
 
       if (response != null) {
         Nav.back();
@@ -49,7 +49,7 @@ class BugReportController {
       }
     } catch (e) {
       Nav.back();
-      debugLog('Error: $e');
+      Log.d('Error: $e', name: 'submitBugReport()');
     }
     return false;
   }

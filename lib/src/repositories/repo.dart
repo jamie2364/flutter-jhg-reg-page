@@ -13,7 +13,7 @@ class Repo extends BaseService with BaseController {
       if (res == null) return null;
       return res['product_ids'];
     } catch (e) {
-      exceptionLog('exception on  get product ids $e');
+      Log.ex('exception on  get product ids $e');
       return null;
     }
   }
@@ -30,7 +30,7 @@ class Repo extends BaseService with BaseController {
       ).catchError((error) => handleError(error, hideLoader: false));
       return res;
     } catch (e) {
-      exceptionLog('exception on  check subscription $e');
+      Log.ex('exception on  check subscription $e');
       return null;
     }
   }
@@ -47,7 +47,7 @@ class Repo extends BaseService with BaseController {
       ).catchError((error) => handleError(error));
       return response;
     } catch (e) {
-      exceptionLog('exception on  post bug $e');
+      Log.ex('exception on  post bug $e');
       return null;
     }
   }
@@ -73,7 +73,7 @@ class Repo extends BaseService with BaseController {
           },
           headers: Constants.marketingHeaders);
     } catch (e) {
-      exceptionLog('exception on  marketing api $e');
+      Log.ex('exception on  marketing api $e');
     }
   }
 }

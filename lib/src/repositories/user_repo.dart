@@ -17,7 +17,7 @@ class UserRepo extends BaseService with BaseController {
       if (res == null) return null;
       return Result.fromMap(res);
     } catch (e) {
-      exceptionLog('exception on  register user repo $e');
+      Log.ex('exception on  register user repo $e');
       return null;
     }
   }
@@ -59,7 +59,7 @@ class UserRepo extends BaseService with BaseController {
 
       return Result(code: 1, message: 'success', data: User.fromMap(res));
     } catch (e) {
-      exceptionLog('exception on  login user repo $e');
+      Log.ex('exception on  login user repo $e');
       return result;
     }
   }

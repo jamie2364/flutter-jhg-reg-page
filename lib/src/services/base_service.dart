@@ -25,11 +25,11 @@ class BaseService {
     try {
       final base = baseUrl ?? Urls.base.url;
       uri = Uri.parse(base + api).replace(queryParameters: queryParams);
-      requestLog(uri, 'GET');
+      Log.req(uri, 'GET');
       var response = await http
           .get(uri, headers: headers)
           .timeout(Duration(seconds: _apiTimeOut));
-      responseLog(api, response, 'GET');
+      Log.res(api, response, 'GET');
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(
@@ -54,7 +54,7 @@ class BaseService {
     var uri = Uri.parse(baseUrl ?? Urls.base.url + api)
         .replace(queryParameters: queryParams);
 
-    requestLog(uri, 'POST', body: payLoadObj);
+    Log.req(uri, 'POST', body: payLoadObj);
     try {
       var response = await http
           .post(
@@ -63,7 +63,7 @@ class BaseService {
             headers: headers,
           )
           .timeout(Duration(seconds: _apiTimeOut));
-      responseLog(api, response, 'POST');
+      Log.res(api, response, 'POST');
       return _processResponse(response);
     } on SocketException {
       throw FetchDataException(
@@ -133,7 +133,7 @@ class BaseService {
 mixin BaseController {
   Future<void> handleError(error, {bool hideLoader = true}) async {
     if (hideLoader) hideLoading();
-    dLog('error in basecontroller $error ${error.message}');
+    Log.d('error in basecontroller $error ${error.message}');
     if (error is BadRequestException) {
       showErrorToast(error.message.isEmpty
           ? Constants.productIdsFailedMessage
