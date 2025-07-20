@@ -14,10 +14,17 @@ class SubscriptionUrlScreen extends StatefulWidget {
 }
 
 class _SubscriptionState extends State<SubscriptionUrlScreen> {
+  late SubscriptionUrlController controller;
+
+  @override
+  void initState() {
+    controller = getIt<SubscriptionUrlController>()..initController();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = Utils.height(context);
-    final controller = getIt<SubscriptionUrlController>()..initController();
     return Scaffold(
       backgroundColor: JHGColors.primaryBlack,
       body: SafeArea(
