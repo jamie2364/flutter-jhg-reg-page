@@ -104,7 +104,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
               isCourseHub(widget.appName) ?
               "assets/images/jhg_logo.png" :
-              "assets/images/Copy of MUSICTOOLS.png",
+              "assets/images/Musictoolslogo.png",
               package: Constants.regPackage,
               height: maxHeight,
               width: maxWidth,
