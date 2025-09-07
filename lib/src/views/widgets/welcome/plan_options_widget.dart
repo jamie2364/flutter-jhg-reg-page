@@ -96,12 +96,11 @@ class PlanOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
-
+    
     return GestureDetector(
       onTap: () => onPlanSelect(planIndex),
       child: Container(
-        width: width > 768 ? 500 : width * 0.85,
+        width: Utils.sWidth(context),
         margin: EdgeInsets.only(bottom: bottomSpace),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),

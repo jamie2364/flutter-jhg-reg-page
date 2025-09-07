@@ -151,7 +151,7 @@ class Utils {
 
   static double screenHrPadding(BuildContext context) {
     final w = width(context);
-    double val = w <= 500 || (!kIsWeb && (w > 768 && w <= 1024))
+    double val = w <= 500 //|| (!kIsWeb && (w > 768 && w <= 1024))
         ? kBodyHrPadding
         : w > 500 && w <= 768
             ? w * .14
@@ -162,8 +162,14 @@ class Utils {
                     : w > 1440 && w <= 1920
                         ? w * .34
                         : w > 1920 && w <= 2560
-                            ? w * .44
+                            ? w * .38
                             : w * .64;
+    // print('width --------- $w $val');
     return val;
   }
+
+  static double sWidth([BuildContext? context]) =>
+      width(context ?? Nav.context) > 768
+          ? 500
+          : width(context ?? Nav.context) * 0.85;
 }
