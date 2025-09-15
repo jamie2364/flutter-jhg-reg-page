@@ -11,7 +11,7 @@ import 'package:reg_page/src/controllers/welcome/welcome_controller.dart';
 import 'package:reg_page/src/models/user_session.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
 
-final GetIt getIt = GetIt.instance;  
+final GetIt getIt = GetIt.instance;
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({
@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-   bool isCourseHub(String name) {
+  bool isCourseHub(String name) {
     const excludedText = "JHG";
     String result = name.replaceAll(excludedText, '');
     return result == "Course Hub" ? true : false;
@@ -88,8 +88,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     final constraints = MediaQuery.of(context).size;
-    final double maxHeight = constraints.height * 0.3;
-    final double maxWidth = constraints.width * 0.8;
+    final double maxHeight = constraints.height * 0.24;
+    final double maxWidth = constraints.width * 0.64;
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -101,10 +101,9 @@ class _SplashScreenState extends State<SplashScreen> {
             duration: const Duration(milliseconds: 2000),
             curve: Curves.linearToEaseOut,
             child: Image.asset(
-
-              isCourseHub(widget.appName) ?
-              "assets/images/jhg_logo.png" :
-              "assets/images/Musictoolslogo.png",
+              isCourseHub(widget.appName)
+                  ? "assets/images/jhg_logo.png"
+                  : "assets/images/Musictoolslogo.png",
               package: Constants.regPackage,
               height: maxHeight,
               width: maxWidth,

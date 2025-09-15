@@ -43,148 +43,154 @@ class _InfoScreenState extends State<InfoScreen> {
           horizontal: Utils.screenHrPadding(context),
         ),
         color: JHGColors.primaryBlack,
-        child: Padding(
-          padding: EdgeInsets.only(top: height * 0.04),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: height * 0.030,
-                ),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    JHGBackButton(),
-                    // GestureDetector(
-                    //   onTap: () {
-                    //     Navigator.pop(context);
-                    //   },
-                    //   child: Icon(
-                    //     Icons.arrow_back_ios,
-                    //     color: JHGColors.primaryWhite,
-                    //     size: 25,
-                    //   ),
-                    // ),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.030,
-                ),
-                AppInfoSection(
-                  title: Constants.appName,
-                  subtitle: getIt<SplashController>().appName,
-                ),
-                SizedBox(
-                  height: height * 0.010,
-                ),
-                AppInfoSection(
-                  title: Constants.version,
-                  subtitle: getIt<SplashController>().appVersion,
-                ),
-                SizedBox(
-                  height: height * 0.030,
-                ),
-                InfoButtonSection(
-                  title: Constants.viewPrivacyPolicy,
-                  onPressed: () {
-                    _launchUrl(Constants.policyPrivacyUrl);
-                  },
-                ),
-                InfoButtonSection(
-                  title: Constants.viewTermsOfUse,
-                  onPressed: () {
-                    _launchUrl(Constants.termAndServicesUrl);
-                  },
-                ),
-                InfoButtonSection(
-                  title: Constants.restorePurchases,
-                  onPressed: () {
-                    restorePopupDialog(
-                      context,
-                      Constants.restoreNotFound,
-                      Constants.restoreNotFoundDescription,
-                    );
-                  },
-                ),
-                kIsWeb
-                    ? const SizedBox()
-                    : Platform.isAndroid
-                        ? InfoButtonSection(
-                            title: Constants.cancelSubscription,
-                            onPressed: () {
-                              _launchUrl(Constants.cancelSubscriptionUrl);
-                            },
-                          )
-                        : const SizedBox(),
-                InfoButtonSection(
-                  title: Constants.visitJamieHarrisonGuitar,
-                  onPressed: () {
-                    _launchUrl(Urls.jhgUrl);
-                  },
-                ),
-                SizedBox(
-                  height: height * 0.045,
-                ),
-                Center(
-                  child: Text(
-                    Constants.appQuotes,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: JHGColors.secondaryWhite,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: Constants.kFontFamilySS3),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.01,
-                ),
-                Center(
-                  child: Text(
-                    Constants.williamShakespeare,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: JHGColors.secondaryWhite,
-                        fontSize: 11,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: Constants.kFontFamilySS3),
-                  ),
-                ),
-                SizedBox(
-                    height: height * 0.16,
-                    width: width,
-                    child: Center(
-                      child: SizedBox(
-                        height: height * 0.16,
-                        width: width * 0.6,
-                        child: Image.asset(
-                          "assets/images/jhg_sign.png",
-                          package: Constants.regPackage,
-                          fit: BoxFit.fill,
+        child: Column(
+          children: [
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: height * 0.04),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: height * 0.030,
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          JHGBackButton(),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * 0.030,
+                      ),
+                      AppInfoSection(
+                        title: Constants.appName,
+                        subtitle: getIt<SplashController>().appName,
+                      ),
+                      SizedBox(
+                        height: height * 0.010,
+                      ),
+                      AppInfoSection(
+                        title: Constants.version,
+                        subtitle: getIt<SplashController>().appVersion,
+                      ),
+                      SizedBox(
+                        height: height * 0.030,
+                      ),
+                      Center(
+                        child: InfoButtonSection(
+                          title: Constants.viewPrivacyPolicy,
+                          onPressed: () {
+                            _launchUrl(Constants.policyPrivacyUrl);
+                          },
                         ),
                       ),
-                    )),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Center(
-                  child: Text(
-                    Constants.copyRight,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: JHGColors.secondaryWhite,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: Constants.kFontFamilySS3,
-                    ),
+                      Center(
+                        child: InfoButtonSection(
+                          title: Constants.viewTermsOfUse,
+                          onPressed: () {
+                            _launchUrl(Constants.termAndServicesUrl);
+                          },
+                        ),
+                      ),
+                      Center(
+                        child: InfoButtonSection(
+                          title: Constants.restorePurchases,
+                          onPressed: () {
+                            restorePopupDialog(
+                              context,
+                              Constants.restoreNotFound,
+                              Constants.restoreNotFoundDescription,
+                            );
+                          },
+                        ),
+                      ),
+                      kIsWeb
+                          ? const SizedBox()
+                          : Platform.isAndroid
+                              ? Center(
+                                  child: InfoButtonSection(
+                                    title: Constants.cancelSubscription,
+                                    onPressed: () {
+                                      _launchUrl(
+                                          Constants.cancelSubscriptionUrl);
+                                    },
+                                  ),
+                                )
+                              : const SizedBox(),
+                      Center(
+                        child: InfoButtonSection(
+                          title: Constants.visitJamieHarrisonGuitar,
+                          onPressed: () {
+                            _launchUrl(Urls.jhgUrl);
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.045,
+                      ),
+                      Center(
+                        child: Text(
+                          Constants.appQuotes,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: JHGColors.secondaryWhite,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: Constants.kFontFamilySS3),
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      Center(
+                        child: Text(
+                          Constants.williamShakespeare,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: JHGColors.secondaryWhite,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: Constants.kFontFamilySS3),
+                        ),
+                      ),
+                      SizedBox(
+                          height: height * 0.16,
+                          width: width,
+                          child: Center(
+                              child: SizedBox(
+                            height: height * 0.16,
+                            width: width * 0.6,
+                            child: Image.asset(
+                              "assets/images/jhg_sign.png",
+                              package: Constants.regPackage,
+                              fit: BoxFit.fill,
+                            ),
+                          ))),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0, top: 8.0),
+              child: Center(
+                child: Text(
+                  Constants.copyRight,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: JHGColors.secondaryWhite,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: Constants.kFontFamilySS3,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -244,9 +250,9 @@ class InfoButtonSection extends StatelessWidget {
       child: GestureDetector(
         onTap: onPressed,
         child: Container(
-          height: height * 0.065,
-          width: width * 0.85,
-          padding: const EdgeInsets.only(left: 15, right: 9),
+          height: height * 0.07,
+          width: width * 0.9,
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             color: JHGColors.greyPrimary,
