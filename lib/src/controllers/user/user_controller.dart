@@ -113,17 +113,22 @@ class UserController {
     }
   }
 
-  Future<void> userLogin() async {
-    if (!loginFormKey.currentState!.validate()) return;
+  Future<void> loginUserForPlatform() async {
+    if (loginFormKey.currentState != null &&
+        !loginFormKey.currentState!.validate()) {
+      return;
+    }
     bool showingLoader = true;
     loaderDialog();
     try {
       final newUser = User(userName: userNameC.text, password: passC.text);
-      final loginRes =
-          await UserRepo().loginUser(newUser.toMapToLogin(), checkError: true);
+      final loginRes = await UserRepo().loginUser(
+        newUser.toMapToLogin(),
+        checkError: true,
+      );
 
       if (loginRes.code == 0) {
-        hideLoading();
+        if (!Constants.isTest) hideLoading();
         return;
       }
       SplashController splashController = getIt<SplashController>();
@@ -149,7 +154,7 @@ class UserController {
       await LocalDB.storeBearerToken(loggedInUser.token!);
       final subRes =
           await Repo().checkSubscription(splashController.productIds);
-      hideLoading();
+      if (!Constants.isTest) hideLoading();
       showingLoader = false;
       if (subRes == null) return;
       bool isActive = Utils.isSubscriptionActive(subRes,
@@ -165,7 +170,7 @@ class UserController {
         LocalDB.saveProductIds(splashController.productIds);
         LocalDB.saveLoginTime(DateTime.now().toIso8601String());
         Log.d(Constants.musictoolsApps.contains(appName));
-        hideLoading();
+        if (!Constants.isTest) hideLoading();
         Utils.handleNextScreenOnSuccess(appName);
         await LocalDB.storeSubscriptionPurchase(true);
         marketingApi(loggedInUser.email ?? '');
@@ -175,7 +180,7 @@ class UserController {
       }
     } catch (e) {
       if (showingLoader) hideLoading();
-      showErrorToast("Something Went Wrong ");
+      showErrorToast('Something Went Wdrong');
     }
   }
 

@@ -189,6 +189,7 @@ class LocalDB {
   static String appUserNameKey = "appUserName";
   static String appUserTokenKey = "appUserToken";
   static String appUserKey = "user";
+  static String downloadedKey = "downloaded";
 
   static Future<void> storeAppUser(User user) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -205,5 +206,15 @@ class LocalDB {
     } catch (e) {
       return null;
     }
+  }
+
+  static Future<void> saveIsFilesDownloaded(bool value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences.setBool(downloadedKey, value);
+  }
+
+  static Future<bool> get getIsFilesDownloaded async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(downloadedKey)?? false;
   }
 }

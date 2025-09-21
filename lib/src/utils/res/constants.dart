@@ -1,4 +1,5 @@
 class Constants {
+  Constants._();
   static const marketingHeaders = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
@@ -160,4 +161,6 @@ class Constants {
   }
 
   static String loginDesc(String url) => 'to $url';
+
+  static bool isTest = false;
 }

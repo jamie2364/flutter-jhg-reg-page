@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
@@ -13,8 +11,9 @@ class LoginScreen extends StatelessWidget {
     super.key,
     this.isAppLogin = false,
   });
+
   ///
-  ///It identifies the second time user login for the spcific platform/baseURL of that app. 
+  ///[isAppLogin] identifies the second time user login for the spcific platform/baseURL of that app.
   ///e.g. evolo for practice routines
   ///
   ///
@@ -88,6 +87,6 @@ class LoginScreen extends StatelessWidget {
   Future<void> onLogin(UserController controller) async {
     isAppLogin
         ? await controller.loginUserForApp()
-        : await controller.userLogin();
+        : await controller.loginUserForPlatform();
   }
 }

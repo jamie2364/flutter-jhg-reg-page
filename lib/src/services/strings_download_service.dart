@@ -52,23 +52,24 @@ class StringsDownloadService {
     final appName = Utils.getMtAppName;
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
-      await dio.download(url, file.path,
-          onReceiveProgress: (rec, total) {
+      await dio.download(url, file.path, onReceiveProgress: (rec, total) {
         int progress = (((rec / total) * 100).toInt());
-        // print("progress===${progress}");
         pd.update(value: progress);
         if (progress == 100) {
+          LocalDB.saveIsFilesDownloaded(true);
           showToast(
               context: context,
               message: "Audio files downloaded",
               isError: false);
           extractFiles(appName);
+        } else {
+          LocalDB.saveIsFilesDownloaded(false);
         }
       });
       return false;
     } on Exception catch (ex) {
       pd.close();
-      Log.ex("downloadString exception==$ex",name: url);
+      Log.ex('downloadString exception==$ex', name: url);
       return false;
     }
   }
@@ -76,7 +77,7 @@ class StringsDownloadService {
   Future<bool> isStringsDownloaded(String appName) async {
     File file = File("${dir!.path}/$folderAndFileName.zip");
 
-    if (!(await file.exists())) {
+    if (!(await file.exists() && await LocalDB.getIsFilesDownloaded)) {
       // ignore: use_build_context_synchronously
       bool isDownload = await _downloadStrings(Nav.key.currentState!.context);
       return isDownload;
