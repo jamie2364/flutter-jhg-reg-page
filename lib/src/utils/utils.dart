@@ -139,6 +139,9 @@ class Utils {
 
   static String get getMtAppName {
     String appName = getIt<SplashController>().appName;
+    if (appName.contains("JHG")) {
+      appName = appName.replaceAll("JHG", "");
+    }
     appName = appName.toLowerCase().replaceAll(' ', '-');
     return 'mt-$appName';
   }
