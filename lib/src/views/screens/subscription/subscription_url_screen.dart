@@ -39,7 +39,7 @@ class _SubscriptionState extends State<SubscriptionUrlScreen> {
               SizedBox(height: height * 0.1),
               const Heading(
                   text: Constants.chooseYourSubscriptionText, height: 320),
-              SizedBox(height: height * 0.08),
+              SizedBox(height: height * 0.05),
               Text(
                 Constants.subscriptionUrlSubText,
                 style: TextStyle(
