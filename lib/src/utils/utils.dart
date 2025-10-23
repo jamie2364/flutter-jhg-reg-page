@@ -147,10 +147,10 @@ class Utils {
   }
 
   static String get urlInText => Urls.base.isEqual(Urls.jhgUrl)
-      ? Constants.jhg
+      ? Constants.welcomeToJamieHarrison
       : Urls.base.isEqual(Urls.evoloUrl)
           ? Constants.evolo
-          : Constants.musictools;
+          : Constants.welcomeToMusicTools;
 
   static double screenHrPadding(BuildContext context) {
     final w = width(context);
