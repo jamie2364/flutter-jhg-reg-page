@@ -1,3 +1,4 @@
+import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
 import 'package:reg_page/src/models/user.dart';
@@ -66,25 +67,59 @@ class UserRepo extends BaseService with BaseController {
   }
 
   Future<Result?> lostPassword(String email) async {
-    try {
-      final res = await post(
-        Urls.lostPassword,
-        {'username': email},
-      ).catchError((error) {
-        handleError(error);
-        return null;
-      });
-      if (res == null) return null;
+    // Construct the full URL to the webpage, not an API endpoint
+    String url;
+    const String path = 'my-account/lost-password/';
 
-      if (res['code'] == 'reset_password_email_sent') {
+    if (Urls.base.isEqual(Urls.jhgUrl)) {
+      url = Urls.jhgUrl + path;
+    } else if (Urls.base.isEqual(Urls.musicUrl)) {
+      url = Urls.musicUrl + path;
+    } else if (Urls.base.isEqual(Urls.evoloUrl)) {
+      url = Urls.evoloUrl + path;
+    } else {
+      showErrorToast("Invalid password reset URL.");
+      return null;
+    }
+
+    try {
+      // We must send this as 'application/x-www-form-urlencoded'
+      // which mimics a browser form submission.
+      // The 'user_login' key is what WooCommerce expects.
+      final body = {'user_login': email};
+      final uri = Uri.parse(url);
+
+      Log.req(uri, 'POST (FORM)', body: body);
+
+      var response = await http.post(
+        uri,
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: body,
+      );
+
+      Log.d("Password reset response status: ${response.statusCode}");
+      Log.d("Password reset final URL: ${response.request?.url.toString()}");
+
+      // SUCCESS: The http client follows the 302 redirect automatically.
+      // We check if the *final* URL it landed on is the success page.
+      if (response.request != null &&
+          response.request!.url.toString().contains('reset-link-sent=true')) {
         return Result(code: 1, message: Constants.passwordRecoveryEmailSent);
-      } else {
-        // This case might not be hit if errors are thrown as exceptions
-        showErrorToast(res['message'] ?? 'Unknown error');
-        return Result(code: 0, message: res['message']);
+      }
+      // FAIL: The page reloaded but showed an error (e.g., invalid email)
+      else if (response.statusCode == 200 &&
+          response.body.contains('woocommerce-error')) {
+        showErrorToast("Invalid username or email.");
+        return null;
+      }
+      // FAIL: Other unexpected error
+      else {
+        showErrorToast('Could not reset password. Please try again.');
+        return null;
       }
     } catch (e) {
       Log.ex('exception on lostPassword repo $e');
+      handleError(e);
       return null;
     }
   }
