@@ -149,7 +149,10 @@ class Constants {
   static const String logout = 'Logout';
   static const String courseHUB = 'Course Hub';
   static const String practiceRoutines = 'Practice Routines';
-
+  static const String forgetPassword = 'Forget Password?';
+  static const String resetPassword = 'Reset Password';
+  static const String passwordRecoveryEmailSent =
+      'Password recovery email sent successfully. Please check your inbox.';
   static const kFontFamilySS3 = 'SourceSans3';
 
   static const String getStarted = 'Get Started';

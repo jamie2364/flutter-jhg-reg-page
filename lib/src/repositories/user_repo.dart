@@ -2,6 +2,7 @@ import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
 import 'package:reg_page/src/models/user.dart';
 import 'package:reg_page/src/services/base_service.dart';
+import 'package:reg_page/src/utils/res/constants.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
 
 class UserRepo extends BaseService with BaseController {
@@ -61,6 +62,30 @@ class UserRepo extends BaseService with BaseController {
     } catch (e) {
       Log.ex('exception on  login user repo $e');
       return result;
+    }
+  }
+
+  Future<Result?> lostPassword(String email) async {
+    try {
+      final res = await post(
+        Urls.lostPassword,
+        {'username': email},
+      ).catchError((error) {
+        handleError(error);
+        return null;
+      });
+      if (res == null) return null;
+
+      if (res['code'] == 'reset_password_email_sent') {
+        return Result(code: 1, message: Constants.passwordRecoveryEmailSent);
+      } else {
+        // This case might not be hit if errors are thrown as exceptions
+        showErrorToast(res['message'] ?? 'Unknown error');
+        return Result(code: 0, message: res['message']);
+      }
+    } catch (e) {
+      Log.ex('exception on lostPassword repo $e');
+      return null;
     }
   }
 }
