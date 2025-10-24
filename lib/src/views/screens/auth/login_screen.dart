@@ -4,7 +4,10 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/toast/show_toast.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({
@@ -69,6 +72,26 @@ class LoginScreen extends StatelessWidget {
                         label: Constants.passwordHint,
                         onSubmitted: (val) => onLogin(controller),
                       ),
+                      SizedBox(height: height * 0.02),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            final resetUrl =
+                                '${Urls.base.url}wp-login.php?action=lostpassword';
+                            _launchUrl(resetUrl);
+                          },
+                          child: Text(
+                            'Forget Password?',
+                            style: TextStyle(
+                              color: JHGColors.primary,
+                              fontFamily: Constants.kFontFamilySS3,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -82,6 +105,17 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    try {
+      if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+        showErrorToast('Could not launch $uri');
+      }
+    } catch (e) {
+      showErrorToast('Could not launch $uri: $e');
+    }
   }
 
   Future<void> onLogin(UserController controller) async {
