@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
@@ -91,24 +93,42 @@ class UserRepo extends BaseService with BaseController {
 
       Log.req(uri, 'POST (FORM)', body: body);
 
-      var response = await http.post(
-        uri,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: body,
-      );
+      // Create a client that does NOT follow redirects
+      final client = http.Client();
+      final request = http.Request('POST', uri)
+        ..headers.addAll({
+          'Content-Type': 'application/x-www-form-urlencoded',
+        })
+        ..followRedirects = false // Do not follow the 302 redirect
+        ..body = body.entries
+            .map((e) =>
+                '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+            .join('&'); // Correctly encode the form body
 
-      Log.d("Password reset response status: ${response.statusCode}");
-      Log.d("Password reset final URL: ${response.request?.url.toString()}");
+      final response = await client.send(request);
+      final streamedResponse = await http.Response.fromStream(response);
 
-      // SUCCESS: The http client follows the 302 redirect automatically.
-      // We check if the *final* URL it landed on is the success page.
-      if (response.request != null &&
-          response.request!.url.toString().contains('reset-link-sent=true')) {
-        return Result(code: 1, message: Constants.passwordRecoveryEmailSent);
+      Log.d("Password reset response status: ${streamedResponse.statusCode}");
+      Log.d("Password reset headers: ${streamedResponse.headers}");
+
+      // SUCCESS:
+      // A successful form submission will return a 302 redirect.
+      // We check the 'location' header for the success parameter.
+      if (streamedResponse.statusCode == 302 ||
+          streamedResponse.statusCode == 301) {
+        final location = streamedResponse.headers[HttpHeaders.locationHeader];
+        if (location != null && location.contains('reset-link-sent=true')) {
+          return Result(code: 1, message: Constants.passwordRecoveryEmailSent);
+        } else {
+          // It redirected, but not to the success page. This means an error.
+          showErrorToast("Invalid username or email.");
+          return null;
+        }
       }
-      // FAIL: The page reloaded but showed an error (e.g., invalid email)
-      else if (response.statusCode == 200 &&
-          response.body.contains('woocommerce-error')) {
+      // FAIL: The page loaded again (status 200), meaning an error message
+      // is displayed on the page itself.
+      else if (streamedResponse.statusCode == 200 &&
+          streamedResponse.body.contains('woocommerce-error')) {
         showErrorToast("Invalid username or email.");
         return null;
       }
