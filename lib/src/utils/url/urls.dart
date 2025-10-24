@@ -24,5 +24,5 @@ class Urls {
   static const _apiBase = '/wp-json/custom/v1/users';
   static String register = '$_apiBase/register';
 
-  static const String lostPassword = 'wp-json/wp/v2/users/lost-password';
+  static const String lostPassword = '/my-account/lost-password/';
 }
