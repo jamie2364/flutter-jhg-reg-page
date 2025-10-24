@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  html: ^0.15.4 # <-- ADD THIS LINE
   shared_preferences: ^2.5.3
   dio: ^5.8.0+1
   connectivity_plus: ^6.1.4

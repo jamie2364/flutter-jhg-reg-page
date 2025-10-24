@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:html/parser.dart' as html_parser;
 import 'package:http/http.dart' as http;
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/models/result.dart';
@@ -69,41 +70,63 @@ class UserRepo extends BaseService with BaseController {
   }
 
   Future<Result?> lostPassword(String email) async {
-    // Construct the full URL to the webpage, not an API endpoint
-    String url;
     const String path = 'my-account/lost-password/';
-
-    if (Urls.base.isEqual(Urls.jhgUrl)) {
-      url = Urls.jhgUrl + path;
-    } else if (Urls.base.isEqual(Urls.musicUrl)) {
-      url = Urls.musicUrl + path;
-    } else if (Urls.base.isEqual(Urls.evoloUrl)) {
-      url = Urls.evoloUrl + path;
-    } else {
-      showErrorToast("Invalid password reset URL.");
+    String baseUrl = Urls.base.url;
+    if (baseUrl.isEmpty) {
+      showErrorToast("Invalid URL. Please restart the app.");
       return null;
     }
+    String pageUrl = baseUrl + path;
+    final client = http.Client();
 
     try {
-      // We must send this as 'application/x-www-form-urlencoded'
-      // which mimics a browser form submission.
-      // The 'user_login' key is what WooCommerce expects.
-      final body = {'user_login': email};
-      final uri = Uri.parse(url);
+      // STEP 1: GET the page to get the security tokens (nonces)
+      final getResponse = await client.get(Uri.parse(pageUrl));
+      if (getResponse.statusCode != 200) {
+        throw Exception('Could not load password reset page.');
+      }
 
+      // Parse the HTML to find the hidden form fields
+      final document = html_parser.parse(getResponse.body);
+      final form = document.querySelector('form.woocommerce-ResetPassword');
+      if (form == null) {
+        throw Exception('Could not find reset form.');
+      }
+
+      // Find the nonce field
+      final nonceElement =
+          form.querySelector('input[name="woocommerce-lost-password-nonce"]');
+      final nonce = nonceElement?.attributes['value'];
+
+      // Find the redirect field
+      final refererElement = form.querySelector('input[name="_wp_http_referer"]');
+      final referer = refererElement?.attributes['value'];
+
+      if (nonce == null) {
+        throw Exception('Could not find security token.');
+      }
+
+      // STEP 2: POST the form with the user's email AND the hidden fields
+      final body = {
+        'user_login': email,
+        'woocommerce-lost-password-nonce': nonce,
+        '_wp_http_referer': referer ?? '',
+      };
+
+      final uri = Uri.parse(pageUrl); // POST to the same page
       Log.req(uri, 'POST (FORM)', body: body);
 
-      // Create a client that does NOT follow redirects
-      final client = http.Client();
       final request = http.Request('POST', uri)
         ..headers.addAll({
           'Content-Type': 'application/x-www-form-urlencoded',
+          // We need to send the cookie from the GET request back
+          'cookie': getResponse.headers['set-cookie'] ?? '',
         })
         ..followRedirects = false // Do not follow the 302 redirect
         ..body = body.entries
             .map((e) =>
                 '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-            .join('&'); // Correctly encode the form body
+            .join('&');
 
       final response = await client.send(request);
       final streamedResponse = await http.Response.fromStream(response);
@@ -141,6 +164,8 @@ class UserRepo extends BaseService with BaseController {
       Log.ex('exception on lostPassword repo $e');
       handleError(e);
       return null;
+    } finally {
+      client.close();
     }
   }
 }
