@@ -98,8 +98,7 @@ class _WelcomeState extends State<WelcomeScreen> {
                           top: MediaQuery.of(context).padding.top +
                               height * 0.01,
                           child: JHGIconButton(
-                            iconData: Icons.info_rounded,
-                            size: 30,
+                            iconData: LucideIcons.info300,
                             onTap: () => Nav.to(InfoScreen(
                               callback: controller.restorePurchase,
                             )),

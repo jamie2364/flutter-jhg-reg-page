@@ -33,7 +33,7 @@ void showPlanInfoDialog(
                 child: InkWell(
                   onTap: () => Navigator.pop(context),
                   child: const Icon(
-                    Icons.close,
+                    LucideIcons.x300,
                     color: Color(0xFFE0E0E0),
                   ),
                 ),
@@ -79,7 +79,7 @@ void showPlanInfoDialog(
                               child: Row(
                                 children: [
                                   const Icon(
-                                    Icons.check_circle_outlined,
+                                    LucideIcons.circleCheck300,
                                     color: JHGColors.primary,
                                   ),
                                   const SizedBox(width: 15),

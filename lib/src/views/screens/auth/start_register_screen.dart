@@ -47,7 +47,7 @@ class _StartRegisterScreenState extends State<StartRegisterScreen> {
         bodyAppBar: JHGAppBar(
           autoImplyLeading: false,
           trailingWidget: JHGIconButton(
-            iconData: Icons.logout,
+            iconData: LucideIcons.logOut300,
             enabled: true,
             childPadding: const EdgeInsets.all(4),
             onTap: () => Utils.logOut(context),
@@ -169,11 +169,11 @@ class SearchDropDown<T> extends StatelessWidget {
               ),
               textStyle: JHGTextStyles.subLabelStyle,
               suffixIcon: (onClear) => JHGIconButton(
-                iconData: Icons.close,
+                iconData: LucideIcons.x300,
                 onTap: onClear,
               ),
               prefixIcon: const Icon(
-                Icons.search,
+                LucideIcons.search300,
                 color: JHGColors.white,
               ),
               constraints: const BoxConstraints(),
@@ -185,9 +185,9 @@ class SearchDropDown<T> extends StatelessWidget {
               splashColor: JHGColors.primary,
             ),
             closedSuffixIcon:
-                const Icon(Icons.arrow_drop_down, color: JHGColors.white),
+                const Icon(LucideIcons.chevronDown300, color: JHGColors.white),
             expandedSuffixIcon:
-                const Icon(Icons.arrow_drop_up_rounded, color: JHGColors.white),
+                const Icon(LucideIcons.chevronUp300, color: JHGColors.white),
             headerStyle: style,
           ),
           initialItem: value,

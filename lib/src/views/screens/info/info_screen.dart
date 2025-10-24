@@ -269,8 +269,7 @@ class InfoButtonSection extends StatelessWidget {
                     fontFamily: Constants.kFontFamilySS3),
               ),
               Icon(
-                Icons.arrow_forward_ios,
-                color: JHGColors.secondaryWhite,
+                LucideIcons.chevronRight300, color: JHGColors.secondaryWhite,
                 // size: 30,
               ),
             ],

@@ -96,7 +96,7 @@ class PlanOptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    
+
     return GestureDetector(
       onTap: () => onPlanSelect(planIndex),
       child: Container(
@@ -172,7 +172,7 @@ class PlanOptionWidget extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: Icon(
-                        Icons.done,
+                        LucideIcons.squareCheckBig300,
                         color: JHGColors.primaryBlack,
                         size: height * 0.02,
                       ),

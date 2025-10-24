@@ -73,7 +73,7 @@ class PlatformSelectionWidget extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.center,
                       child: Icon(
-                        Icons.done,
+                        LucideIcons.squareCheckBig300,
                         color: JHGColors.primaryBlack,
                         size: height * 0.02,
                       ),
