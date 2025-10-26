@@ -4,7 +4,9 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/controllers/user/user_controller.dart';
 import 'package:reg_page/src/utils/res/constants.dart';
+import 'package:reg_page/src/utils/url/urls.dart';
 import 'package:reg_page/src/views/widgets/heading.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({
@@ -18,6 +20,18 @@ class LoginScreen extends StatelessWidget {
   ///
   ///
   final bool isAppLogin;
+
+  Future<void> _launchUrl(String url) async {
+    if (url.isEmpty) {
+      showErrorToast("Invalid URL. Please restart the app.");
+      return;
+    }
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      showErrorToast("Could not open link.");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = Utils.height(context);
@@ -74,7 +88,9 @@ class LoginScreen extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: GestureDetector(
                           onTap: () {
-                            Nav.to(const ForgetPasswordScreen());
+                            final url =
+                                '${Urls.base.url}my-account/lost-password/';
+                            _launchUrl(url);
                           },
                           child: Text(
                             Constants.forgetPassword,

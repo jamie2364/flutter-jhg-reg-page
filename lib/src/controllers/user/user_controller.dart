@@ -16,7 +16,6 @@ class UserController {
   final GlobalKey<FormState> compRegFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final GlobalKey<FormState> updateFormKey = GlobalKey<FormState>();
-  final GlobalKey<FormState> forgetPasswordFormKey = GlobalKey<FormState>();
 
   final TextEditingController fNameC = TextEditingController();
   final TextEditingController lNameC = TextEditingController();
@@ -24,7 +23,6 @@ class UserController {
   final TextEditingController emailC = TextEditingController();
   final TextEditingController passC = TextEditingController();
   final TextEditingController confirmPassC = TextEditingController();
-  final TextEditingController forgetEmailC = TextEditingController();
 
   String? selectedCountry = Contact.countries.first.name;
   bool tryAgain = false;
@@ -183,20 +181,6 @@ class UserController {
     } catch (e) {
       if (showingLoader) hideLoading();
       showErrorToast('Something Went Wdrong');
-    }
-  }
-
-  Future<void> sendPasswordResetEmail() async {
-    if (!forgetPasswordFormKey.currentState!.validate()) return;
-    loaderDialog();
-    final res = await _repo.lostPassword(forgetEmailC.text);
-    hideLoading();
-    if (res != null && res.code == 1) {
-      showToast(message: res.message ?? Constants.passwordRecoveryEmailSent);
-      forgetEmailC.clear();
-      Nav.back();
-    } else {
-      // Error toast is handled by the repo/base service
     }
   }
 
