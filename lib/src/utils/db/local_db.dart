@@ -126,9 +126,10 @@ class LocalDB {
     return purchase;
   }
 
-  static Future<void> clearLocalDB() async {
+  static Future<void> clearLocalDB({bool isStringsDownloaded = true}) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
+    await sharedPreferences.setBool(downloadedKey, isStringsDownloaded);
   }
 
   static Future<void> saveBaseUrl(String value) async {
@@ -215,6 +216,6 @@ class LocalDB {
 
   static Future<bool> get getIsFilesDownloaded async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getBool(downloadedKey)?? false;
+    return sharedPreferences.getBool(downloadedKey) ?? false;
   }
 }

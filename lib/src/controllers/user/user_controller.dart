@@ -177,7 +177,7 @@ class UserController {
         await LocalDB.storeSubscriptionPurchase(true);
         marketingApi(loggedInUser.email ?? '');
       } else {
-        await LocalDB.clearLocalDB();
+        await LocalDB.clearLocalDB(isStringsDownloaded: false);
         showErrorToast(Constants.noSubscriptionMessage);
       }
     } catch (e) {
