@@ -120,14 +120,15 @@ class _InfoScreenState extends State<InfoScreen> {
                                   ),
                                 )
                               : const SizedBox(),
-                      Center(
-                        child: InfoButtonSection(
-                          title: Constants.visitJamieHarrisonGuitar,
-                          onPressed: () {
-                            _launchUrl(Urls.jhgUrl);
-                          },
+                      if (Platform.isIOS)
+                        Center(
+                          child: InfoButtonSection(
+                            title: Constants.visitJamieHarrisonGuitar,
+                            onPressed: () {
+                              _launchUrl(Urls.jhgUrl);
+                            },
+                          ),
                         ),
-                      ),
                       SizedBox(
                         height: height * 0.045,
                       ),
