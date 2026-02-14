@@ -29,7 +29,7 @@ dependencies:
     # path: ../flutter_jhg_elements
     git:
       url: https://github.com/jamie2364/flutter_jhg_elements
-      ref: lucid-icon
+      ref: new_widgets_ui
   get_it: ^8.0.3
   animated_custom_dropdown: ^3.1.1
   device_info_plus: ^11.4.0
