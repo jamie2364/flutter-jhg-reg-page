@@ -4,9 +4,9 @@ class Urls {
   Urls._();
   static BaseUrl base = BaseUrl.empty;
 
-  static const String jhgUrl = 'https://www.Jamieharrisonguitar.com/';
-  static const String evoloUrl = 'https://www.evolo.app/';
-  static const String musicUrl = 'https://www.musictools.io/';
+  static const String jhgUrl = 'https://Jamieharrisonguitar.com/';
+  static const String evoloUrl = 'https://evolo.app/';
+  static const String musicUrl = 'https://musictools.io/';
 
   static const String marketingUrl =
       'https://app.bentonow.com/api/v1/batch/subscribers?site_uuid=f0eba21f0b6640bbbe47fedefa843b0f';
