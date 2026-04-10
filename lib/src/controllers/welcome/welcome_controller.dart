@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/foundation.dart';
@@ -234,6 +235,22 @@ class WelcomeController {
       loaderDialog();
       final productIds = await Repo().getProductIds(appName);
       if (productIds == null) return;
+      getIt<SplashController>().productIds = productIds;
+      hideLoading();
+      Nav.to(const LoginScreen());
+      return;
+    }
+    // On Android, skip the external platform selection screen to comply with
+    // Google Play Payments policy. Go directly to LoginScreen using the
+    // musictools base URL.
+    if (!kIsWeb && Platform.isAndroid) {
+      Urls.base = BaseUrl.musictools;
+      loaderDialog();
+      final productIds = await Repo().getProductIds(appName);
+      if (productIds == null) {
+        hideLoading();
+        return;
+      }
       getIt<SplashController>().productIds = productIds;
       hideLoading();
       Nav.to(const LoginScreen());
