@@ -240,22 +240,6 @@ class WelcomeController {
       Nav.to(const LoginScreen());
       return;
     }
-    // On Android, skip the external platform selection screen to comply with
-    // Google Play Payments policy. Go directly to LoginScreen using the
-    // musictools base URL.
-    if (!kIsWeb && Platform.isAndroid) {
-      Urls.base = BaseUrl.musictools;
-      loaderDialog();
-      final productIds = await Repo().getProductIds(appName);
-      if (productIds == null) {
-        hideLoading();
-        return;
-      }
-      getIt<SplashController>().productIds = productIds;
-      hideLoading();
-      Nav.to(const LoginScreen());
-      return;
-    }
     Nav.to(const SubscriptionUrlScreen());
   }
 
