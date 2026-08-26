@@ -4,7 +4,10 @@ class Urls {
   Urls._();
   static BaseUrl base = BaseUrl.empty;
 
-  static const String jhgUrl = 'https://Jamieharrisonguitar.com/';
+  // Must use the canonical www host: the apex (with or without the capital J)
+  // 301-redirects to https://www.jamieharrisonguitar.com/, and dart:io does not
+  // follow a 301 on POST, which surfaced login as "Error Occured with code: 301".
+  static const String jhgUrl = 'https://www.jamieharrisonguitar.com/';
   static const String evoloUrl = 'https://evolo.app/';
   static const String musicUrl = 'https://musictools.io/';
 
