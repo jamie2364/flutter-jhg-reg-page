@@ -143,10 +143,17 @@ class WelcomeController {
             Constants.restoreNotFound, Constants.restoreNotFoundDescription);
       } else {
         for (PurchaseDetails purchaseDetails in purchaseDetailsList) {
-          if (purchaseDetails.status == PurchaseStatus.purchased) {
+          if (purchaseDetails.status == PurchaseStatus.purchased ||
+              purchaseDetails.status == PurchaseStatus.restored) {
             await _onPurchasedSuccess();
             Nav.off(spController.nextPage());
-          } else if (purchaseDetails.pendingCompletePurchase) {
+          } else if (purchaseDetails.status == PurchaseStatus.error ||
+              purchaseDetails.status == PurchaseStatus.canceled) {
+            // Terminal, non-success states must dismiss the loader, otherwise
+            // the spinner hangs forever (App Store 2.1(a) rejection).
+            hideLoading();
+          }
+          if (purchaseDetails.pendingCompletePurchase) {
             await InAppPurchase.instance.completePurchase(purchaseDetails);
           }
         }
@@ -193,21 +200,50 @@ class WelcomeController {
 
   // Purchase subscription
   Future<void> purchaseSubscription(int plan) async {
+    // StoreKit returned no products (still loading, no network, or the IAP
+    // products are not available in this store/review environment). Never show
+    // a loader we cannot dismiss — bail out with a clear message instead.
+    // (This was the cause of the App Store "activity indicator spun
+    // indefinitely" rejection: products[index] threw a RangeError that the old
+    // `on PlatformException` catch did not handle, so the loader never hid.)
+    if (products.isEmpty) {
+      showToast(
+          message:
+              'Subscriptions are currently unavailable. Please check your internet connection and try again.',
+          isError: true);
+      return;
+    }
     try {
       loaderDialog();
       Log.d("SELECTED PLAN IS $plan");
 
-      int selectedProductIndex = _getProductIndex(plan);
+      final int selectedProductIndex = _getProductIndex(plan);
+      if (selectedProductIndex < 0 || selectedProductIndex >= products.length) {
+        hideLoading();
+        showToast(
+            message: 'The selected plan is unavailable right now.',
+            isError: true);
+        return;
+      }
+
+      if (!await inAppPurchase.isAvailable()) {
+        hideLoading();
+        showToast(
+            message: 'In-App Purchases are not available on this device.',
+            isError: true);
+        return;
+      }
 
       final PurchaseParam param =
           PurchaseParam(productDetails: products[selectedProductIndex]);
-
-      if (await inAppPurchase.isAvailable()) {
-        await inAppPurchase.buyNonConsumable(purchaseParam: param);
-      }
-    } on PlatformException catch (e) {
+      await inAppPurchase.buyNonConsumable(purchaseParam: param);
+      // Loader stays until the purchase stream (_listenToPurchase) resolves it.
+    } catch (e) {
       hideLoading();
-      showToast(message: e.message!, isError: true);
+      Log.ex(e.toString(), name: 'purchaseSubscription');
+      showToast(
+          message: 'Could not start the purchase. Please try again.',
+          isError: true);
     }
   }
 
