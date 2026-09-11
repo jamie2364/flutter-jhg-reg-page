@@ -35,10 +35,8 @@ class _AccountCheckScreenState extends State<AccountCheckScreen> {
             ? null
             : JHGAppBar(
                 autoImplyLeading: false,
-                trailingWidget: JHGIconButton(
-                  iconData: LucideIcons.logOut300,
-                  enabled: true,
-                  childPadding: const EdgeInsets.all(4),
+                trailingWidget: JhgIconChipButton.header(
+                  icon: LucideIcons.logOut,
                   onTap: () => Utils.logOut(),
                 ),
               ),

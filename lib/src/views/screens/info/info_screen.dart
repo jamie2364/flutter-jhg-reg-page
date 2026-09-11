@@ -56,10 +56,12 @@ class _InfoScreenState extends State<InfoScreen> {
                       SizedBox(
                         height: height * 0.030,
                       ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          JHGBackButton(),
+                          JhgBackChip(
+                            onTap: () => Navigator.of(context).maybePop(),
+                          ),
                         ],
                       ),
                       SizedBox(
