@@ -53,28 +53,43 @@ class StringsDownloadService {
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
       await dio.download(url, file.path, onReceiveProgress: (rec, total) {
-        int progress = (((rec / total) * 100).toInt());
-        pd.update(value: progress);
-        if (progress == 100) {
-          LocalDB.saveIsFilesDownloaded(true);
-          showToast(
-              context: context,
-              message: "Audio files downloaded",
-              isError: false);
-          extractFiles(appName);
-        } else {
-          LocalDB.saveIsFilesDownloaded(false);
+        // total is -1 when the server sends no Content-Length, so drive the bar
+        // only when we actually know the size. Never treat progress here as the
+        // "download finished" signal (see below).
+        if (total > 0) {
+          pd.update(value: (((rec / total) * 100).toInt()));
         }
       });
-      return false;
+
+      // The await above only returns once the whole file has been written to
+      // disk, so THIS is the reliable "done" point. The old code saved the
+      // downloaded flag inside the progress callback guarded by
+      // `progress == 100`, which never fired when the server omitted
+      // Content-Length (total == -1) — so the flag stayed false and the app
+      // re-downloaded the audio on every launch.
+      await LocalDB.saveIsFilesDownloaded(true);
+      extractFiles(appName);
+      pd.close();
+      showToast(
+          context: context,
+          message: "Audio files downloaded",
+          isError: false);
+      return true;
     } on Exception catch (ex) {
       pd.close();
+      await LocalDB.saveIsFilesDownloaded(false);
       Log.ex('downloadString exception==$ex', name: url);
       return false;
     }
   }
 
   Future<bool> isStringsDownloaded(String appName) async {
+    // The constructor kicks off init() but does not await it, so dir may still
+    // be null on the first launch when the home screen calls in. Make sure the
+    // directory is ready before we touch it.
+    if (dir == null) {
+      await init();
+    }
     File file = File("${dir!.path}/$folderAndFileName.zip");
 
     if (!(await file.exists() && await LocalDB.getIsFilesDownloaded)) {
