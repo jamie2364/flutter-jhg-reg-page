@@ -8,14 +8,34 @@ import 'package:flutter_jhg_elements/jhg_elements.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:reg_page/reg_page.dart';
 import 'package:reg_page/src/utils/url/urls.dart';
-import 'package:sn_progress_dialog/progress_dialog.dart';
 
+/// Downloads an app's audio pack (hosted on the web deploy) once per install and
+/// extracts it to local storage so the native/C++ engine can open real files.
+///
+/// Design notes — the two bugs this class used to have:
+///
+///  1. "Re-downloads on every launch." The old gate relied on a `downloaded`
+///     bool in SharedPreferences. But `LocalDB.clearLocalDB()` runs on several
+///     splash paths (expired/invalid subscription, logout) and wipes every
+///     pref, so the flag kept resetting and the download dialog reappeared on
+///     each cold start. The gate now lives on disk: a per-app sentinel file
+///     written only after a successful extract. Pref clears can't touch it.
+///
+///  2. "Ugly, dated dialog." The old code used `sn_progress_dialog`. The
+///     progress UI is now a suite-styled frosted card built from JHG tokens.
+///
+/// It is also graceful: if the network/CDN is unavailable but the audio was
+/// already extracted on a previous run, it stays silent and does nothing.
 class StringsDownloadService {
   static final StringsDownloadService _instance =
       StringsDownloadService._internal();
 
   Directory? dir;
   final String folderAndFileName = "audio_strings";
+
+  /// Guards against two overlapping download attempts (e.g. splash + home both
+  /// calling in on a fast first launch).
+  bool _inFlight = false;
 
   factory StringsDownloadService() {
     return _instance;
@@ -31,94 +51,318 @@ class StringsDownloadService {
           ? getApplicationSupportDirectory()
           : getApplicationDocumentsDirectory());
       Directory directory = Directory("${dir?.path}/assets/");
-      directory.create();
+      await directory.create(recursive: true);
     }
   }
 
-  Future<bool> _downloadStrings(BuildContext context) async {
-    ProgressDialog pd = ProgressDialog(context: context);
-    pd.show(
-        max: 100,
-        msg: 'Downloading Audio Files',
-        barrierColor: Colors.black87,
-        backgroundColor: JHGColors.dialogBackground,
-        surfaceTintColor: JHGColors.dialogBackground,
-        progressBgColor: JHGColors.white,
-        progressValueColor: JHGColors.primary,
-        msgColor: JHGColors.white,
-        valueColor: JHGColors.white);
+  /// Absolute path to the extracted asset root (`<dir>/assets`).
+  String? get assetsPath => dir == null ? null : "${dir!.path}/assets";
+
+  /// Per-app sentinel marking a completed, verified extraction. Kept on disk so
+  /// it survives `LocalDB.clearLocalDB()`. Deliberately NOT a dotfile — hidden
+  /// files behaved unreliably across launches on iOS.
+  File _readyMarker(String appName) =>
+      File("${dir!.path}/assets/audio_${appName}_ready.flag");
+
+  /// Marks that a first download has been attempted (whether or not it
+  /// succeeded). Used to show the progress dialog only on the very first try;
+  /// later retries run silently in the background and self-heal once the
+  /// server-side pack appears.
+  File _attemptMarker(String appName) =>
+      File("${dir!.path}/assets/audio_${appName}_attempted.flag");
+
+  /// True when this install has already downloaded and extracted the pack.
+  /// Accepts either the sentinel OR real extracted audio on disk, so a flaky
+  /// marker write can never force a re-download when the pack is clearly there.
+  Future<bool> _alreadyProvisioned(String appName) async {
+    if (dir == null) return false;
+    try {
+      if (await _readyMarker(appName).exists()) return true;
+      return await _hasExtractedAudio();
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// True when at least one real audio file has already been extracted into the
+  /// pack directory by a previous successful download.
+  Future<bool> _hasExtractedAudio() async {
+    try {
+      final root = Directory("${dir!.path}/assets");
+      if (!await root.exists()) return false;
+      await for (final e in root.list(recursive: true, followLinks: false)) {
+        if (e is File) {
+          final p = e.path.toLowerCase();
+          if (p.endsWith('.mp3') || p.endsWith('.wav')) return true;
+        }
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  /// [showUi] drives whether the modal dialog and toasts appear. It is true on
+  /// the first attempt of an install and false for silent background retries.
+  Future<bool> _downloadStrings(
+      BuildContext? context, String appName, bool showUi) async {
+    final progress = ValueNotifier<double?>(null);
+    final dialog =
+        _AudioDownloadDialog.show(showUi ? context : null, progress);
+
     File file = File("${dir!.path}/$folderAndFileName.zip");
     final dio = Dio();
-    final appName = Utils.getMtAppName;
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
       await dio.download(url, file.path, onReceiveProgress: (rec, total) {
-        // total is -1 when the server sends no Content-Length, so drive the bar
-        // only when we actually know the size. Never treat progress here as the
-        // "download finished" signal (see below).
-        if (total > 0) {
-          pd.update(value: (((rec / total) * 100).toInt()));
-        }
+        // total is -1 when the server sends no Content-Length. Drive the bar
+        // only when the size is known; otherwise leave it indeterminate.
+        progress.value = total > 0 ? rec / total : null;
       });
 
-      // The await above only returns once the whole file has been written to
-      // disk, so THIS is the reliable "done" point. The old code saved the
-      // downloaded flag inside the progress callback guarded by
-      // `progress == 100`, which never fired when the server omitted
-      // Content-Length (total == -1) — so the flag stayed false and the app
-      // re-downloaded the audio on every launch.
-      await LocalDB.saveIsFilesDownloaded(true);
+      // The await above only returns once the whole file is on disk, so this is
+      // the reliable "done" point.
       extractFiles(appName);
-      pd.close();
-      showToast(
-          context: context,
-          message: "Audio files downloaded",
-          isError: false);
+
+      // Mark success on disk (survives pref clears) AND in prefs (back-compat
+      // with any code still reading the old flag).
+      final marker = _readyMarker(appName);
+      await marker.create(recursive: true);
+      debugPrint('[AudioDL] wrote marker=${marker.path} '
+          'exists=${await marker.exists()}');
+      await LocalDB.saveIsFilesDownloaded(true);
+
+      // The zip is dead weight once extracted — drop it to reclaim space.
+      try {
+        if (await file.exists()) await file.delete();
+      } catch (_) {}
+
+      await dialog.close();
+      if (showUi && context != null && context.mounted) {
+        showToast(
+            context: context, message: "Audio files ready", isError: false);
+      }
       return true;
     } on Exception catch (ex) {
-      pd.close();
+      await dialog.close();
       await LocalDB.saveIsFilesDownloaded(false);
+      debugPrint('[AudioDL] FAILED url=$url ex=$ex');
       Log.ex('downloadString exception==$ex', name: url);
+      // Intentionally silent. A failed download is never surfaced to the user:
+      // the app keeps whatever audio it already has and quietly retries on a
+      // later launch. No error banner.
       return false;
     }
   }
 
+  /// Ensures the audio pack is present. Downloads + extracts exactly once per
+  /// install; on every later launch it returns immediately with no dialog and
+  /// no network call. Returns true only when a download actually ran to
+  /// completion this call.
   Future<bool> isStringsDownloaded(String appName) async {
-    // The constructor kicks off init() but does not await it, so dir may still
-    // be null on the first launch when the home screen calls in. Make sure the
-    // directory is ready before we touch it.
+    if (kIsWeb) return false;
+
+    // The constructor starts init() without awaiting it, so dir may still be
+    // null on a fast first launch. Make sure storage is ready first.
     if (dir == null) {
       await init();
     }
-    File file = File("${dir!.path}/$folderAndFileName.zip");
 
-    if (!(await file.exists() && await LocalDB.getIsFilesDownloaded)) {
-      // ignore: use_build_context_synchronously
-      bool isDownload = await _downloadStrings(Nav.key.currentState!.context);
-      return isDownload;
-    } else {
+    // The app-name the pack is keyed by on the server (e.g. "mt-dictionaries").
+    final packName = Utils.getMtAppName;
+
+    // Already have it? Nothing to do — this is the common, every-launch path.
+    final provisioned = await _alreadyProvisioned(packName);
+    debugPrint('[AudioDL] dir=${dir?.path}');
+    debugPrint('[AudioDL] pack=$packName marker=${_readyMarker(packName).path}');
+    debugPrint('[AudioDL] alreadyProvisioned=$provisioned');
+    if (provisioned) {
       return false;
+    }
+
+    if (_inFlight) return false;
+    _inFlight = true;
+    try {
+      // Show the dialog only on the first attempt of this install; later
+      // retries (e.g. while the server-side pack is still being published)
+      // run silently so they never nag the user.
+      bool firstAttempt = true;
+      try {
+        firstAttempt = !await _attemptMarker(packName).exists();
+      } catch (_) {}
+
+      // Context is grabbed fresh from the root navigator here; the download
+      // helper guards every later use with a mounted check.
+      final ctx = Nav.key.currentState?.context;
+      // ignore: use_build_context_synchronously
+      final ok = await _downloadStrings(ctx, packName, firstAttempt);
+
+      // Record that an attempt happened, so the next launch retries silently.
+      try {
+        await _attemptMarker(packName).create(recursive: true);
+      } catch (_) {}
+
+      return ok;
+    } finally {
+      _inFlight = false;
     }
   }
 
-  void extractFiles(String appName) async {
+  void extractFiles(String appName) {
     final bytes = File("${dir!.path}/$folderAndFileName.zip").readAsBytesSync();
-    // Decode the Zip file
     final archive = ZipDecoder().decodeBytes(bytes);
 
     for (final file in archive) {
       final filename = file.name;
-      final updatedFileName = filename.replaceFirst("$appName/", '');
+      // Strip the top-level pack folder ("mt-<app>/") the server wraps the zip
+      // in, and tolerate a redundant leading "assets/" if the web deploy
+      // includes one, so files always land at "<dir>/assets/<relative path>".
+      var updatedFileName = filename.replaceFirst("$appName/", '');
+      if (updatedFileName.startsWith('assets/')) {
+        updatedFileName = updatedFileName.replaceFirst('assets/', '');
+      }
+      final outPath =
+          "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}";
       if (file.isFile) {
         final data = file.content as List<int>;
-        File("${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
+        File(outPath)
           ..createSync(recursive: true)
           ..writeAsBytesSync(data);
       } else {
-        Directory(
-                "${dir!.path}/assets/${updatedFileName.replaceAll("%20", ' ')}")
-            .create(recursive: true);
+        Directory(outPath).createSync(recursive: true);
       }
     }
+  }
+}
+
+/// A compact, suite-styled modal shown while the audio pack downloads.
+/// Replaces the old `sn_progress_dialog`.
+class _AudioDownloadDialog {
+  final BuildContext? _context;
+  bool _open = false;
+
+  _AudioDownloadDialog._(this._context);
+
+  static _AudioDownloadDialog show(
+      BuildContext? context, ValueNotifier<double?> progress) {
+    final d = _AudioDownloadDialog._(context);
+    if (context == null) return d;
+    d._open = true;
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      barrierColor: Colors.black.withValues(alpha: 0.6),
+      useRootNavigator: true,
+      builder: (_) => PopScope(
+        canPop: false,
+        child: _AudioDownloadCard(progress: progress),
+      ),
+    );
+    return d;
+  }
+
+  Future<void> close() async {
+    final ctx = _context;
+    if (!_open || ctx == null || !ctx.mounted) return;
+    _open = false;
+    final nav = Navigator.of(ctx, rootNavigator: true);
+    if (nav.canPop()) nav.pop();
+  }
+}
+
+class _AudioDownloadCard extends StatelessWidget {
+  final ValueNotifier<double?> progress;
+  const _AudioDownloadCard({required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(24, 26, 24, 24),
+        decoration: BoxDecoration(
+          color: JHGColors.dialogBackground,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.4),
+              blurRadius: 30,
+              offset: const Offset(0, 12),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: JHGColors.primary.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.library_music_outlined,
+                      color: JHGColors.primary, size: 22),
+                ),
+                const SizedBox(width: 14),
+                const Expanded(
+                  child: Text(
+                    'Getting your sounds ready',
+                    style: TextStyle(
+                      color: JHGColors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            const Text(
+              'Downloading the audio library. This happens only once.',
+              style: TextStyle(
+                color: JHGColors.whiteGrey,
+                fontSize: 13,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ValueListenableBuilder<double?>(
+              valueListenable: progress,
+              builder: (context, value, _) {
+                final pct = value == null ? null : (value * 100).clamp(0, 100);
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: LinearProgressIndicator(
+                        value: value,
+                        minHeight: 8,
+                        backgroundColor: Colors.white.withValues(alpha: 0.10),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(JHGColors.primary),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      pct == null ? 'Starting…' : '${pct.toInt()}%',
+                      style: const TextStyle(
+                        color: JHGColors.whiteGrey,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -116,6 +116,15 @@ class BaseService {
             message: json.decode(response.body)['message'],
             url: response.request?.url.toString());
 
+      case 202:
+        // SiteGround (and similar hosts) answer a flagged request with 202 and
+        // an HTML anti-bot / captcha challenge page instead of the API JSON.
+        // The app can't solve that challenge — it has to be relaxed/allowlisted
+        // in the host's security settings for the /wp-json/ API routes.
+        throw FetchDataException(
+            message: 'The server is running a security check (202) and blocked '
+                'the request. Please try again in a moment.',
+            url: response.request?.url.toString());
       case 409:
       case 422:
         throw UnProcessableException(
