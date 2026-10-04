@@ -43,18 +43,23 @@ class AlreadySubscribed extends StatelessWidget {
     );
   }
 
-  GestureDetector buildTextButton(void Function()? onTap, String str,
-      [Color? color]) {
+  Widget buildTextButton(void Function()? onTap, String str, [Color? color]) {
+    // Padded hit area so "Login" is comfortably tappable instead of a bare,
+    // cramped word pinned between the plan box and the Continue button.
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
-      child: Text(
-        str,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          color: color ?? JHGColors.white,
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
-          fontFamily: Constants.kFontFamilySS3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+        child: Text(
+          str,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: color ?? JHGColors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            fontFamily: Constants.kFontFamilySS3,
+          ),
         ),
       ),
     );

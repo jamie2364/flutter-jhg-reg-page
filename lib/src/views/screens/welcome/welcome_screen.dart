@@ -60,6 +60,41 @@ class _WelcomeState extends State<WelcomeScreen> {
 
   // final upgrader = Upgrader(debugDisplayAlways: true);
 
+  // The image + "Welcome / to Music Tools / <app>" title, plus the info chip.
+  // It is the first thing in the scroll view, so the plan content that follows
+  // can never be drawn under the title (the old overlap) and the title can never
+  // push the content off-screen.
+  Widget _header(double height, double width) {
+    return Stack(
+      children: [
+        HeaderImage(height: height, width: width),
+        Positioned(
+          right: width * 0.05,
+          top: MediaQuery.of(context).padding.top + height * 0.01,
+          child: JhgIconChipButton.header(
+            icon: LucideIcons.info,
+            onTap: () => Nav.to(InfoScreen(
+              callback: controller.restorePurchase,
+            )),
+          ),
+        ),
+        Positioned(
+          left: width < 768 ? width * .07 : 50,
+          bottom: 0,
+          right: width < 768 ? width * .07 : 50,
+          child: Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: Utils.sWidth(context),
+              child: WelcomeText(
+                  appName: controller.replaceAppName(), height: height),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -70,10 +105,10 @@ class _WelcomeState extends State<WelcomeScreen> {
         !spController.showFreePlan) {
       plans.removeAt(0);
     }
+    final double btnWidth = width > 768 ? 500 : width * 0.85;
     return SafeArea(
       top: false,
       child: UpgradeAlert(
-        // upgrader: upgrader,
         dialogStyle: !kIsWeb
             ? Platform.isIOS
                 ? UpgradeDialogStyle.cupertino
@@ -87,171 +122,98 @@ class _WelcomeState extends State<WelcomeScreen> {
                     color: JHGColors.primary,
                   ),
                 )
-              : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        HeaderImage(height: height, width: width),
-                        Positioned(
-                          right: width * 0.05,
-                          top: MediaQuery.of(context).padding.top +
-                              height * 0.01,
-                          child: JhgIconChipButton.header(
-                            icon: LucideIcons.info,
-                            onTap: () => Nav.to(InfoScreen(
-                              callback: controller.restorePurchase,
-                            )),
-                          ),
-                        ),
-                        Positioned(
-                          left: width < 768 ? width * .07 : 50, //50,
-                          bottom: 0,
-                          right: width < 768 ? width * .07 : 50, //50,
-                          // alignment: Alignment.bottomCenter,
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: SizedBox(
-                              width: Utils.sWidth(context),
-                              child: WelcomeText(
-                                  appName: controller.replaceAppName(),
-                                  height: height),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: kIsWeb
-                          ? Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: width * 0.07),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  SizedBox(
-                                    height: height * 0.18,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: JHGPrimaryBtn(
-                                      width: width > 768 ? 500 : width * 0.85,
-                                      label: Constants.getStarted,
-                                      onPressed: () =>
-                                          Nav.to(const SubscriptionUrlScreen()),
-                                    ),
-                                  )
-                                ],
+              // One scroll view for the whole page. Fixed gaps (never Spacers,
+              // which collapse to nothing and cram the plan cards, the Login row
+              // and the Continue button together) keep consistent breathing room
+              // on every device; the page simply scrolls on a short screen
+              // instead of clipping the Continue button.
+              : SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: kIsWeb
+                        ? [
+                            _header(height, width),
+                            SizedBox(height: height * 0.12),
+                            Center(
+                              child: JHGPrimaryBtn(
+                                width: btnWidth,
+                                label: Constants.getStarted,
+                                onPressed: () =>
+                                    Nav.to(const SubscriptionUrlScreen()),
                               ),
-                            )
-                          // Mobile: let the plan block SCROLL instead of
-                          // overflowing. The old layout was a fixed Column of
-                          // Spacers; when the plan cards + Continue button were
-                          // taller than the space left under the header (short
-                          // phones, or a phone with a large system nav inset),
-                          // the Column overflowed off the bottom and clipped the
-                          // Continue button. The ConstrainedBox(minHeight) +
-                          // IntrinsicHeight keeps the Spacers filling the screen
-                          // on tall phones (look unchanged), while short phones
-                          // fall back to the content's own height and scroll, so
-                          // Continue is always reachable and never cut off.
-                          : LayoutBuilder(
-                              builder: (context, constraints) {
-                                return SingleChildScrollView(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: width * 0.07),
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                        minHeight: constraints.maxHeight),
-                                    child: IntrinsicHeight(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Spacer(),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: SizedBox(
-                                              width: Utils.sWidth(context),
-                                              child: Text(
-                                                Constants.pleaseChoosePlan,
-                                                style: TextStyle(
-                                                  color:
-                                                      JHGColors.secondaryWhite,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily:
-                                                      Constants.kFontFamilySS3,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: height > 650
-                                                  ? height * 0.03
-                                                  : height * 0.02),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: PlanOptionsWidget(
-                                              plans: plans,
-                                              selectedPlan:
-                                                  controller.selectedPlan.value,
-                                              onPlanSelect: onPlanSelect,
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                          AlreadySubscribed(onLogin: () {
-                                            LocalDB.setIsFreePlan(false);
-                                            controller.launchNextPage();
-                                          }),
-                                          const Spacer(),
-                                          Align(
-                                            alignment: Alignment.center,
-                                            child: ListenableBuilder(
-                                              listenable:
-                                                  controller.selectedPlan,
-                                              builder: (context, _) {
-                                                return JHGPrimaryBtn(
-                                                  width: width > 768
-                                                      ? 500
-                                                      : width * 0.85,
-                                                  label: controller.selectedPlan
-                                                              .value ==
-                                                          2
-                                                      ? Constants.tryFree
-                                                      : Constants.continueText,
-                                                  onPressed: () async {
-                                                    if (controller.selectedPlan
-                                                            .value ==
-                                                        0) {
-                                                      LocalDB.setIsFreePlan(
-                                                          true);
-                                                      SplashScreen.session
-                                                          .isFreePlan = true;
-                                                      Nav.offAll(spController
-                                                          .nextPage());
-                                                      return;
-                                                    }
-                                                    await controller
-                                                        .purchaseSubscription(
-                                                            controller
-                                                                .selectedPlan
-                                                                .value);
-                                                  },
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                          const Spacer(),
-                                        ],
+                            ),
+                            SizedBox(height: height * 0.08),
+                          ]
+                        : [
+                            _header(height, width),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  width * 0.07, 24, width * 0.07, 28),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      Constants.pleaseChoosePlan,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: JHGColors.secondaryWhite,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: Constants.kFontFamilySS3,
                                       ),
                                     ),
                                   ),
-                                );
-                              },
+                                  const SizedBox(height: 24),
+                                  Center(
+                                    child: PlanOptionsWidget(
+                                      plans: plans,
+                                      selectedPlan:
+                                          controller.selectedPlan.value,
+                                      onPlanSelect: onPlanSelect,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 28),
+                                  Center(
+                                    child: AlreadySubscribed(onLogin: () {
+                                      LocalDB.setIsFreePlan(false);
+                                      controller.launchNextPage();
+                                    }),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Center(
+                                    child: ListenableBuilder(
+                                      listenable: controller.selectedPlan,
+                                      builder: (context, _) {
+                                        return JHGPrimaryBtn(
+                                          width: btnWidth,
+                                          label:
+                                              controller.selectedPlan.value == 2
+                                                  ? Constants.tryFree
+                                                  : Constants.continueText,
+                                          onPressed: () async {
+                                            if (controller.selectedPlan.value ==
+                                                0) {
+                                              LocalDB.setIsFreePlan(true);
+                                              SplashScreen.session.isFreePlan =
+                                                  true;
+                                              Nav.offAll(
+                                                  spController.nextPage());
+                                              return;
+                                            }
+                                            await controller
+                                                .purchaseSubscription(controller
+                                                    .selectedPlan.value);
+                                          },
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                    ),
-                  ],
+                          ],
+                  ),
                 ),
         ),
       ),
