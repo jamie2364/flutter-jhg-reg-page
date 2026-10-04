@@ -122,90 +122,134 @@ class _WelcomeState extends State<WelcomeScreen> {
                       ],
                     ),
                     Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.07),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:
-                              kIsWeb
-                                  ? [
-                                      SizedBox(
-                                        height: height * 0.18,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: JHGPrimaryBtn(
-                                          width: width > 768 ? 500 : width * 0.85,
-                                          label: Constants.getStarted,
-                                          onPressed: () =>
-                                              Nav.to(const SubscriptionUrlScreen()),
-                                        ),
-                                      )
-                                    ]
-                                  :
-                              [
-                            const Spacer(),
-                            Align(
-                              alignment: Alignment.center,
-                              child: SizedBox(
-                                width: Utils.sWidth(context),
-                                child: Text(
-                                  Constants.pleaseChoosePlan,
-                                  style: TextStyle(
-                                    color: JHGColors.secondaryWhite,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: Constants.kFontFamilySS3,
+                      child: kIsWeb
+                          ? Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.07),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: height * 0.18,
                                   ),
-                                ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: JHGPrimaryBtn(
+                                      width: width > 768 ? 500 : width * 0.85,
+                                      label: Constants.getStarted,
+                                      onPressed: () =>
+                                          Nav.to(const SubscriptionUrlScreen()),
+                                    ),
+                                  )
+                                ],
                               ),
+                            )
+                          // Mobile: let the plan block SCROLL instead of
+                          // overflowing. The old layout was a fixed Column of
+                          // Spacers; when the plan cards + Continue button were
+                          // taller than the space left under the header (short
+                          // phones, or a phone with a large system nav inset),
+                          // the Column overflowed off the bottom and clipped the
+                          // Continue button. The ConstrainedBox(minHeight) +
+                          // IntrinsicHeight keeps the Spacers filling the screen
+                          // on tall phones (look unchanged), while short phones
+                          // fall back to the content's own height and scroll, so
+                          // Continue is always reachable and never cut off.
+                          : LayoutBuilder(
+                              builder: (context, constraints) {
+                                return SingleChildScrollView(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.07),
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        minHeight: constraints.maxHeight),
+                                    child: IntrinsicHeight(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Spacer(),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: SizedBox(
+                                              width: Utils.sWidth(context),
+                                              child: Text(
+                                                Constants.pleaseChoosePlan,
+                                                style: TextStyle(
+                                                  color:
+                                                      JHGColors.secondaryWhite,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily:
+                                                      Constants.kFontFamilySS3,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                              height: height > 650
+                                                  ? height * 0.03
+                                                  : height * 0.02),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: PlanOptionsWidget(
+                                              plans: plans,
+                                              selectedPlan:
+                                                  controller.selectedPlan.value,
+                                              onPlanSelect: onPlanSelect,
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                          AlreadySubscribed(onLogin: () {
+                                            LocalDB.setIsFreePlan(false);
+                                            controller.launchNextPage();
+                                          }),
+                                          const Spacer(),
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: ListenableBuilder(
+                                              listenable:
+                                                  controller.selectedPlan,
+                                              builder: (context, _) {
+                                                return JHGPrimaryBtn(
+                                                  width: width > 768
+                                                      ? 500
+                                                      : width * 0.85,
+                                                  label: controller.selectedPlan
+                                                              .value ==
+                                                          2
+                                                      ? Constants.tryFree
+                                                      : Constants.continueText,
+                                                  onPressed: () async {
+                                                    if (controller.selectedPlan
+                                                            .value ==
+                                                        0) {
+                                                      LocalDB.setIsFreePlan(
+                                                          true);
+                                                      SplashScreen.session
+                                                          .isFreePlan = true;
+                                                      Nav.offAll(spController
+                                                          .nextPage());
+                                                      return;
+                                                    }
+                                                    await controller
+                                                        .purchaseSubscription(
+                                                            controller
+                                                                .selectedPlan
+                                                                .value);
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                          const Spacer(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            SizedBox(
-                                height: height > 650
-                                    ? height * 0.03
-                                    : height * 0.02),
-                            Align(
-                              alignment: Alignment.center,
-                              child: PlanOptionsWidget(
-                                plans: plans,
-                                selectedPlan: controller.selectedPlan.value,
-                                onPlanSelect: onPlanSelect,
-                              ),
-                            ),
-                            const Spacer(),
-                            AlreadySubscribed(onLogin: () {
-                              LocalDB.setIsFreePlan(false);
-                              controller.launchNextPage();
-                            }),
-                            const Spacer(),
-                            Align(
-                              alignment: Alignment.center,
-                              child: ListenableBuilder(
-                                listenable: controller.selectedPlan,
-                                builder: (context, _) {
-                                  return JHGPrimaryBtn(
-                                    width: width > 768 ? 500 : width * 0.85,
-                                    label: controller.selectedPlan.value == 2
-                                        ? Constants.tryFree
-                                        : Constants.continueText,
-                                    onPressed: () async {
-                                      if (controller.selectedPlan.value == 0) {
-                                        LocalDB.setIsFreePlan(true);
-                                        SplashScreen.session.isFreePlan = true;
-                                        Nav.offAll(spController.nextPage());
-                                        return;
-                                      }
-                                      await controller.purchaseSubscription(
-                                          controller.selectedPlan.value);
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
-                        ),
-                      ),
                     ),
                   ],
                 ),
