@@ -246,11 +246,9 @@ class _AudioDownloadDialog {
     final d = _AudioDownloadDialog._(context);
     if (context == null) return d;
     d._open = true;
-    showDialog<void>(
+    showJHGBlurDialog<void>(
       context: context,
       barrierDismissible: false,
-      barrierColor: Colors.black.withValues(alpha: 0.6),
-      useRootNavigator: true,
       builder: (_) => PopScope(
         canPop: false,
         child: _AudioDownloadCard(progress: progress),
@@ -274,94 +272,80 @@ class _AudioDownloadCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(24, 26, 24, 24),
-        decoration: BoxDecoration(
-          color: JHGColors.dialogBackground,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.06)),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.4),
-              blurRadius: 30,
-              offset: const Offset(0, 12),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 42,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: JHGColors.primary.withValues(alpha: 0.14),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(Icons.library_music_outlined,
-                      color: JHGColors.primary, size: 22),
+    return JHGFrostedPanel.padded(
+      maxWidth: 400,
+      accent: JHGColors.primary,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: JHGColors.primary.withValues(alpha: 0.18),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                const SizedBox(width: 14),
-                const Expanded(
-                  child: Text(
-                    'Getting your sounds ready',
+                child: const Icon(Icons.library_music_outlined,
+                    color: JHGColors.primary, size: 22),
+              ),
+              const SizedBox(width: 14),
+              const Expanded(
+                child: Text(
+                  'Getting your sounds ready',
+                  style: TextStyle(
+                    color: JHGColors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 18),
+          Text(
+            'Downloading the audio library. This happens only once.',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.7),
+              fontSize: 13,
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 22),
+          ValueListenableBuilder<double?>(
+            valueListenable: progress,
+            builder: (context, value, _) {
+              final pct = value == null ? null : (value * 100).clamp(0, 100);
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: LinearProgressIndicator(
+                      value: value,
+                      minHeight: 8,
+                      backgroundColor: Colors.white.withValues(alpha: 0.10),
+                      valueColor:
+                          const AlwaysStoppedAnimation<Color>(JHGColors.primary),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    pct == null ? 'Starting…' : '${pct.toInt()}%',
                     style: TextStyle(
-                      color: JHGColors.white,
-                      fontSize: 16,
+                      color: Colors.white.withValues(alpha: 0.7),
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 18),
-            const Text(
-              'Downloading the audio library. This happens only once.',
-              style: TextStyle(
-                color: JHGColors.whiteGrey,
-                fontSize: 13,
-                height: 1.35,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ValueListenableBuilder<double?>(
-              valueListenable: progress,
-              builder: (context, value, _) {
-                final pct = value == null ? null : (value * 100).clamp(0, 100);
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        value: value,
-                        minHeight: 8,
-                        backgroundColor: Colors.white.withValues(alpha: 0.10),
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(JHGColors.primary),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      pct == null ? 'Starting…' : '${pct.toInt()}%',
-                      style: const TextStyle(
-                        color: JHGColors.whiteGrey,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ],
-        ),
+                ],
+              );
+            },
+          ),
+        ],
       ),
     );
   }

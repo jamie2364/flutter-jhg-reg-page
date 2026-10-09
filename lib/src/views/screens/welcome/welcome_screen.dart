@@ -122,99 +122,112 @@ class _WelcomeState extends State<WelcomeScreen> {
                     color: JHGColors.primary,
                   ),
                 )
-              // One scroll view for the whole page. Fixed gaps (never Spacers,
-              // which collapse to nothing and cram the plan cards, the Login row
-              // and the Continue button together) keep consistent breathing room
-              // on every device; the page simply scrolls on a short screen
-              // instead of clipping the Continue button.
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: kIsWeb
-                        ? [
-                            _header(height, width),
-                            SizedBox(height: height * 0.12),
-                            Center(
-                              child: JHGPrimaryBtn(
-                                width: btnWidth,
-                                label: Constants.getStarted,
-                                onPressed: () =>
-                                    Nav.to(const SubscriptionUrlScreen()),
-                              ),
+              : kIsWeb
+                  // Web keeps a single scroll view (desktop viewports vary wildly).
+                  ? SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _header(height, width),
+                          SizedBox(height: height * 0.12),
+                          Center(
+                            child: JHGPrimaryBtn(
+                              width: btnWidth,
+                              label: Constants.getStarted,
+                              onPressed: () =>
+                                  Nav.to(const SubscriptionUrlScreen()),
                             ),
-                            SizedBox(height: height * 0.08),
-                          ]
-                        : [
-                            _header(height, width),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                  width * 0.07, 24, width * 0.07, 28),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      Constants.pleaseChoosePlan,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: JHGColors.secondaryWhite,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: Constants.kFontFamilySS3,
+                          ),
+                          SizedBox(height: height * 0.08),
+                        ],
+                      ),
+                    )
+                  // Mobile: a fixed, NON-scrolling layout. The header is fixed at
+                  // the top, the plan cards sit in the flexible middle, and the
+                  // Continue button is pinned at the bottom so it is always fully
+                  // visible and never clipped — no scroll on any phone.
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _header(height, width),
+                        Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(
+                                width * 0.07, 16, width * 0.07, 18),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Center(
+                                  child: Text(
+                                    Constants.pleaseChoosePlan,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: JHGColors.secondaryWhite,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: Constants.kFontFamilySS3,
+                                    ),
+                                  ),
+                                ),
+                                // The plan cards fill the flexible middle. The
+                                // button below is pinned and always visible; the
+                                // cards are not user-scrollable but clip
+                                // gracefully on a very short phone instead of
+                                // throwing an overflow.
+                                Expanded(
+                                  child: SingleChildScrollView(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.symmetric(vertical: 10),
+                                      child: PlanOptionsWidget(
+                                        plans: plans,
+                                        selectedPlan:
+                                            controller.selectedPlan.value,
+                                        onPlanSelect: onPlanSelect,
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 24),
-                                  Center(
-                                    child: PlanOptionsWidget(
-                                      plans: plans,
-                                      selectedPlan:
-                                          controller.selectedPlan.value,
-                                      onPlanSelect: onPlanSelect,
-                                    ),
+                                ),
+                                Center(
+                                  child: AlreadySubscribed(onLogin: () {
+                                    LocalDB.setIsFreePlan(false);
+                                    controller.launchNextPage();
+                                  }),
+                                ),
+                                const SizedBox(height: 14),
+                                Center(
+                                  child: ListenableBuilder(
+                                    listenable: controller.selectedPlan,
+                                    builder: (context, _) {
+                                      return JHGPrimaryBtn(
+                                        width: btnWidth,
+                                        label: controller.selectedPlan.value == 2
+                                            ? Constants.tryFree
+                                            : Constants.continueText,
+                                        onPressed: () async {
+                                          if (controller.selectedPlan.value ==
+                                              0) {
+                                            LocalDB.setIsFreePlan(true);
+                                            SplashScreen.session.isFreePlan =
+                                                true;
+                                            Nav.offAll(spController.nextPage());
+                                            return;
+                                          }
+                                          await controller.purchaseSubscription(
+                                              controller.selectedPlan.value);
+                                        },
+                                      );
+                                    },
                                   ),
-                                  const SizedBox(height: 28),
-                                  Center(
-                                    child: AlreadySubscribed(onLogin: () {
-                                      LocalDB.setIsFreePlan(false);
-                                      controller.launchNextPage();
-                                    }),
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Center(
-                                    child: ListenableBuilder(
-                                      listenable: controller.selectedPlan,
-                                      builder: (context, _) {
-                                        return JHGPrimaryBtn(
-                                          width: btnWidth,
-                                          label:
-                                              controller.selectedPlan.value == 2
-                                                  ? Constants.tryFree
-                                                  : Constants.continueText,
-                                          onPressed: () async {
-                                            if (controller.selectedPlan.value ==
-                                                0) {
-                                              LocalDB.setIsFreePlan(true);
-                                              SplashScreen.session.isFreePlan =
-                                                  true;
-                                              Nav.offAll(
-                                                  spController.nextPage());
-                                              return;
-                                            }
-                                            await controller
-                                                .purchaseSubscription(controller
-                                                    .selectedPlan.value);
-                                          },
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                  ),
-                ),
+                          ),
+                        ),
+                      ],
+                    ),
         ),
       ),
     );
