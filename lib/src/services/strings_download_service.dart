@@ -71,14 +71,44 @@ class StringsDownloadService {
   File _attemptMarker(String appName) =>
       File("${dir!.path}/assets/audio_${appName}_attempted.flag");
 
-  /// True when this install has already downloaded and extracted the pack.
-  /// Accepts either the sentinel OR real extracted audio on disk, so a flaky
-  /// marker write can never force a re-download when the pack is clearly there.
-  Future<bool> _alreadyProvisioned(String appName) async {
+  /// Records which asset-pack version this install last extracted. The app
+  /// tells us the version it expects via [isStringsDownloaded]'s `packVersion`;
+  /// a re-download runs only when the version on disk is older than that. This
+  /// is how adding a new sound (bump the version) forces a refresh, while a
+  /// code-only app update (same version) never re-downloads.
+  File _versionMarker(String appName) =>
+      File("${dir!.path}/assets/audio_${appName}_version.txt");
+
+  /// The pack version currently on disk. Returns 0 when nothing is downloaded.
+  /// Installs that provisioned before versioning existed have no version file
+  /// but do have the pack, so they are grandfathered in at version 1 — they
+  /// only re-download once an app actually asks for version 2 or higher.
+  Future<int> _storedVersion(String appName) async {
+    if (dir == null) return 0;
+    try {
+      final vf = _versionMarker(appName);
+      if (await vf.exists()) {
+        final v = int.tryParse((await vf.readAsString()).trim());
+        if (v != null) return v;
+      }
+      if (await _readyMarker(appName).exists() || await _hasExtractedAudio()) {
+        return 1;
+      }
+    } catch (_) {}
+    return 0;
+  }
+
+  /// True when this install already holds the pack AT OR ABOVE the version the
+  /// app expects. Accepts the sentinel OR real extracted audio on disk, so a
+  /// flaky marker write can never force a re-download when the pack is there —
+  /// but a version older than [packVersion] always triggers a refresh.
+  Future<bool> _alreadyProvisioned(String appName, int packVersion) async {
     if (dir == null) return false;
     try {
-      if (await _readyMarker(appName).exists()) return true;
-      return await _hasExtractedAudio();
+      final hasPack =
+          await _readyMarker(appName).exists() || await _hasExtractedAudio();
+      if (!hasPack) return false;
+      return await _storedVersion(appName) >= packVersion;
     } catch (_) {
       return false;
     }
@@ -102,8 +132,8 @@ class StringsDownloadService {
 
   /// [showUi] drives whether the modal dialog and toasts appear. It is true on
   /// the first attempt of an install and false for silent background retries.
-  Future<bool> _downloadStrings(
-      BuildContext? context, String appName, bool showUi) async {
+  Future<bool> _downloadStrings(BuildContext? context, String appName,
+      bool showUi, int packVersion) async {
     final progress = ValueNotifier<double?>(null);
     final dialog =
         _AudioDownloadDialog.show(showUi ? context : null, progress);
@@ -126,7 +156,14 @@ class StringsDownloadService {
       // with any code still reading the old flag).
       final marker = _readyMarker(appName);
       await marker.create(recursive: true);
-      debugPrint('[AudioDL] wrote marker=${marker.path} '
+      // Stamp the version we just extracted so later launches know whether the
+      // pack is current. Written only on success, so a failed/partial download
+      // leaves the old version in place and retries next launch.
+      try {
+        await _versionMarker(appName)
+            .writeAsString('$packVersion', flush: true);
+      } catch (_) {}
+      debugPrint('[AudioDL] wrote marker=${marker.path} v=$packVersion '
           'exists=${await marker.exists()}');
       await LocalDB.saveIsFilesDownloaded(true);
 
@@ -153,11 +190,17 @@ class StringsDownloadService {
     }
   }
 
-  /// Ensures the audio pack is present. Downloads + extracts exactly once per
-  /// install; on every later launch it returns immediately with no dialog and
-  /// no network call. Returns true only when a download actually ran to
-  /// completion this call.
-  Future<bool> isStringsDownloaded(String appName) async {
+  /// Ensures the audio pack is present and up to date. Downloads + extracts on
+  /// first install, and again only when [packVersion] is higher than the
+  /// version already on disk — i.e. when you have shipped a new/changed asset
+  /// pack. On every other launch (including a code-only app update) it returns
+  /// immediately with no dialog and no network call. Returns true only when a
+  /// download actually ran to completion this call.
+  ///
+  /// [packVersion] defaults to 1 so existing apps that do not pass it keep the
+  /// old "download once per install" behaviour untouched. Bump it (in the app)
+  /// in lockstep with uploading a new pack to the server to force a refresh.
+  Future<bool> isStringsDownloaded(String appName, {int packVersion = 1}) async {
     if (kIsWeb) return false;
 
     // The constructor starts init() without awaiting it, so dir may still be
@@ -169,11 +212,13 @@ class StringsDownloadService {
     // The app-name the pack is keyed by on the server (e.g. "mt-dictionaries").
     final packName = Utils.getMtAppName;
 
-    // Already have it? Nothing to do — this is the common, every-launch path.
-    final provisioned = await _alreadyProvisioned(packName);
+    // Already have this version? Nothing to do — the common every-launch path.
+    final provisioned = await _alreadyProvisioned(packName, packVersion);
+    final storedVersion = await _storedVersion(packName);
     debugPrint('[AudioDL] dir=${dir?.path}');
     debugPrint('[AudioDL] pack=$packName marker=${_readyMarker(packName).path}');
-    debugPrint('[AudioDL] alreadyProvisioned=$provisioned');
+    debugPrint('[AudioDL] stored=v$storedVersion want=v$packVersion '
+        'provisioned=$provisioned');
     if (provisioned) {
       return false;
     }
@@ -181,19 +226,23 @@ class StringsDownloadService {
     if (_inFlight) return false;
     _inFlight = true;
     try {
-      // Show the dialog only on the first attempt of this install; later
-      // retries (e.g. while the server-side pack is still being published)
-      // run silently so they never nag the user.
+      // Show the dialog on the first attempt of an install, and whenever a
+      // version upgrade triggers the refresh (so the user sees "getting sounds
+      // ready" rather than a silent mid-session swap). Pure background retries
+      // — same version, server pack not up yet — stay silent.
+      final bool versionUpgrade =
+          storedVersion > 0 && storedVersion < packVersion;
       bool firstAttempt = true;
       try {
         firstAttempt = !await _attemptMarker(packName).exists();
       } catch (_) {}
+      final bool showUi = firstAttempt || versionUpgrade;
 
       // Context is grabbed fresh from the root navigator here; the download
       // helper guards every later use with a mounted check.
       final ctx = Nav.key.currentState?.context;
       // ignore: use_build_context_synchronously
-      final ok = await _downloadStrings(ctx, packName, firstAttempt);
+      final ok = await _downloadStrings(ctx, packName, showUi, packVersion);
 
       // Record that an attempt happened, so the next launch retries silently.
       try {
