@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:dio/dio.dart';
+import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_jhg_elements/jhg_elements.dart';
@@ -131,6 +131,46 @@ class StringsDownloadService {
     return false;
   }
 
+  /// Downloads [url] to a file named [filename] under the app's pack directory
+  /// using the OS-level background downloader (iOS URLSession / Android
+  /// WorkManager). The transfer keeps running when the app is backgrounded or
+  /// the screen is locked, and the package retries transient failures itself.
+  /// Returns the completed File, or null on failure. [onProgress] reports 0..1.
+  ///
+  /// Resume-after-force-kill is handled a level up: each chunk is extracted and
+  /// verified as it lands, so the next launch only re-fetches the pieces that
+  /// are still missing (see [isStringsDownloaded] + the packValidator).
+  Future<File?> _bgDownload(
+    String url,
+    String filename, {
+    void Function(double fraction)? onProgress,
+  }) async {
+    // Keep the zip next to the extracted pack: iOS app-support, Android
+    // app-documents — matching [dir] so cleanup/paths line up.
+    final base = Platform.isIOS
+        ? BaseDirectory.applicationSupport
+        : BaseDirectory.applicationDocuments;
+    final task = DownloadTask(
+      url: url,
+      filename: filename,
+      baseDirectory: base,
+      updates: Updates.statusAndProgress,
+      allowPause: true,
+      retries: 3,
+    );
+    final result = await FileDownloader().download(
+      task,
+      onProgress: (p) {
+        if (onProgress != null && p >= 0) onProgress(p.clamp(0.0, 1.0));
+      },
+    );
+    if (result.status == TaskStatus.complete) {
+      final f = File(await task.filePath());
+      if (await f.exists() && await f.length() > 0) return f;
+    }
+    return null;
+  }
+
   String _formatChunkLabel(String chunk) {
     if (chunk == 'drum_beats') return 'drum beats';
     if (chunk.contains('/')) {
@@ -159,10 +199,6 @@ class StringsDownloadService {
       statusMessage: statusText,
     );
 
-    final dio = Dio();
-    dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 90);
-
     bool allSucceeded = true;
     final totalChunks = chunksToDownload.length;
 
@@ -174,46 +210,35 @@ class StringsDownloadService {
 
       final url =
           '${Urls.downloadAssetsUrl}$appName&folders=${Uri.encodeQueryComponent(chunk)}';
-      final tempZip = File(
-          "${dir!.path}/chunk_${DateTime.now().microsecondsSinceEpoch}.zip");
+      final zipName = 'chunk_${DateTime.now().microsecondsSinceEpoch}.zip';
 
       bool chunkOk = false;
-      const maxRetries = 3;
-
-      for (int attempt = 1; attempt <= maxRetries; attempt++) {
+      // The background downloader retries transient network errors on its own
+      // (retries: 3); this outer loop only guards an extract/IO failure.
+      const maxAttempts = 2;
+      for (int attempt = 1; attempt <= maxAttempts; attempt++) {
         try {
           debugPrint(
-              '[AudioDL] Chunk ${i + 1}/$totalChunks (attempt $attempt/$maxRetries): $chunk');
-          await dio.download(
+              '[AudioDL] Chunk ${i + 1}/$totalChunks (attempt $attempt/$maxAttempts): $chunk');
+          final file = await _bgDownload(
             url,
-            tempZip.path,
-            onReceiveProgress: (rec, total) {
-              if (total > 0) {
-                final chunkFraction = (rec / total).clamp(0.0, 1.0);
-                progress.value = (i + chunkFraction) / totalChunks;
-              } else {
-                progress.value = i / totalChunks;
-              }
-            },
+            zipName,
+            onProgress: (f) => progress.value = (i + f) / totalChunks,
           );
-
-          if (await tempZip.exists() && await tempZip.length() > 0) {
-            extractFiles(appName, tempZip);
+          if (file != null) {
+            extractFiles(appName, file);
             chunkOk = true;
             try {
-              await tempZip.delete();
+              await file.delete();
             } catch (_) {}
             break;
           }
         } catch (ex) {
           debugPrint(
               '[AudioDL] Chunk ${i + 1}/$totalChunks attempt $attempt failed: $ex');
-          try {
-            if (await tempZip.exists()) await tempZip.delete();
-          } catch (_) {}
-          if (attempt < maxRetries) {
-            await Future<void>.delayed(Duration(seconds: attempt));
-          }
+        }
+        if (attempt < maxAttempts) {
+          await Future<void>.delayed(Duration(seconds: attempt));
         }
       }
 
@@ -290,15 +315,18 @@ class StringsDownloadService {
     final dialog =
         _AudioDownloadDialog.show(showUi ? context : null, progress);
 
-    File file = File("${dir!.path}/$folderAndFileName.zip");
-    final dio = Dio();
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
-      await dio.download(url, file.path, onReceiveProgress: (rec, total) {
-        progress.value = total > 0 ? rec / total : null;
-      });
+      final file = await _bgDownload(
+        url,
+        '$folderAndFileName.zip',
+        onProgress: (f) => progress.value = f,
+      );
+      if (file == null) {
+        throw Exception('background download did not complete');
+      }
 
-      extractFiles(appName);
+      extractFiles(appName, file);
 
       final marker = _readyMarker(appName);
       await marker.create(recursive: true);

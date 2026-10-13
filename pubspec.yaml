@@ -21,6 +21,7 @@ dependencies:
   sn_progress_dialog: ^1.2.0
   path_provider: ^2.1.5
   archive: ^4.0.7
+  background_downloader: ^9.0.0
   permission_handler: ^12.0.0+1
   app_tracking_transparency: ^2.0.6+1
   http: ^1.4.0
