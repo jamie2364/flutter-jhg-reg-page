@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
@@ -12,20 +13,11 @@ import 'package:reg_page/src/utils/url/urls.dart';
 /// Downloads an app's audio pack (hosted on the web deploy) once per install and
 /// extracts it to local storage so the native/C++ engine can open real files.
 ///
-/// Design notes — the two bugs this class used to have:
-///
-///  1. "Re-downloads on every launch." The old gate relied on a `downloaded`
-///     bool in SharedPreferences. But `LocalDB.clearLocalDB()` runs on several
-///     splash paths (expired/invalid subscription, logout) and wipes every
-///     pref, so the flag kept resetting and the download dialog reappeared on
-///     each cold start. The gate now lives on disk: a per-app sentinel file
-///     written only after a successful extract. Pref clears can't touch it.
-///
-///  2. "Ugly, dated dialog." The old code used `sn_progress_dialog`. The
-///     progress UI is now a suite-styled frosted card built from JHG tokens.
-///
-/// It is also graceful: if the network/CDN is unavailable but the audio was
-/// already extracted on a previous run, it stays silent and does nothing.
+/// Supports:
+///  1. Standard single-request ZIP download (default, legacy behavior for smaller packs).
+///  2. Chunked folder-by-folder downloads (opt-in via [chunks], preventing timeouts on large packs).
+///  3. Custom [packValidator] to verify required audio structure on disk.
+///  4. [missingChunksResolver] to self-heal and fetch only missing parts.
 class StringsDownloadService {
   static final StringsDownloadService _instance =
       StringsDownloadService._internal();
@@ -73,17 +65,13 @@ class StringsDownloadService {
 
   /// Records which asset-pack version this install last extracted. The app
   /// tells us the version it expects via [isStringsDownloaded]'s `packVersion`;
-  /// a re-download runs only when the version on disk is older than that. This
-  /// is how adding a new sound (bump the version) forces a refresh, while a
-  /// code-only app update (same version) never re-downloads.
+  /// a re-download runs only when the version on disk is older than that.
   File _versionMarker(String appName) =>
       File("${dir!.path}/assets/audio_${appName}_version.txt");
 
   /// The pack version currently on disk. Returns 0 when nothing is downloaded.
-  /// Installs that provisioned before versioning existed have no version file
-  /// but do have the pack, so they are grandfathered in at version 1 — they
-  /// only re-download once an app actually asks for version 2 or higher.
   Future<int> _storedVersion(String appName) async {
+    if (dir == null) await init();
     if (dir == null) return 0;
     try {
       final vf = _versionMarker(appName);
@@ -99,14 +87,25 @@ class StringsDownloadService {
   }
 
   /// True when this install already holds the pack AT OR ABOVE the version the
-  /// app expects. Accepts the sentinel OR real extracted audio on disk, so a
-  /// flaky marker write can never force a re-download when the pack is there —
-  /// but a version older than [packVersion] always triggers a refresh.
-  Future<bool> _alreadyProvisioned(String appName, int packVersion) async {
+  /// app expects. Accepts the sentinel OR real extracted audio on disk (or
+  /// [packValidator] if provided), so a flaky marker write can never force a
+  /// re-download when the pack is there — but a version older than [packVersion]
+  /// or an incomplete pack always triggers a refresh.
+  Future<bool> _alreadyProvisioned(String appName, int packVersion,
+      {Future<bool> Function(String assetsPath)? packValidator}) async {
+    if (dir == null) await init();
     if (dir == null) return false;
     try {
-      final hasPack =
-          await _readyMarker(appName).exists() || await _hasExtractedAudio();
+      bool hasPack = false;
+      if (packValidator != null) {
+        final path = assetsPath;
+        if (path != null) {
+          hasPack = await packValidator(path);
+        }
+      } else {
+        hasPack =
+            await _readyMarker(appName).exists() || await _hasExtractedAudio();
+      }
       if (!hasPack) return false;
       return await _storedVersion(appName) >= packVersion;
     } catch (_) {
@@ -117,6 +116,8 @@ class StringsDownloadService {
   /// True when at least one real audio file has already been extracted into the
   /// pack directory by a previous successful download.
   Future<bool> _hasExtractedAudio() async {
+    if (dir == null) await init();
+    if (dir == null) return false;
     try {
       final root = Directory("${dir!.path}/assets");
       if (!await root.exists()) return false;
@@ -128,6 +129,157 @@ class StringsDownloadService {
       }
     } catch (_) {}
     return false;
+  }
+
+  String _formatChunkLabel(String chunk) {
+    if (chunk == 'drum_beats') return 'drum beats';
+    if (chunk.contains('/')) {
+      final parts = chunk.split(',');
+      final first = parts.first.split('/').last;
+      return first;
+    }
+    return chunk;
+  }
+
+  /// Downloads multiple smaller chunks sequentially to avoid server timeouts
+  /// on large asset libraries. Reports combined progress and verifies the pack.
+  Future<bool> _downloadChunks(
+    BuildContext? context,
+    String appName,
+    List<String> chunksToDownload,
+    bool showUi,
+    int packVersion,
+    Future<bool> Function(String assetsPath)? packValidator,
+  ) async {
+    final progress = ValueNotifier<double?>(null);
+    final statusText = ValueNotifier<String?>('Starting download…');
+    final dialog = _AudioDownloadDialog.show(
+      showUi ? context : null,
+      progress,
+      statusMessage: statusText,
+    );
+
+    final dio = Dio();
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 90);
+
+    bool allSucceeded = true;
+    final totalChunks = chunksToDownload.length;
+
+    for (int i = 0; i < totalChunks; i++) {
+      final chunk = chunksToDownload[i];
+      final label = _formatChunkLabel(chunk);
+      statusText.value = 'Downloading $label (${i + 1}/$totalChunks)…';
+      progress.value = totalChunks > 0 ? i / totalChunks : null;
+
+      final url =
+          '${Urls.downloadAssetsUrl}$appName&folders=${Uri.encodeQueryComponent(chunk)}';
+      final tempZip = File(
+          "${dir!.path}/chunk_${DateTime.now().microsecondsSinceEpoch}.zip");
+
+      bool chunkOk = false;
+      const maxRetries = 3;
+
+      for (int attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          debugPrint(
+              '[AudioDL] Chunk ${i + 1}/$totalChunks (attempt $attempt/$maxRetries): $chunk');
+          await dio.download(
+            url,
+            tempZip.path,
+            onReceiveProgress: (rec, total) {
+              if (total > 0) {
+                final chunkFraction = (rec / total).clamp(0.0, 1.0);
+                progress.value = (i + chunkFraction) / totalChunks;
+              } else {
+                progress.value = i / totalChunks;
+              }
+            },
+          );
+
+          if (await tempZip.exists() && await tempZip.length() > 0) {
+            extractFiles(appName, tempZip);
+            chunkOk = true;
+            try {
+              await tempZip.delete();
+            } catch (_) {}
+            break;
+          }
+        } catch (ex) {
+          debugPrint(
+              '[AudioDL] Chunk ${i + 1}/$totalChunks attempt $attempt failed: $ex');
+          try {
+            if (await tempZip.exists()) await tempZip.delete();
+          } catch (_) {}
+          if (attempt < maxRetries) {
+            await Future<void>.delayed(Duration(seconds: attempt));
+          }
+        }
+      }
+
+      if (!chunkOk) {
+        allSucceeded = false;
+        debugPrint('[AudioDL] Chunk failed permanently: $chunk');
+        break;
+      }
+
+      progress.value = (i + 1) / totalChunks;
+    }
+
+    if (allSucceeded) {
+      statusText.value = 'Verifying audio files…';
+      bool verified = true;
+      if (packValidator != null && assetsPath != null) {
+        verified = await packValidator(assetsPath!);
+      }
+
+      if (verified) {
+        final marker = _readyMarker(appName);
+        await marker.create(recursive: true);
+        try {
+          await _versionMarker(appName)
+              .writeAsString('$packVersion', flush: true);
+        } catch (_) {}
+        await LocalDB.saveIsFilesDownloaded(true);
+        await dialog.close();
+        if (showUi && context != null && context.mounted) {
+          showToast(
+              context: context, message: "Audio files ready", isError: false);
+        }
+        return true;
+      } else {
+        debugPrint('[AudioDL] Post-download verification failed');
+        try {
+          final marker = _readyMarker(appName);
+          if (await marker.exists()) await marker.delete();
+        } catch (_) {}
+        await dialog.close();
+        if (showUi && context != null && context.mounted) {
+          showToast(
+            context: context,
+            message: "Audio verification failed. Some files may be missing.",
+            isError: true,
+          );
+        }
+        return false;
+      }
+    } else {
+      await dialog.close();
+      await LocalDB.saveIsFilesDownloaded(false);
+      try {
+        final marker = _readyMarker(appName);
+        if (await marker.exists()) await marker.delete();
+      } catch (_) {}
+      if (showUi && context != null && context.mounted) {
+        showToast(
+          context: context,
+          message:
+              "Could not download all audio files. Please check your connection.",
+          isError: true,
+        );
+      }
+      return false;
+    }
   }
 
   /// [showUi] drives whether the modal dialog and toasts appear. It is true on
@@ -143,22 +295,13 @@ class StringsDownloadService {
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
       await dio.download(url, file.path, onReceiveProgress: (rec, total) {
-        // total is -1 when the server sends no Content-Length. Drive the bar
-        // only when the size is known; otherwise leave it indeterminate.
         progress.value = total > 0 ? rec / total : null;
       });
 
-      // The await above only returns once the whole file is on disk, so this is
-      // the reliable "done" point.
       extractFiles(appName);
 
-      // Mark success on disk (survives pref clears) AND in prefs (back-compat
-      // with any code still reading the old flag).
       final marker = _readyMarker(appName);
       await marker.create(recursive: true);
-      // Stamp the version we just extracted so later launches know whether the
-      // pack is current. Written only on success, so a failed/partial download
-      // leaves the old version in place and retries next launch.
       try {
         await _versionMarker(appName)
             .writeAsString('$packVersion', flush: true);
@@ -167,7 +310,6 @@ class StringsDownloadService {
           'exists=${await marker.exists()}');
       await LocalDB.saveIsFilesDownloaded(true);
 
-      // The zip is dead weight once extracted — drop it to reclaim space.
       try {
         if (await file.exists()) await file.delete();
       } catch (_) {}
@@ -183,42 +325,67 @@ class StringsDownloadService {
       await LocalDB.saveIsFilesDownloaded(false);
       debugPrint('[AudioDL] FAILED url=$url ex=$ex');
       Log.ex('downloadString exception==$ex', name: url);
-      // Intentionally silent. A failed download is never surfaced to the user:
-      // the app keeps whatever audio it already has and quietly retries on a
-      // later launch. No error banner.
       return false;
     }
   }
 
   /// Ensures the audio pack is present and up to date. Downloads + extracts on
   /// first install, and again only when [packVersion] is higher than the
-  /// version already on disk — i.e. when you have shipped a new/changed asset
-  /// pack. On every other launch (including a code-only app update) it returns
-  /// immediately with no dialog and no network call. Returns true only when a
-  /// download actually ran to completion this call.
+  /// version already on disk.
   ///
-  /// [packVersion] defaults to 1 so existing apps that do not pass it keep the
-  /// old "download once per install" behaviour untouched. Bump it (in the app)
-  /// in lockstep with uploading a new pack to the server to force a refresh.
-  Future<bool> isStringsDownloaded(String appName, {int packVersion = 1}) async {
+  /// Optional parameters:
+  /// - [chunks]: When provided, splits the download into discrete folder requests
+  ///   (avoids PHP timeouts on large multi-megabyte packs).
+  /// - [packValidator]: When provided, performs a structural check on disk to
+  ///   confirm all expected assets exist. If validation fails, triggers a repair.
+  /// - [missingChunksResolver]: Resolves which subset of [chunks] is missing on disk.
+  /// - [force]: Bypasses the provisioned gate (useful for user-triggered "Repair").
+  /// - [context]: Explicit BuildContext for showing the download modal.
+  Future<bool> isStringsDownloaded(
+    String appName, {
+    int packVersion = 1,
+    List<String>? chunks,
+    Future<bool> Function(String assetsPath)? packValidator,
+    Future<List<String>> Function(String assetsPath)? missingChunksResolver,
+    bool force = false,
+    BuildContext? context,
+  }) async {
     if (kIsWeb) return false;
 
-    // The constructor starts init() without awaiting it, so dir may still be
-    // null on a fast first launch. Make sure storage is ready first.
+    // Storage directory check — ensures dir is initialized
     if (dir == null) {
       await init();
     }
 
-    // The app-name the pack is keyed by on the server (e.g. "mt-dictionaries").
     final packName = Utils.getMtAppName;
-
-    // Already have this version? Nothing to do — the common every-launch path.
-    final provisioned = await _alreadyProvisioned(packName, packVersion);
     final storedVersion = await _storedVersion(packName);
+
+    // Verify current on-disk integrity if validator is provided
+    bool isComplete = true;
+    if (packValidator != null) {
+      final path = assetsPath;
+      if (path != null) {
+        isComplete = await packValidator(path);
+      } else {
+        isComplete = false;
+      }
+      if (!isComplete) {
+        try {
+          final marker = _readyMarker(packName);
+          if (await marker.exists()) await marker.delete();
+        } catch (_) {}
+      }
+    }
+
+    final provisioned = !force &&
+        isComplete &&
+        (await _alreadyProvisioned(packName, packVersion,
+            packValidator: packValidator));
+
     debugPrint('[AudioDL] dir=${dir?.path}');
     debugPrint('[AudioDL] pack=$packName marker=${_readyMarker(packName).path}');
     debugPrint('[AudioDL] stored=v$storedVersion want=v$packVersion '
-        'provisioned=$provisioned');
+        'provisioned=$provisioned isComplete=$isComplete force=$force');
     if (provisioned) {
       return false;
     }
@@ -226,25 +393,51 @@ class StringsDownloadService {
     if (_inFlight) return false;
     _inFlight = true;
     try {
-      // Show the dialog on the first attempt of an install, and whenever a
-      // version upgrade triggers the refresh (so the user sees "getting sounds
-      // ready" rather than a silent mid-session swap). Pure background retries
-      // — same version, server pack not up yet — stay silent.
       final bool versionUpgrade =
           storedVersion > 0 && storedVersion < packVersion;
       bool firstAttempt = true;
       try {
         firstAttempt = !await _attemptMarker(packName).exists();
       } catch (_) {}
-      final bool showUi = firstAttempt || versionUpgrade;
 
-      // Context is grabbed fresh from the root navigator here; the download
-      // helper guards every later use with a mounted check.
-      final ctx = Nav.key.currentState?.context;
-      // ignore: use_build_context_synchronously
-      final ok = await _downloadStrings(ctx, packName, showUi, packVersion);
+      final bool showUi = force ||
+          firstAttempt ||
+          versionUpgrade ||
+          (packValidator != null && !isComplete);
 
-      // Record that an attempt happened, so the next launch retries silently.
+      final ctx = context ?? Nav.key.currentState?.context;
+
+      bool ok;
+      if (chunks != null && chunks.isNotEmpty) {
+        List<String> chunksToDownload;
+        if (missingChunksResolver != null && assetsPath != null) {
+          final missing = await missingChunksResolver(assetsPath!);
+          if (missing.isNotEmpty) {
+            chunksToDownload = missing;
+          } else if (force || versionUpgrade) {
+            chunksToDownload = List<String>.from(chunks);
+          } else {
+            final marker = _readyMarker(packName);
+            await marker.create(recursive: true);
+            return true;
+          }
+        } else {
+          chunksToDownload = List<String>.from(chunks);
+        }
+
+        ok = await _downloadChunks(
+          ctx,
+          packName,
+          chunksToDownload,
+          showUi,
+          packVersion,
+          packValidator,
+        );
+      } else {
+        // Legacy single-request path (for other apps)
+        ok = await _downloadStrings(ctx, packName, showUi, packVersion);
+      }
+
       try {
         await _attemptMarker(packName).create(recursive: true);
       } catch (_) {}
@@ -255,8 +448,20 @@ class StringsDownloadService {
     }
   }
 
-  void extractFiles(String appName) {
-    final bytes = File("${dir!.path}/$folderAndFileName.zip").readAsBytesSync();
+  /// Checks whether the on-disk audio pack satisfies [packValidator].
+  Future<bool> verifyPackIntegrity(
+      Future<bool> Function(String assetsPath) packValidator) async {
+    if (kIsWeb) return true;
+    if (dir == null) await init();
+    final path = assetsPath;
+    if (path == null) return false;
+    return await packValidator(path);
+  }
+
+  void extractFiles(String appName, [File? zipFile]) {
+    final target = zipFile ?? File("${dir!.path}/$folderAndFileName.zip");
+    if (!target.existsSync()) return;
+    final bytes = target.readAsBytesSync();
     final archive = ZipDecoder().decodeBytes(bytes);
 
     for (final file in archive) {
@@ -265,6 +470,10 @@ class StringsDownloadService {
       // in, and tolerate a redundant leading "assets/" if the web deploy
       // includes one, so files always land at "<dir>/assets/<relative path>".
       var updatedFileName = filename.replaceFirst("$appName/", '');
+      if (appName.startsWith("mt-")) {
+        updatedFileName =
+            updatedFileName.replaceFirst("${appName.substring(3)}/", '');
+      }
       if (updatedFileName.startsWith('assets/')) {
         updatedFileName = updatedFileName.replaceFirst('assets/', '');
       }
@@ -283,7 +492,6 @@ class StringsDownloadService {
 }
 
 /// A compact, suite-styled modal shown while the audio pack downloads.
-/// Replaces the old `sn_progress_dialog`.
 class _AudioDownloadDialog {
   final BuildContext? _context;
   bool _open = false;
@@ -291,7 +499,10 @@ class _AudioDownloadDialog {
   _AudioDownloadDialog._(this._context);
 
   static _AudioDownloadDialog show(
-      BuildContext? context, ValueNotifier<double?> progress) {
+    BuildContext? context,
+    ValueNotifier<double?> progress, {
+    ValueNotifier<String?>? statusMessage,
+  }) {
     final d = _AudioDownloadDialog._(context);
     if (context == null) return d;
     d._open = true;
@@ -300,7 +511,10 @@ class _AudioDownloadDialog {
       barrierDismissible: false,
       builder: (_) => PopScope(
         canPop: false,
-        child: _AudioDownloadCard(progress: progress),
+        child: _AudioDownloadCard(
+          progress: progress,
+          statusMessage: statusMessage,
+        ),
       ),
     );
     return d;
@@ -317,7 +531,11 @@ class _AudioDownloadDialog {
 
 class _AudioDownloadCard extends StatelessWidget {
   final ValueNotifier<double?> progress;
-  const _AudioDownloadCard({required this.progress});
+  final ValueNotifier<String?>? statusMessage;
+  const _AudioDownloadCard({
+    required this.progress,
+    this.statusMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -355,14 +573,27 @@ class _AudioDownloadCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 18),
-          Text(
-            'Downloading the audio library. This happens only once.',
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.7),
-              fontSize: 13,
-              height: 1.4,
+          if (statusMessage != null)
+            ValueListenableBuilder<String?>(
+              valueListenable: statusMessage!,
+              builder: (context, msg, _) => Text(
+                msg ?? 'Downloading the audio library. This happens only once.',
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontSize: 13,
+                  height: 1.4,
+                ),
+              ),
+            )
+          else
+            Text(
+              'Downloading the audio library. This happens only once.',
+              style: TextStyle(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontSize: 13,
+                height: 1.4,
+              ),
             ),
-          ),
           const SizedBox(height: 22),
           ValueListenableBuilder<double?>(
             valueListenable: progress,
