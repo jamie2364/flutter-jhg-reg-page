@@ -189,14 +189,16 @@ class StringsDownloadService {
     List<String> chunksToDownload,
     bool showUi,
     int packVersion,
-    Future<bool> Function(String assetsPath)? packValidator,
-  ) async {
+    Future<bool> Function(String assetsPath)? packValidator, {
+    List<String>? tips,
+  }) async {
     final progress = ValueNotifier<double?>(null);
     final statusText = ValueNotifier<String?>('Starting download…');
     final dialog = _AudioDownloadDialog.show(
       showUi ? context : null,
       progress,
       statusMessage: statusText,
+      tips: tips,
     );
 
     bool allSucceeded = true;
@@ -310,10 +312,14 @@ class StringsDownloadService {
   /// [showUi] drives whether the modal dialog and toasts appear. It is true on
   /// the first attempt of an install and false for silent background retries.
   Future<bool> _downloadStrings(BuildContext? context, String appName,
-      bool showUi, int packVersion) async {
+      bool showUi, int packVersion,
+      {List<String>? tips}) async {
     final progress = ValueNotifier<double?>(null);
-    final dialog =
-        _AudioDownloadDialog.show(showUi ? context : null, progress);
+    final dialog = _AudioDownloadDialog.show(
+      showUi ? context : null,
+      progress,
+      tips: tips,
+    );
 
     final url = '${Urls.downloadAssetsUrl}$appName';
     try {
@@ -377,6 +383,7 @@ class StringsDownloadService {
     Future<List<String>> Function(String assetsPath)? missingChunksResolver,
     bool force = false,
     BuildContext? context,
+    List<String>? tips,
   }) async {
     if (kIsWeb) return false;
 
@@ -460,10 +467,12 @@ class StringsDownloadService {
           showUi,
           packVersion,
           packValidator,
+          tips: tips,
         );
       } else {
         // Legacy single-request path (for other apps)
-        ok = await _downloadStrings(ctx, packName, showUi, packVersion);
+        ok = await _downloadStrings(ctx, packName, showUi, packVersion,
+            tips: tips);
       }
 
       try {
@@ -530,6 +539,7 @@ class _AudioDownloadDialog {
     BuildContext? context,
     ValueNotifier<double?> progress, {
     ValueNotifier<String?>? statusMessage,
+    List<String>? tips,
   }) {
     final d = _AudioDownloadDialog._(context);
     if (context == null) return d;
@@ -542,6 +552,7 @@ class _AudioDownloadDialog {
         child: _AudioDownloadCard(
           progress: progress,
           statusMessage: statusMessage,
+          tips: tips,
         ),
       ),
     );
@@ -560,9 +571,15 @@ class _AudioDownloadDialog {
 class _AudioDownloadCard extends StatelessWidget {
   final ValueNotifier<double?> progress;
   final ValueNotifier<String?>? statusMessage;
+
+  /// Optional rotating "while you wait" lines, supplied by the host app so the
+  /// copy stays relevant to it. When empty/null, no rotating line is shown.
+  final List<String>? tips;
+
   const _AudioDownloadCard({
     required this.progress,
     this.statusMessage,
+    this.tips,
   });
 
   @override
@@ -652,6 +669,43 @@ class _AudioDownloadCard extends StatelessWidget {
                 ],
               );
             },
+          ),
+          if (tips != null && tips!.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            JhgRotatingTips.card(tips: tips!),
+          ],
+          const SizedBox(height: 14),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: JHGTokens.amber.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: JHGTokens.amber.withValues(alpha: 0.35),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  size: 18,
+                  color: JHGTokens.amber,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Please keep the app open. Closing it will interrupt the download.',
+                    style: JHGType.inter(
+                      size: 12.5,
+                      weight: FontWeight.w600,
+                      color: Colors.white.withValues(alpha: 0.9),
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
