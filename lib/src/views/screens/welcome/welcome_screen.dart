@@ -170,14 +170,16 @@ class _WelcomeState extends State<WelcomeScreen> {
                                   ),
                                 ),
                                 // The plan cards fill the flexible middle. The
-                                // button below is pinned and always visible; the
-                                // cards are not user-scrollable but clip
-                                // gracefully on a very short phone instead of
-                                // throwing an overflow.
+                                // button below stays pinned and always visible.
+                                // Selecting a plan expands its card (detailed
+                                // description + More Info), so on shorter phones
+                                // the three cards can exceed the middle area —
+                                // let ONLY this region scroll so every plan and
+                                // its full description stays reachable, while the
+                                // header and Continue button never move.
                                 Expanded(
                                   child: SingleChildScrollView(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
+                                    physics: const ClampingScrollPhysics(),
                                     child: Padding(
                                       padding:
                                           const EdgeInsets.symmetric(vertical: 10),
