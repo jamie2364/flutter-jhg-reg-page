@@ -97,8 +97,16 @@ class _WelcomeState extends State<WelcomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    final mq = MediaQuery.of(context);
+    final width = mq.size.width;
+    // Size the header against the height ACTUALLY usable for the page, not the
+    // raw screen height. Android's system navigation bar takes ~48dp at the
+    // bottom that iPhone's thin home indicator does not, so a header measured
+    // off the full height left the plan cards too little room and the Annual
+    // card was pushed off the bottom (invisible on Android, fine on iPhone).
+    // Subtracting the bottom inset makes both platforms leave the same room for
+    // the cards.
+    final height = mq.size.height - mq.padding.bottom;
     final plans = Plan.getPlans(monthlyPrice ?? '', yearlyPrice ?? '');
     if (spController.appName.contains(Constants.courseHUB) ||
         spController.appName.contains(Constants.practiceRoutines) ||

@@ -15,13 +15,16 @@ class HeaderImage extends StatelessWidget {
       children: [
         SizedBox(
           width: width,
+          // Slightly shorter than before so all three plan cards (Free,
+          // Monthly, Annual) and the Continue button fit without scrolling,
+          // including on Android where the nav bar takes extra bottom space.
           height: kIsWeb
               ? height * 0.7
               : height > 650
-                  ? height * 0.44
+                  ? height * 0.40
                   : height > 440
-                      ? height * 0.34
-                      : height * 0.30,
+                      ? height * 0.32
+                      : height * 0.28,
           child: Image.asset(
             "assets/images/jhg_background.png",
             package: Constants.regPackage,
